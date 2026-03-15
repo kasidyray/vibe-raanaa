@@ -4,6 +4,7 @@ import * as React from "react"
 import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
+import { PageHeader } from "@/components/ui/page-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 import { Avatar, AvatarFallback, AvatarImage, AvatarGroup, AvatarGroupCount, AvatarBadge } from "@/components/ui/avatar"
@@ -13,6 +14,7 @@ import {
   BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis,
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
+import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from "@/components/ui/button-group"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -78,6 +80,13 @@ import {
 } from "@/components/ui/input-group"
 import { Toaster } from "@/components/ui/sonner"
 import {
+  Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent,
+} from "@/components/ui/empty"
+import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card"
+import { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "@/components/ui/input-otp"
+import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress"
+import { Switch } from "@/components/ui/switch"
+import {
   Select, SelectContent, SelectItem, SelectTrigger,
   SelectValue, SelectGroup, SelectLabel, SelectSeparator,
 } from "@/components/ui/select"
@@ -101,7 +110,11 @@ import {
   RiBankCardLine, RiCommandLine, RiSearchLine, RiMailLine,
   RiCheckboxCircleLine, RiErrorWarningLine, RiInformationLine,
   RiCloseCircleLine, RiDownloadLine, RiArrowRightLine, RiShareLine,
-  RiGridLine, RiListCheck,
+  RiGridLine, RiListCheck, RiArrowDownSLine, RiSortDesc, RiFileCopyLine,
+  RiDeleteBinLine, RiMicLine, RiVolumeMuteLine, RiCheckLine,
+  RiAlertLine, RiUserForbidLine,
+  RiCalendarLine, RiGlobalLine, RiExternalLinkLine, RiUserFollowLine,
+  RiMapPinLine, RiLink, RiBarChart2Line,
 } from "@remixicon/react"
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
@@ -177,6 +190,169 @@ function ButtonSection() {
         <Button disabled>Default</Button>
         <Button variant="secondary" disabled>Secondary</Button>
         <Button variant="outline" disabled>Outline</Button>
+      </Row>
+    </Section>
+  )
+}
+
+const CURRENCIES = [
+  { value: "USD", label: "US Dollar" },
+  { value: "EUR", label: "Euro" },
+  { value: "GBP", label: "British Pound" },
+  { value: "JPY", label: "Japanese Yen" },
+  { value: "NGN", label: "Nigerian Naira" },
+  { value: "CAD", label: "Canadian Dollar" },
+]
+
+function CurrencySendExample() {
+  const [currency, setCurrency] = useState("USD")
+  return (
+    <ButtonGroup>
+      <ButtonGroup>
+        <Select value={currency} onValueChange={(value) => setCurrency(value as string)}>
+          <SelectTrigger className="font-mono">{currency}</SelectTrigger>
+          <SelectContent alignItemWithTrigger={false} align="start">
+            <SelectGroup>
+              {CURRENCIES.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.value}{" "}
+                  <span className="text-muted-foreground">{item.label}</span>
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Input placeholder="10.00" pattern="[0-9]*" className="w-28" />
+      </ButtonGroup>
+      <ButtonGroup>
+        <Button aria-label="Send" size="icon" variant="outline">
+          <RiArrowRightLine />
+        </Button>
+      </ButtonGroup>
+    </ButtonGroup>
+  )
+}
+
+function ButtonGroupSection() {
+  return (
+    <Section title="Button Group" sub="button-group.tsx">
+      <Row label="Default">
+        <ButtonGroup>
+          <Button variant="outline">Back</Button>
+          <Button variant="outline">Cancel</Button>
+          <Button variant="outline">Next</Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="Icon toolbar">
+        <ButtonGroup>
+          <Button variant="outline" size="icon"><RiBold /></Button>
+          <Button variant="outline" size="icon"><RiItalic /></Button>
+          <Button variant="outline" size="icon"><RiUnderline /></Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button variant="outline" size="icon"><RiAlignLeft /></Button>
+          <Button variant="outline" size="icon"><RiAlignCenter /></Button>
+          <Button variant="outline" size="icon"><RiAlignRight /></Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="With input">
+        <ButtonGroup>
+          <Input placeholder="Search..." />
+          <Button variant="outline" aria-label="Search"><RiSearchLine /></Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="With separator">
+        <ButtonGroup>
+          <Button variant="outline"><RiFileCopyLine />Duplicate</Button>
+          <ButtonGroupSeparator />
+          <Button variant="outline" className="text-destructive hover:text-destructive"><RiDeleteBinLine />Delete</Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="With label">
+        <ButtonGroup>
+          <ButtonGroupText>Sort by</ButtonGroupText>
+          <Button variant="outline" size="sm">Name</Button>
+          <Button variant="outline" size="sm">Date</Button>
+          <Button variant="outline" size="sm"><RiSortDesc />Priority</Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="Split button">
+        <ButtonGroup>
+          <Button><RiDownloadLine />Download</Button>
+          <ButtonGroupSeparator />
+          <Button size="icon"><RiArrowDownSLine /></Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button variant="outline">Publish</Button>
+          <ButtonGroupSeparator />
+          <Button variant="outline" size="icon"><RiArrowDownSLine /></Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button variant="outline">Follow</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger render={<Button variant="outline" className="pl-2!"><RiArrowDownSLine /></Button>} />
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuGroup>
+                <DropdownMenuItem><RiVolumeMuteLine />Mute</DropdownMenuItem>
+                <DropdownMenuItem><RiCheckLine />Mark as Read</DropdownMenuItem>
+                <DropdownMenuItem><RiAlertLine />Report</DropdownMenuItem>
+                <DropdownMenuItem><RiUserForbidLine />Block User</DropdownMenuItem>
+                <DropdownMenuItem><RiShareLine />Share</DropdownMenuItem>
+                <DropdownMenuItem><RiFileCopyLine />Copy</DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem variant="destructive"><RiDeleteBinLine />Delete</DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ButtonGroup>
+      </Row>
+      <Row label="Sizes">
+        <ButtonGroup>
+          <Button variant="outline" size="sm">Edit</Button>
+          <Button variant="outline" size="sm">Share</Button>
+          <Button variant="outline" size="sm">Delete</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button variant="outline">Edit</Button>
+          <Button variant="outline">Share</Button>
+          <Button variant="outline">Delete</Button>
+        </ButtonGroup>
+        <ButtonGroup>
+          <Button variant="outline" size="lg">Edit</Button>
+          <Button variant="outline" size="lg">Share</Button>
+          <Button variant="outline" size="lg">Delete</Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="Vertical">
+        <ButtonGroup orientation="vertical">
+          <Button variant="outline">Profile</Button>
+          <Button variant="outline"><RiBankCardLine />Billing</Button>
+          <Button variant="outline"><RiSettings3Line />Settings</Button>
+          <Button variant="outline"><RiLogoutBoxLine />Sign out</Button>
+        </ButtonGroup>
+      </Row>
+      <Row label="Currency input">
+        <CurrencySendExample />
+      </Row>
+      <Row label="Chat input">
+        <ButtonGroup className="w-full max-w-md">
+          <ButtonGroup>
+            <Button variant="outline" size="icon"><RiAddLine /></Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <InputGroup>
+              <InputGroupInput placeholder="Send a message..." />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger render={<InputGroupAddon align="inline-end"><RiMicLine /></InputGroupAddon>} />
+                  <TooltipContent>Voice Mode</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </InputGroup>
+          </ButtonGroup>
+        </ButtonGroup>
       </Row>
     </Section>
   )
@@ -1246,6 +1422,380 @@ function CalendarSection() {
   )
 }
 
+// ─── HoverCard ───────────────────────────────────────────────────────────────
+
+function HoverCardSection() {
+  return (
+    <Section title="Hover Card" sub="hover-card.tsx">
+      {/* User mention */}
+      <Row label="User profile">
+        <p className="text-sm text-muted-foreground">
+          Built by{" "}
+          <HoverCard>
+            <HoverCardTrigger className="font-medium text-foreground underline underline-offset-4 decoration-dotted cursor-pointer">
+              @amara_osei
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <div className="flex gap-3">
+                <Avatar className="size-10 shrink-0">
+                  <AvatarFallback>AO</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <div>
+                    <p className="font-semibold leading-snug">Amara Osei</p>
+                    <p className="text-xs text-muted-foreground">@amara_osei</p>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Product designer & frontend engineer. Building design systems and open-source tools.
+                  </p>
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><RiMapPinLine className="size-3" />Accra, Ghana</span>
+                    <span className="flex items-center gap-1"><RiCalendarLine className="size-3" />Joined Jan 2021</span>
+                  </div>
+                  <div className="mt-1 flex gap-4 text-xs">
+                    <span><strong className="text-foreground">248</strong> following</span>
+                    <span><strong className="text-foreground">1.4k</strong> followers</span>
+                  </div>
+                </div>
+              </div>
+              <Button size="sm" className="mt-3 w-full" variant="outline">
+                <RiUserFollowLine />Follow
+              </Button>
+            </HoverCardContent>
+          </HoverCard>
+          {" "}and the team at Raana.
+        </p>
+      </Row>
+
+      {/* Link preview */}
+      <Row label="Link preview">
+        <HoverCard>
+          <HoverCardTrigger className="inline-flex items-center gap-1 text-sm font-medium text-link underline underline-offset-4 cursor-pointer">
+            <RiLink className="size-3.5" />
+            shadcn/ui documentation
+          </HoverCardTrigger>
+          <HoverCardContent side="top">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="font-semibold leading-snug">shadcn/ui</p>
+                  <p className="text-xs text-muted-foreground">ui.shadcn.com</p>
+                </div>
+                <RiExternalLinkLine className="size-4 shrink-0 text-muted-foreground mt-0.5" />
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Beautifully designed components built with Radix UI and Tailwind CSS. Open source and free to use in your projects.
+              </p>
+              <div className="flex gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1"><RiGlobalLine className="size-3" />Open source</span>
+                <span className="flex items-center gap-1"><RiCalendarLine className="size-3" />Updated Mar 2026</span>
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      </Row>
+
+      {/* Metric breakdown */}
+      <Row label="Metric">
+        <HoverCard>
+          <HoverCardTrigger>
+            <Badge variant="info" icon={<RiBarChart2Line />} size="lg" className="cursor-default">
+              98.4% uptime
+            </Badge>
+          </HoverCardTrigger>
+          <HoverCardContent side="top" align="start">
+            <p className="font-semibold mb-2">Uptime breakdown</p>
+            <div className="flex flex-col gap-1.5 text-xs">
+              {[
+                { label: "Last 24 hours", value: "100%", ok: true },
+                { label: "Last 7 days",   value: "99.8%", ok: true },
+                { label: "Last 30 days",  value: "98.4%", ok: true },
+                { label: "Last incident", value: "14 Mar 2026", ok: false },
+              ].map(({ label, value, ok }) => (
+                <div key={label} className="flex items-center justify-between gap-6">
+                  <span className="text-muted-foreground">{label}</span>
+                  <span className={ok ? "font-medium" : "text-muted-foreground"}>{value}</span>
+                </div>
+              ))}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      </Row>
+    </Section>
+  )
+}
+
+// ─── InputOTP ────────────────────────────────────────────────────────────────
+
+function InputOTPSection() {
+  const [value, setValue] = useState("")
+  return (
+    <Section title="Input OTP" sub="input-otp.tsx">
+      <Row label="Default (6-digit)">
+        <InputOTP maxLength={6}>
+          <InputOTPGroup>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <InputOTPSlot key={i} index={i} />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
+      </Row>
+
+      <Row label="With separator (3-3)">
+        <InputOTP maxLength={6}>
+          <InputOTPGroup>
+            <InputOTPSlot index={0} />
+            <InputOTPSlot index={1} />
+            <InputOTPSlot index={2} />
+          </InputOTPGroup>
+          <InputOTPSeparator />
+          <InputOTPGroup>
+            <InputOTPSlot index={3} />
+            <InputOTPSlot index={4} />
+            <InputOTPSlot index={5} />
+          </InputOTPGroup>
+        </InputOTP>
+      </Row>
+
+      <Row label="4-digit PIN">
+        <InputOTP maxLength={4}>
+          <InputOTPGroup>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <InputOTPSlot key={i} index={i} />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
+      </Row>
+
+      <Row label="Controlled">
+        <div className="flex flex-col gap-2">
+          <InputOTP maxLength={6} value={value} onChange={setValue}>
+            <InputOTPGroup>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <InputOTPSlot key={i} index={i} />
+              ))}
+            </InputOTPGroup>
+          </InputOTP>
+          <p className="text-xs text-muted-foreground">
+            Value: <span className="font-mono">{value || "—"}</span>
+          </p>
+        </div>
+      </Row>
+
+      <Row label="Disabled">
+        <InputOTP maxLength={6} disabled>
+          <InputOTPGroup>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <InputOTPSlot key={i} index={i} />
+            ))}
+          </InputOTPGroup>
+        </InputOTP>
+      </Row>
+    </Section>
+  )
+}
+
+// ─── Switch ──────────────────────────────────────────────────────────────────
+
+function SwitchSection() {
+  const [notifications, setNotifications] = React.useState(true)
+  const [marketing, setMarketing] = React.useState(false)
+  const [updates, setUpdates] = React.useState(true)
+  const [security, setSecurity] = React.useState(true)
+  return (
+    <Section title="Switch" sub="switch.tsx">
+      <Row label="Default">
+        <Switch />
+        <Switch defaultChecked />
+      </Row>
+
+      <Row label="Sizes">
+        <Switch size="sm" />
+        <Switch size="sm" defaultChecked />
+        <Switch size="default" />
+        <Switch size="default" defaultChecked />
+      </Row>
+
+      <Row label="Disabled">
+        <Switch disabled />
+        <Switch disabled defaultChecked />
+      </Row>
+
+      <Row label="With label">
+        <div className="flex items-center gap-2">
+          <Switch id="airplane" />
+          <Label htmlFor="airplane">Airplane mode</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch id="wifi" defaultChecked />
+          <Label htmlFor="wifi">Wi-Fi</Label>
+        </div>
+      </Row>
+
+      <Row label="Controlled (notification settings)">
+        <div className="flex w-full flex-col gap-3">
+          {[
+            { id: "notif",    label: "Push notifications", desc: "Receive alerts for activity",       checked: notifications, onChange: setNotifications },
+            { id: "mkt",      label: "Marketing emails",   desc: "Promotions and feature updates",    checked: marketing,     onChange: setMarketing },
+            { id: "updates",  label: "Product updates",    desc: "Changelog and release notes",       checked: updates,       onChange: setUpdates },
+            { id: "security", label: "Security alerts",    desc: "Login attempts and account changes", checked: security,     onChange: setSecurity },
+          ].map(({ id, label, desc, checked, onChange }) => (
+            <div key={id} className="flex items-center justify-between gap-4">
+              <div className="min-w-0">
+                <p className="text-sm font-medium leading-snug">{label}</p>
+                <p className="text-xs text-muted-foreground">{desc}</p>
+              </div>
+              <Switch
+                id={id}
+                checked={checked}
+                onCheckedChange={onChange}
+              />
+            </div>
+          ))}
+        </div>
+      </Row>
+    </Section>
+  )
+}
+
+// ─── Progress ────────────────────────────────────────────────────────────────
+
+const RESOURCES = [
+  { name: "Storage",   value: 78 },
+  { name: "Bandwidth", value: 42 },
+  { name: "API calls", value: 91 },
+]
+
+function ProgressSection() {
+  return (
+    <Section title="Progress" sub="progress.tsx">
+      <Row label="Default">
+        <Progress value={60} className="w-full" />
+      </Row>
+
+      <Row label="With label and value">
+        <Progress value={73} className="w-full">
+          <ProgressLabel>Profile completion</ProgressLabel>
+          <ProgressValue />
+        </Progress>
+      </Row>
+
+      <Row label="Resource usage">
+        <div className="flex w-full flex-col gap-3">
+          {RESOURCES.map(({ name, value }) => (
+            <Progress key={name} value={value}>
+              <ProgressLabel>{name}</ProgressLabel>
+              <ProgressValue />
+            </Progress>
+          ))}
+        </div>
+      </Row>
+
+      <Row label="Indeterminate">
+        <Progress value={null} className="w-full" />
+      </Row>
+    </Section>
+  )
+}
+
+// ─── Empty ───────────────────────────────────────────────────────────────────
+
+function EmptySection() {
+  return (
+    <>
+      <Section title="Empty – No results" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiSearchLine /></EmptyMedia>
+            <EmptyTitle>No results found</EmptyTitle>
+            <EmptyDescription>
+              Try adjusting your search or filters to find what you're looking for.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button variant="outline" size="sm">Clear filters</Button>
+          </EmptyContent>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – No messages" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiMailLine /></EmptyMedia>
+            <EmptyTitle>No messages yet</EmptyTitle>
+            <EmptyDescription>
+              You're all caught up. New messages from your team will appear here.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – No documents" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiFileCopyLine /></EmptyMedia>
+            <EmptyTitle>No documents</EmptyTitle>
+            <EmptyDescription>
+              Upload or create your first document to get started.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <div className="flex gap-2">
+              <Button size="sm"><RiAddLine />New document</Button>
+              <Button variant="outline" size="sm"><RiDownloadLine />Upload</Button>
+            </div>
+          </EmptyContent>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – No team members" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiUser2Line /></EmptyMedia>
+            <EmptyTitle>Invite your team</EmptyTitle>
+            <EmptyDescription>
+              Collaborate with others by inviting them to your workspace.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button size="sm"><RiAddLine />Invite members</Button>
+          </EmptyContent>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – No tasks" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiListCheck /></EmptyMedia>
+            <EmptyTitle>No tasks yet</EmptyTitle>
+            <EmptyDescription>
+              Create your first task and start tracking your progress.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button size="sm"><RiAddLine />New task</Button>
+          </EmptyContent>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – Error state" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="icon"><RiErrorWarningLine /></EmptyMedia>
+            <EmptyTitle>Something went wrong</EmptyTitle>
+            <EmptyDescription>
+              We couldn't load this content. Please check your connection and try again.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button variant="outline" size="sm">Try again</Button>
+          </EmptyContent>
+        </Empty>
+      </Section>
+    </>
+  )
+}
+
 // ─── Chart data ──────────────────────────────────────────────────────────────
 
 const chartMonthlyData = [
@@ -1399,7 +1949,7 @@ function ChartAreaGradientSection() {
 function ChartPieSection() {
   return (
     <Section title="Pie Chart" sub="chart.tsx">
-      <ChartContainer config={chartPieConfig} className="mx-auto aspect-square max-h-[220px]">
+      <ChartContainer config={chartPieConfig} className="mx-auto aspect-square w-full max-h-[220px]">
         <PieChart>
           <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
           <Pie data={chartPieData} dataKey="visitors" nameKey="browser" />
@@ -1412,7 +1962,7 @@ function ChartPieSection() {
 function ChartRadarSection() {
   return (
     <Section title="Radar Chart" sub="chart.tsx">
-      <ChartContainer config={chartDesktopConfig} className="mx-auto aspect-square max-h-[220px]">
+      <ChartContainer config={chartDesktopConfig} className="mx-auto aspect-square w-full max-h-[220px]">
         <RadarChart data={chartMonthlyData}>
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <PolarAngleAxis dataKey="month" />
@@ -1452,7 +2002,17 @@ export default function ComponentsPage() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader
+          left={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbPage>Components</BreadcrumbPage></BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
         {!bannerDismissed && (
           <Alert variant="info" level="page" onClose={() => setBannerDismissed(true)}>
             <AlertIcon />
@@ -1465,15 +2025,26 @@ export default function ComponentsPage() {
           </Alert>
         )}
         <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-          <div>
-            <h1 className="text-2xl font-semibold">Components</h1>
-            <p className="text-sm text-muted-foreground">
-              All UI components available in <code className="font-mono text-xs">components/ui/</code>
-            </p>
-          </div>
+          <PageHeader
+            title="Components"
+            description={<>All UI components available in <code className="font-mono text-xs">components/ui/</code></>}
+            actions={
+              <>
+                <Button variant="outline" size="sm">
+                  <RiShareLine />
+                  Share
+                </Button>
+                <Button size="sm">
+                  <RiDownloadLine />
+                  Export
+                </Button>
+              </>
+            }
+          />
 
           <div className="columns-1 gap-6 md:columns-2 xl:columns-3">
             <ButtonSection />
+            <ButtonGroupSection />
             <BadgeSection />
             <TabsSection />
             <AvatarSection />
@@ -1511,6 +2082,11 @@ export default function ComponentsPage() {
             <ChartRadarSection />
             <ChartRadialSection />
             <SonnerSection />
+            <HoverCardSection />
+            <InputOTPSection />
+            <SwitchSection />
+            <ProgressSection />
+            <EmptySection />
           </div>
         </div>
       </SidebarInset>

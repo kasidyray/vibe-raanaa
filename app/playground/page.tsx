@@ -1,6 +1,11 @@
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
+import { PageHeader } from "@/components/ui/page-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import {
+  Breadcrumb, BreadcrumbItem, BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb"
 import {
   IconGrid,
   ComponentControls,
@@ -44,8 +49,20 @@ export default function PlaygroundPage() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        <SiteHeader
+          left={
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem><BreadcrumbPage>Playground</BreadcrumbPage></BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          }
+        />
         <div className="flex flex-1 flex-col gap-10 p-4 md:p-6">
+          <PageHeader
+            title="Playground"
+            description="Explore and experiment with UI blocks and component compositions."
+          />
 
           {/* Stats — full width */}
           <section className="flex flex-col gap-6">

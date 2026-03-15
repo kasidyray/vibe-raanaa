@@ -3,7 +3,7 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 
 import { cn } from "@/lib/utils"
-import { RiArrowRightSLine, RiMoreLine } from "@remixicon/react"
+import { RiMoreLine } from "@remixicon/react"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -85,9 +85,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? (
-        <RiArrowRightSLine />
-      )}
+      {children ?? <span className="text-muted-foreground/60">/</span>}
     </li>
   )
 }
