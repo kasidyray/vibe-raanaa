@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
@@ -24,10 +25,15 @@ import {
   AlertDialogTitle, AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import {
+  Alert, AlertIcon, AlertContent, AlertTitle,
+  AlertDescription, AlertActions, AlertClose,
+} from "@/components/ui/alert"
+import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut,
   DropdownMenuTrigger, DropdownMenuCheckboxItem, DropdownMenuSub,
   DropdownMenuSubTrigger, DropdownMenuSubContent,
+  DropdownMenuRadioGroup, DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -37,8 +43,8 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import {
-  Sheet, SheetContent, SheetDescription, SheetHeader,
-  SheetTitle, SheetTrigger,
+  Sheet, SheetContent, SheetDescription, SheetFooter,
+  SheetHeader, SheetTitle, SheetTrigger, SheetClose,
 } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
@@ -95,6 +101,7 @@ import {
   RiBankCardLine, RiCommandLine, RiSearchLine, RiMailLine,
   RiCheckboxCircleLine, RiErrorWarningLine, RiInformationLine,
   RiCloseCircleLine, RiDownloadLine, RiArrowRightLine, RiShareLine,
+  RiGridLine, RiListCheck,
 } from "@remixicon/react"
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
@@ -360,6 +367,7 @@ function ToggleSection() {
 function ToggleGroupSection() {
   const [align, setAlign] = useState("left")
   const [format, setFormat] = useState<string[]>(["bold"])
+  const [view, setView] = useState("grid")
   return (
     <Section title="Toggle Group" sub="toggle-group.tsx">
       <Row label="Single (alignment)">
@@ -374,6 +382,43 @@ function ToggleGroupSection() {
           <ToggleGroupItem value="bold" aria-label="Bold"><RiBold /></ToggleGroupItem>
           <ToggleGroupItem value="italic" aria-label="Italic"><RiItalic /></ToggleGroupItem>
           <ToggleGroupItem value="underline" aria-label="Underline"><RiUnderline /></ToggleGroupItem>
+        </ToggleGroup>
+      </Row>
+      <Row label="With labels">
+        <ToggleGroup type="single" value={view} onValueChange={(v) => v && setView(v)} variant="outline">
+          <ToggleGroupItem value="grid" aria-label="Grid view"><RiGridLine />Grid</ToggleGroupItem>
+          <ToggleGroupItem value="list" aria-label="List view"><RiListCheck />List</ToggleGroupItem>
+        </ToggleGroup>
+      </Row>
+      <Row label="Spaced">
+        <ToggleGroup type="multiple" variant="outline" spacing={1} defaultValue={["bold"]}>
+          <ToggleGroupItem value="bold" aria-label="Bold"><RiBold /></ToggleGroupItem>
+          <ToggleGroupItem value="italic" aria-label="Italic"><RiItalic /></ToggleGroupItem>
+          <ToggleGroupItem value="underline" aria-label="Underline"><RiUnderline /></ToggleGroupItem>
+        </ToggleGroup>
+      </Row>
+      <Row label="Sizes">
+        <ToggleGroup type="single" variant="outline" size="sm" defaultValue="left">
+          <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
+          <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
+          <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
+        </ToggleGroup>
+        <ToggleGroup type="single" variant="outline" size="default" defaultValue="left">
+          <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
+          <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
+          <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
+        </ToggleGroup>
+        <ToggleGroup type="single" variant="outline" size="lg" defaultValue="left">
+          <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
+          <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
+          <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
+        </ToggleGroup>
+      </Row>
+      <Row label="Vertical">
+        <ToggleGroup type="multiple" variant="outline" orientation="vertical" defaultValue={["bold"]}>
+          <ToggleGroupItem value="bold"><RiBold />Bold</ToggleGroupItem>
+          <ToggleGroupItem value="italic"><RiItalic />Italic</ToggleGroupItem>
+          <ToggleGroupItem value="underline"><RiUnderline />Underline</ToggleGroupItem>
         </ToggleGroup>
       </Row>
     </Section>
@@ -409,6 +454,7 @@ function TooltipSection() {
 
 function DropdownSection() {
   const [checked, setChecked] = useState(true)
+  const [radio, setRadio] = useState("comfortable")
   return (
     <Section title="Dropdown Menu" sub="dropdown-menu.tsx">
       <Row>
@@ -416,8 +462,7 @@ function DropdownSection() {
           <DropdownMenuTrigger render={<Button variant="outline" />}>Open Menu</DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuItem>
                 <RiUser2Line />Profile
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
@@ -452,6 +497,53 @@ function DropdownSection() {
               <RiLogoutBoxLine />Log out
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </Row>
+      <Row label="Item variants">
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>All variants</DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Default</DropdownMenuLabel>
+              <DropdownMenuItem>
+                <RiUser2Line />Default item
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <RiUser2Line />With shortcut
+                <DropdownMenuShortcut>⌘D</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <RiSettings3Line />Disabled item
+              </DropdownMenuItem>
+              <DropdownMenuItem inset>Inset item</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Checkbox</DropdownMenuLabel>
+              <DropdownMenuCheckboxItem checked={checked} onCheckedChange={setChecked}>
+                Checked state
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked={false}>
+                Unchecked state
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Radio</DropdownMenuLabel>
+              <DropdownMenuRadioGroup value={radio} onValueChange={setRadio}>
+                <DropdownMenuRadioItem value="compact">Compact</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="comfortable">Comfortable</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="spacious">Spacious</DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Destructive</DropdownMenuLabel>
+              <DropdownMenuItem variant="destructive">
+                <RiLogoutBoxLine />Destructive item
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </Row>
@@ -637,6 +729,75 @@ function AlertDialogSection() {
   )
 }
 
+const ALERT_VARIANTS = ["info", "success", "warning", "error"] as const
+const ALERT_LABELS: Record<string, { title: string; description: string; action: string }> = {
+  info:    { title: "Heads up",             description: "Your account will be reviewed within 2 business days.", action: "Learn more" },
+  success: { title: "Changes saved",        description: "Your profile has been updated successfully.",           action: "View profile" },
+  warning: { title: "Storage almost full",  description: "You've used 90% of your storage. Consider upgrading.", action: "Upgrade plan" },
+  error:   { title: "Something went wrong", description: "We couldn't process your request. Please try again.",  action: "Try again" },
+}
+
+function AlertSection() {
+  const [dismissed, setDismissed] = React.useState<Record<string, boolean>>({})
+  return (
+    <Section title="Alert" sub="alert.tsx">
+      <Row label="Page">
+        <div className="w-full flex flex-col gap-2">
+          {ALERT_VARIANTS.map((v) => (
+            <Alert key={v} variant={v} level="page">
+              <AlertIcon />
+              <AlertContent>
+                <AlertTitle>{ALERT_LABELS[v].title}</AlertTitle>
+                <AlertDescription>{ALERT_LABELS[v].description}</AlertDescription>
+                <AlertActions>
+                  <a href="#" className="text-xs font-medium underline underline-offset-2 hover:no-underline">{ALERT_LABELS[v].action}</a>
+                </AlertActions>
+              </AlertContent>
+            </Alert>
+          ))}
+        </div>
+      </Row>
+      <Row label="Section">
+        <div className="w-full flex flex-col gap-3">
+          {ALERT_VARIANTS.map((v) => {
+            const key = `section-${v}`
+            if (dismissed[key]) return null
+            return (
+              <Alert key={v} variant={v} level="section" onClose={() => setDismissed((d) => ({ ...d, [key]: true }))}>
+                <AlertIcon />
+                <AlertContent>
+                  <AlertTitle>{ALERT_LABELS[v].title}</AlertTitle>
+                  <AlertDescription>{ALERT_LABELS[v].description}</AlertDescription>
+                  <AlertActions>
+                    <a href="#" className="text-xs font-medium underline underline-offset-2 hover:no-underline">{ALERT_LABELS[v].action}</a>
+                  </AlertActions>
+                </AlertContent>
+                <AlertClose />
+              </Alert>
+            )
+          })}
+        </div>
+      </Row>
+      <Row label="Inline">
+        <div className="w-full flex flex-col gap-2">
+          {ALERT_VARIANTS.map((v) => (
+            <Alert key={v} variant={v} level="inline">
+              <AlertIcon />
+              <AlertContent>
+                <AlertTitle>{ALERT_LABELS[v].title}</AlertTitle>
+                <AlertDescription>{ALERT_LABELS[v].description}</AlertDescription>
+                <AlertActions>
+                  <a href="#" className="text-xs font-medium underline underline-offset-2 hover:no-underline">{ALERT_LABELS[v].action}</a>
+                </AlertActions>
+              </AlertContent>
+            </Alert>
+          ))}
+        </div>
+      </Row>
+    </Section>
+  )
+}
+
 function SheetSection() {
   return (
     <Section title="Sheet" sub="sheet.tsx">
@@ -646,10 +807,53 @@ function SheetSection() {
             <SheetTrigger render={<Button variant="outline" size="sm" />}>{side}</SheetTrigger>
             <SheetContent side={side}>
               <SheetHeader>
-                <SheetTitle>Sheet — {side}</SheetTitle>
-                <SheetDescription>This sheet slides in from the {side}.</SheetDescription>
+                <SheetTitle>Edit Profile</SheetTitle>
+                <SheetDescription>Update your personal details. Changes are saved immediately.</SheetDescription>
               </SheetHeader>
-              <div className="p-4 text-sm text-muted-foreground">Sheet content goes here.</div>
+              <div className="flex flex-col gap-5 px-6 py-2 flex-1 overflow-y-auto">
+                <div className="flex items-center gap-4">
+                  <Avatar className="size-14">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>AJ</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium">Alice Johnson</p>
+                    <Button variant="outline" size="sm">Change photo</Button>
+                  </div>
+                </div>
+                <Separator />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={`sheet-${side}-name`}>Full name</Label>
+                  <Input id={`sheet-${side}-name`} defaultValue="Alice Johnson" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={`sheet-${side}-email`}>Email</Label>
+                  <Input id={`sheet-${side}-email`} type="email" defaultValue="alice@example.com" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={`sheet-${side}-role`}>Job title</Label>
+                  <Input id={`sheet-${side}-role`} defaultValue="Product Designer" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={`sheet-${side}-bio`}>Bio</Label>
+                  <Textarea
+                    id={`sheet-${side}-bio`}
+                    rows={3}
+                    defaultValue="I design thoughtful digital experiences. Based in San Francisco."
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor={`sheet-${side}-url`}>Website</Label>
+                  <InputGroup>
+                    <InputGroupAddon align="inline-start"><InputGroupText>https://</InputGroupText></InputGroupAddon>
+                    <InputGroupInput id={`sheet-${side}-url`} placeholder="yoursite.com" />
+                  </InputGroup>
+                </div>
+              </div>
+              <SheetFooter className="flex-row gap-2">
+                <SheetClose render={<Button variant="outline" className="flex-1" />}>Cancel</SheetClose>
+                <Button className="flex-1">Save changes</Button>
+              </SheetFooter>
             </SheetContent>
           </Sheet>
         ))}
@@ -809,6 +1013,32 @@ function InputGroupSection() {
           </InputGroupAddon>
         </InputGroup>
       </Row>
+      <Row label="Text both sides">
+        <InputGroup className="w-full max-w-xs">
+          <InputGroupAddon align="inline-start">
+            <InputGroupText>$</InputGroupText>
+          </InputGroupAddon>
+          <InputGroupInput placeholder="0.00" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupText>USD</InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+        <InputGroup className="w-full max-w-xs">
+          <InputGroupAddon align="inline-start">
+            <InputGroupText>https://</InputGroupText>
+          </InputGroupAddon>
+          <InputGroupInput placeholder="example.com" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupText>.com</InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+        <InputGroup className="w-full max-w-xs">
+          <InputGroupInput placeholder="Enter your username" />
+          <InputGroupAddon align="inline-end">
+            <InputGroupText>@company.com</InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+      </Row>
       <Row label="Button end">
         <InputGroup className="w-full max-w-xs">
           <InputGroupInput placeholder="Enter email" />
@@ -860,19 +1090,19 @@ function SonnerSection() {
     <Section title="Sonner / Toast" sub="sonner.tsx">
       <Toaster />
       <Row label="Types">
-        <Button size="sm" variant="outline" onClick={() => toast.success("Saved successfully!")}>
+        <Button size="sm" variant="outline" onClick={() => toast.success("Event has been created", { position: "bottom-left" })}>
           <RiCheckboxCircleLine className="text-success" />Success
         </Button>
-        <Button size="sm" variant="outline" onClick={() => toast.error("Something went wrong.")}>
+        <Button size="sm" variant="outline" onClick={() => toast.error("Something went wrong.", { position: "bottom-left" })}>
           <RiCloseCircleLine className="text-error" />Error
         </Button>
-        <Button size="sm" variant="outline" onClick={() => toast.warning("Low disk space.")}>
+        <Button size="sm" variant="outline" onClick={() => toast.warning("Low disk space.", { position: "bottom-left" } )}>
           <RiErrorWarningLine className="text-warning" />Warning
         </Button>
-        <Button size="sm" variant="outline" onClick={() => toast.info("Update available.")}>
+        <Button size="sm" variant="outline" onClick={() => toast.info("Update available.", { position: "bottom-left" } )}>
           <RiInformationLine className="text-info" />Info
         </Button>
-        <Button size="sm" variant="outline" onClick={() => toast.loading("Processing…")}>
+        <Button size="sm" variant="outline" onClick={() => toast.loading("Processing…", { position: "bottom-left" })}>
           Loading
         </Button>
         <Button size="sm" variant="outline" onClick={() => toast("Default toast message")}>
@@ -892,12 +1122,26 @@ function DrawerSection() {
             <DrawerTrigger render={<Button variant="outline" size="sm" />}>{dir}</DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
-                <DrawerTitle>Drawer — {dir}</DrawerTitle>
-                <DrawerDescription>This drawer slides in from the {dir}.</DrawerDescription>
+                <DrawerTitle>Terms of Service</DrawerTitle>
+                <DrawerDescription>Please read carefully before continuing.</DrawerDescription>
               </DrawerHeader>
-              <div className="p-4 text-sm text-muted-foreground">Drawer content goes here.</div>
+              <div className="flex-1 overflow-y-auto px-6">
+                <div className="flex flex-col gap-4 text-sm text-foreground">
+                  <p>Welcome to our platform. By accessing or using our services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
+                  <p>The materials contained in this platform are protected by applicable copyright and trademark law. Permission is granted to temporarily download one copy of the materials for personal, non-commercial transitory viewing only.</p>
+                  <p>This licence shall automatically terminate if you violate any of these restrictions and may be terminated by us at any time. Upon terminating your viewing of these materials or upon the termination of this licence, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
+                  <p>The materials on our platform are provided on an &apos;as is&apos; basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                  <p>In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our platform, even if we or an authorised representative has been notified orally or in writing of the possibility of such damage.</p>
+                  <p>We have not reviewed all of the sites linked to our platform and are not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by us. Use of any such linked website is at the user&apos;s own risk.</p>
+                  <p>We may revise these terms of service at any time without notice. By using this platform you are agreeing to be bound by the then current version of these terms of service. These terms and conditions are governed by and construed in accordance with applicable law and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+                  <p>If you have any questions about these Terms, please contact our support team. We are committed to ensuring that our users fully understand the terms under which they access and use our services.</p>
+                </div>
+              </div>
               <DrawerFooter>
-                <DrawerClose render={<Button variant="outline" />}>Close</DrawerClose>
+                <Button>Accept</Button>
+                <DrawerClose asChild>
+                  <Button variant="outline">Cancel</Button>
+              </DrawerClose>
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
@@ -1196,6 +1440,7 @@ function ChartRadialSection() {
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function ComponentsPage() {
+  const [bannerDismissed, setBannerDismissed] = useState(false)
   return (
     <SidebarProvider
       style={
@@ -1208,6 +1453,17 @@ export default function ComponentsPage() {
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
+        {!bannerDismissed && (
+          <Alert variant="info" level="page" onClose={() => setBannerDismissed(true)}>
+            <AlertIcon />
+            <AlertContent>
+              
+              <AlertDescription>Some components may be incomplete or subject to change. Do not use in production.</AlertDescription>
+             
+            </AlertContent>
+            <AlertClose />
+          </Alert>
+        )}
         <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
           <div>
             <h1 className="text-2xl font-semibold">Components</h1>
@@ -1235,6 +1491,7 @@ export default function ComponentsPage() {
             <PopoverSection />
             <DialogSection />
             <AlertDialogSection />
+            <AlertSection />
             <SheetSection />
             <DrawerSection />
             <TableSection />
