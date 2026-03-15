@@ -109,7 +109,7 @@ export default function Dialog10() {
 
               <div className="space-y-2">
                 <Label htmlFor="time">Time</Label>
-                <Select value={startTime} onValueChange={setStartTime}>
+                <Select value={startTime} onValueChange={(v) => setStartTime(v ?? "")}>
                   <SelectTrigger id="time" className="w-full">
                     <SelectValue placeholder="Select time" />
                   </SelectTrigger>

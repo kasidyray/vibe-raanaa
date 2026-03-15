@@ -47,7 +47,7 @@ export default function ProfileCard() {
 
             <Field>
               <FieldLabel htmlFor="email">Public Email</FieldLabel>
-              <Select items={["m@shadcn.com", "m@gmail.com"]} defaultValue="m@shadcn.com">
+              <Select items={[{ label: "m@shadcn.com", value: "m@shadcn.com" }, { label: "m@gmail.com", value: "m@gmail.com" }]} defaultValue="m@shadcn.com">
                 <SelectTrigger id="email">
                   <SelectValue />
                 </SelectTrigger>

@@ -195,8 +195,8 @@ export function ComponentControls() {
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
             <Badge>Badge</Badge>
-            <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="outline">Outline</Badge>
+            <Badge variant="neutral">Secondary</Badge>
+            <Badge variant="neutral">Outline</Badge>
           </div>
           <RadioGroup
             value={radio}
@@ -303,7 +303,7 @@ export function ImageCard() {
           Create Query
           <RiAddLine data-icon="inline-end" />
         </Button>
-        <Badge variant="secondary" className="ml-auto">Warning</Badge>
+        <Badge variant="neutral" className="ml-auto">Warning</Badge>
       </CardFooter>
     </Card>
   )
@@ -316,7 +316,7 @@ export function VisitorsChart() {
         <CardTitle>Visitors</CardTitle>
         <CardDescription>Last 6 months</CardDescription>
         <CardAction>
-          <Badge variant="secondary">+2% vs last month</Badge>
+          <Badge variant="neutral">+2% vs last month</Badge>
         </CardAction>
       </CardHeader>
       <CardContent className="px-0">

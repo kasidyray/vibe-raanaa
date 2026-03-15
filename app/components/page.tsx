@@ -503,7 +503,7 @@ function TabsSection() {
         <div>
           <p className="mb-2 text-xs text-muted-foreground">Line variant</p>
           <Tabs defaultValue="overview">
-            <TabsList variant="line">
+            <TabsList variant="underline">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
@@ -547,51 +547,51 @@ function ToggleGroupSection() {
   return (
     <Section title="Toggle Group" sub="toggle-group.tsx">
       <Row label="Single (alignment)">
-        <ToggleGroup type="single" value={align} onValueChange={(v) => v && setAlign(v)} variant="outline">
+        <ToggleGroup value={[align]} onValueChange={(v) => v.length > 0 && setAlign(v[v.length - 1])} variant="outline">
           <ToggleGroupItem value="left" aria-label="Left"><RiAlignLeft /></ToggleGroupItem>
           <ToggleGroupItem value="center" aria-label="Center"><RiAlignCenter /></ToggleGroupItem>
           <ToggleGroupItem value="right" aria-label="Right"><RiAlignRight /></ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Row label="Multiple (formatting)">
-        <ToggleGroup type="multiple" value={format} onValueChange={setFormat} variant="outline">
+        <ToggleGroup multiple value={format} onValueChange={(v) => setFormat(v)} variant="outline">
           <ToggleGroupItem value="bold" aria-label="Bold"><RiBold /></ToggleGroupItem>
           <ToggleGroupItem value="italic" aria-label="Italic"><RiItalic /></ToggleGroupItem>
           <ToggleGroupItem value="underline" aria-label="Underline"><RiUnderline /></ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Row label="With labels">
-        <ToggleGroup type="single" value={view} onValueChange={(v) => v && setView(v)} variant="outline">
+        <ToggleGroup value={[view]} onValueChange={(v) => v.length > 0 && setView(v[v.length - 1])} variant="outline">
           <ToggleGroupItem value="grid" aria-label="Grid view"><RiGridLine />Grid</ToggleGroupItem>
           <ToggleGroupItem value="list" aria-label="List view"><RiListCheck />List</ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Row label="Spaced">
-        <ToggleGroup type="multiple" variant="outline" spacing={1} defaultValue={["bold"]}>
+        <ToggleGroup multiple variant="outline" spacing={1} defaultValue={["bold"]}>
           <ToggleGroupItem value="bold" aria-label="Bold"><RiBold /></ToggleGroupItem>
           <ToggleGroupItem value="italic" aria-label="Italic"><RiItalic /></ToggleGroupItem>
           <ToggleGroupItem value="underline" aria-label="Underline"><RiUnderline /></ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Row label="Sizes">
-        <ToggleGroup type="single" variant="outline" size="sm" defaultValue="left">
+        <ToggleGroup variant="outline" size="sm" defaultValue={["left"]}>
           <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
           <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
           <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
         </ToggleGroup>
-        <ToggleGroup type="single" variant="outline" size="default" defaultValue="left">
+        <ToggleGroup variant="outline" size="default" defaultValue={["left"]}>
           <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
           <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
           <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
         </ToggleGroup>
-        <ToggleGroup type="single" variant="outline" size="lg" defaultValue="left">
+        <ToggleGroup variant="outline" size="lg" defaultValue={["left"]}>
           <ToggleGroupItem value="left"><RiAlignLeft /></ToggleGroupItem>
           <ToggleGroupItem value="center"><RiAlignCenter /></ToggleGroupItem>
           <ToggleGroupItem value="right"><RiAlignRight /></ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Row label="Vertical">
-        <ToggleGroup type="multiple" variant="outline" orientation="vertical" defaultValue={["bold"]}>
+        <ToggleGroup multiple variant="outline" orientation="vertical" defaultValue={["bold"]}>
           <ToggleGroupItem value="bold"><RiBold />Bold</ToggleGroupItem>
           <ToggleGroupItem value="italic"><RiItalic />Italic</ToggleGroupItem>
           <ToggleGroupItem value="underline"><RiUnderline />Underline</ToggleGroupItem>
@@ -795,7 +795,7 @@ function TableSection() {
               <TableCell className="font-medium">{r.name}</TableCell>
               <TableCell>{r.role}</TableCell>
               <TableCell>
-                <Badge variant={r.status === "Active" ? "default" : "secondary"}>{r.status}</Badge>
+                <Badge variant={r.status === "Active" ? "success" : "neutral"}>{r.status}</Badge>
               </TableCell>
             </TableRow>
           ))}
@@ -1154,7 +1154,7 @@ function CardSection() {
       />
       <CardHeader>
         <CardAction>
-          <Badge variant="secondary">Featured</Badge>
+          <Badge variant="neutral">Featured</Badge>
         </CardAction>
         <CardTitle>Design systems meetup</CardTitle>
         <CardDescription>
@@ -1295,7 +1295,7 @@ function DrawerSection() {
       <Row label="Directions">
         {(["bottom", "right", "left"] as const).map((dir) => (
           <Drawer key={dir} direction={dir}>
-            <DrawerTrigger render={<Button variant="outline" size="sm" />}>{dir}</DrawerTrigger>
+            <DrawerTrigger asChild><Button variant="outline" size="sm">{dir}</Button></DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
                 <DrawerTitle>Terms of Service</DrawerTitle>
@@ -1343,7 +1343,7 @@ function ComboboxSection() {
   return (
     <Section title="Combobox" sub="combobox.tsx">
       <Row label="Single select">
-        <Combobox value={single} onValueChange={setSingle} items={comboboxFrameworks}>
+        <Combobox value={single} onValueChange={(v) => setSingle(v ?? "")} items={comboboxFrameworks}>
           <ComboboxInput placeholder="Select framework…" className="w-52" showTrigger showClear={!!single} />
           <ComboboxContent>
             <ComboboxList>
@@ -1362,7 +1362,7 @@ function ComboboxSection() {
         <Combobox multiple value={multi} onValueChange={setMulti} items={comboboxFrameworks}>
           <ComboboxChips ref={chipsAnchor} className="w-64">
             {multi.map((v) => (
-              <ComboboxChip key={v} value={v}>{v}</ComboboxChip>
+              <ComboboxChip key={v}>{v}</ComboboxChip>
             ))}
             <ComboboxChipsInput placeholder={multi.length === 0 ? "Select frameworks…" : ""} />
           </ComboboxChips>
@@ -1380,7 +1380,7 @@ function ComboboxSection() {
       </Row>
 
       <Row label="With groups">
-        <Combobox value={grouped} onValueChange={setGrouped}>
+        <Combobox value={grouped} onValueChange={(v) => setGrouped(v ?? "")}>
           <ComboboxInput placeholder="Select technology…" className="w-52" showTrigger showClear={!!grouped} />
           <ComboboxContent>
             <ComboboxList>
@@ -1415,7 +1415,7 @@ function CalendarSection() {
       <div className="flex flex-col gap-4">
         <div>
           <p className="mb-2 text-xs text-muted-foreground">Single</p>
-          <Calendar mode="range" className="bg-popover rounded-lg border" captionLayout="dropdown" selected={date} onSelect={setDate} />
+          <Calendar mode="single" className="bg-popover rounded-lg border" captionLayout="dropdown" selected={date} onSelect={setDate} />
         </div>
       </div>
     </Section>

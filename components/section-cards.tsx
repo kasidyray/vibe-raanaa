@@ -21,7 +21,7 @@ export function SectionCards() {
             $1,250.00
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="neutral">
               <RiArrowUpLine
               />
               +12.5%
@@ -45,7 +45,7 @@ export function SectionCards() {
             1,234
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="neutral">
               <RiArrowDownLine
               />
               -20%
@@ -69,7 +69,7 @@ export function SectionCards() {
             45,678
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="neutral">
               <RiArrowUpLine
               />
               +12.5%
@@ -91,7 +91,7 @@ export function SectionCards() {
             4.5%
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
+            <Badge variant="neutral">
               <RiArrowUpLine
               />
               +4.5%

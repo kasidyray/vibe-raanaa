@@ -253,7 +253,7 @@ export default function FileUpload01() {
           </div>
 
           <div className="px-6 py-3 border-t border-border bg-muted rounded-b-lg flex justify-between items-center">
-            <TooltipProvider delayDuration={0}>
+            <TooltipProvider delay={0}>
               <Tooltip>
                 <TooltipTrigger render={<Button variant="ghost" size="sm" className="flex items-center text-muted-foreground hover:text-foreground" />}><HelpCircle className="h-4 w-4 mr-1" />Need help?
                                                 </TooltipTrigger>

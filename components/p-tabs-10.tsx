@@ -9,7 +9,7 @@ export default function Particle() {
           All
           <Badge
             className="not-in-data-active:text-muted-foreground"
-            variant="outline"
+            variant="neutral"
           >
             128
           </Badge>
@@ -18,7 +18,7 @@ export default function Particle() {
           Pending
           <Badge
             className="not-in-data-active:text-muted-foreground"
-            variant="outline"
+            variant="neutral"
           >
             8
           </Badge>
@@ -27,7 +27,7 @@ export default function Particle() {
           Completed
           <Badge
             className="not-in-data-active:text-muted-foreground"
-            variant="outline"
+            variant="neutral"
           >
             120
           </Badge>

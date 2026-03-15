@@ -59,9 +59,8 @@ export default function TrafficChannelsCard() {
         <CardDescription>Desktop vs mobile over the last {range}</CardDescription>
         <CardAction>
           <ToggleGroup
-            type="single"
-            value={range}
-            onValueChange={(v) => v && setRange(v)}
+            value={[range]}
+            onValueChange={(v) => v.length > 0 && setRange(v[v.length - 1])}
             variant="outline"
             size="sm"
             aria-label="Time range"
