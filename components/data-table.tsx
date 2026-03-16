@@ -180,7 +180,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => (
       <Badge variant="neutral" className="px-1.5 text-muted-foreground">
         {row.original.status === "Done" ? (
-          <RiCheckboxCircleFill className="fill-green-500 dark:fill-green-400" />
+          <RiCheckboxCircleFill className="fill-success dark:fill-success-dark" />
         ) : (
           <RiLoader4Line
           />

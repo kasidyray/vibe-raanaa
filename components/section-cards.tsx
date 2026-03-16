@@ -21,16 +21,15 @@ export function SectionCards() {
             $1,250.00
           </CardTitle>
           <CardAction>
-            <Badge variant="neutral">
-              <RiArrowUpLine
-              />
+            <Badge variant="success">
+              <RiArrowUpLine />
               +12.5%
             </Badge>
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month{" "}
+        <CardFooter className="flex-col items-start gap-1 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium text-success-dark">
+            Trending up this month
             <RiArrowUpLine className="size-4" />
           </div>
           <div className="text-muted-foreground">
@@ -45,16 +44,15 @@ export function SectionCards() {
             1,234
           </CardTitle>
           <CardAction>
-            <Badge variant="neutral">
-              <RiArrowDownLine
-              />
+            <Badge variant="critical">
+              <RiArrowDownLine />
               -20%
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period{" "}
+          <div className="line-clamp-1 flex gap-2 font-medium text-error-dark">
+            Down 20% this period
             <RiArrowDownLine className="size-4" />
           </div>
           <div className="text-muted-foreground">
@@ -69,16 +67,15 @@ export function SectionCards() {
             45,678
           </CardTitle>
           <CardAction>
-            <Badge variant="neutral">
-              <RiArrowUpLine
-              />
+            <Badge variant="success">
+              <RiArrowUpLine />
               +12.5%
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention{" "}
+          <div className="line-clamp-1 flex gap-2 font-medium text-success-dark">
+            Strong user retention
             <RiArrowUpLine className="size-4" />
           </div>
           <div className="text-muted-foreground">Engagement exceed targets</div>
@@ -91,16 +88,15 @@ export function SectionCards() {
             4.5%
           </CardTitle>
           <CardAction>
-            <Badge variant="neutral">
-              <RiArrowUpLine
-              />
+            <Badge variant="success">
+              <RiArrowUpLine />
               +4.5%
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase{" "}
+          <div className="line-clamp-1 flex gap-2 font-medium text-success-dark">
+            Steady performance increase
             <RiArrowUpLine className="size-4" />
           </div>
           <div className="text-muted-foreground">Meets growth projections</div>

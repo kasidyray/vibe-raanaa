@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import {
-  RiBellLine,
+  RiNotification2Line,
   RiQuestionLine,
   RiSettingsLine,
   RiLogoutBoxLine,
@@ -28,11 +28,11 @@ function DefaultHeaderRight() {
   return (
     <>
       <ModeToggle />
-      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground" aria-label="Notifications">
-        <RiBellLine className="size-4" />
+      <Button variant="ghost" size="icon-lg" className="" aria-label="Notifications">
+        <RiNotification2Line />
       </Button>
-      <Button variant="ghost" size="icon" className="size-8 text-muted-foreground" aria-label="Help">
-        <RiQuestionLine className="size-4" />
+      <Button variant="ghost" size="icon-lg" className="" aria-label="Help">
+        <RiQuestionLine/>
       </Button>
       <Separator orientation="vertical" className="h-4 data-vertical:self-auto" />
       <DropdownMenu>
@@ -44,8 +44,8 @@ function DefaultHeaderRight() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-52">
           <div className="flex flex-col gap-0.5 px-3 py-2">
-            <span className="text-sm font-medium text-foreground">Ike Dieze</span>
-            <span className="text-xs text-muted-foreground">ike@example.com</span>
+            <span className="text-sm font-medium text-foreground">Ikedi Eze</span>
+            <span className="text-xs text-muted-foreground">kasidyray@gmail.com</span>
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
