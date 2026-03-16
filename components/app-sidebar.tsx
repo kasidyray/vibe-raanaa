@@ -62,7 +62,7 @@ const data = {
     },
     {
       title: "Lifecycle",
-      url: "#",
+      url: "/lifecycle",
       icon: (
         <RiListUnordered
         />
@@ -70,7 +70,7 @@ const data = {
     },
     {
       title: "Projects",
-      url: "#",
+      url: "/projects",
       icon: (
         <RiFolderLine
         />
@@ -78,7 +78,7 @@ const data = {
     },
     {
       title: "Team",
-      url: "#",
+      url: "/team",
       icon: (
         <RiGroupLine
         />
@@ -145,7 +145,7 @@ const data = {
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: (
         <RiSettingsLine
         />
@@ -153,7 +153,7 @@ const data = {
     },
     {
       title: "Get Help",
-      url: "#",
+      url: "/help",
       icon: (
         <RiQuestionLine
         />
@@ -161,7 +161,7 @@ const data = {
     },
     {
       title: "Search",
-      url: "#",
+      url: "/search",
       icon: (
         <RiSearchLine
         />
@@ -171,7 +171,7 @@ const data = {
   documents: [
     {
       name: "Data Library",
-      url: "#",
+      url: "/data-library",
       icon: (
         <RiDatabase2Line
         />
@@ -179,7 +179,7 @@ const data = {
     },
     {
       name: "Reports",
-      url: "#",
+      url: "/reports",
       icon: (
         <RiFileChartLine
         />
@@ -187,7 +187,7 @@ const data = {
     },
     {
       name: "Word Assistant",
-      url: "#",
+      url: "/word-assistant",
       icon: (
         <RiFileLine
         />
