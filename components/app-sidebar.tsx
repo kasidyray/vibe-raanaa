@@ -61,14 +61,6 @@ const data = {
       ),
     },
     {
-      title: "Lifecycle",
-      url: "/lifecycle",
-      icon: (
-        <RiListUnordered
-        />
-      ),
-    },
-    {
       title: "Projects",
       url: "/projects",
       icon: (
