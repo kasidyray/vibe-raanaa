@@ -14,9 +14,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 
-import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { PageHeader } from "@/components/ui/page-header"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbList,
@@ -484,36 +482,26 @@ function TasksTable() {
 
 export default function DataTablePage() {
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar variant="inset" />
-      <SidebarInset>
-        <SiteHeader
-          left={
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem><BreadcrumbPage>Data Table</BreadcrumbPage></BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          }
+    <>
+      <SiteHeader
+        left={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem><BreadcrumbPage>Data Table</BreadcrumbPage></BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
+      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+        <PageHeader
+          title="Tasks"
+          description="Manage and track your team's tasks across all projects."
+          actions={<Button><RiAddLine />New task</Button>}
         />
-        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-          <PageHeader
-            title="Tasks"
-            description="Manage and track your team's tasks across all projects."
-            actions={<Button><RiAddLine />New task</Button>}
-          />
-          <TasksTable />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+        <TasksTable />
+      </div>
+    </>
   )
 }
