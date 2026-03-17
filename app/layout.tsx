@@ -3,6 +3,7 @@ import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import NextTopLoader from "nextjs-toploader";
 
 const mtnBrighterSans = localFont({
   src: [
@@ -40,6 +41,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${mtnBrighterSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
+        <NextTopLoader
+          color="var(--color-primary)"
+          height={2}
+          showSpinner={false}
+          shadow={false}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

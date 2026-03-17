@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import {
   RiNotification2Line,
   RiQuestionLine,
@@ -25,6 +26,7 @@ import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
 function DefaultHeaderRight() {
+  const router = useRouter()
   return (
     <>
       <ModeToggle />
@@ -63,7 +65,7 @@ function DefaultHeaderRight() {
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem variant="destructive" onClick={() => router.push("/login3")}>
             <RiLogoutBoxLine />
             Sign out
           </DropdownMenuItem>

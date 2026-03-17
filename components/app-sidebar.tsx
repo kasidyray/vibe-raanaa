@@ -19,8 +19,8 @@ import { RiDashboardLine, RiListUnordered, RiBarChartLine, RiFolderLine, RiGroup
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Ikedi Eze",
+    email: "kasidyray@gmail.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [

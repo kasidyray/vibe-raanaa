@@ -114,7 +114,8 @@ import {
   RiDeleteBinLine, RiMicLine, RiVolumeMuteLine, RiCheckLine,
   RiAlertLine, RiUserForbidLine,
   RiCalendarLine, RiGlobalLine, RiExternalLinkLine, RiUserFollowLine,
-  RiMapPinLine, RiLink, RiBarChart2Line,
+  RiMapPinLine, RiLink, RiBarChart2Line, RiFileTextLine, RiEditLine,
+  RiLockLine, RiEyeLine, RiEyeOffLine,
 } from "@remixicon/react"
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
@@ -978,61 +979,176 @@ function SheetSection() {
   return (
     <Section title="Sheet" sub="sheet.tsx">
       <Row label="Sides">
-        {(["left", "right", "bottom"] as const).map((side) => (
-          <Sheet key={side}>
-            <SheetTrigger render={<Button variant="outline" size="sm" />}>{side}</SheetTrigger>
-            <SheetContent side={side}>
+          {/* Left sheet — activity feed */}
+          <Sheet>
+            <SheetTrigger render={<Button variant="outline" size="sm" />}>left</SheetTrigger>
+            <SheetContent side="left">
               <SheetHeader>
-                <SheetTitle>Edit Profile</SheetTitle>
-                <SheetDescription>Update your personal details. Changes are saved immediately.</SheetDescription>
+                <SheetTitle>Add a new user</SheetTitle>
               </SheetHeader>
-              <div className="flex flex-col gap-5 px-6 py-2 flex-1 overflow-y-auto">
-                <div className="flex items-center gap-4">
-                  <Avatar className="size-14">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>AJ</AvatarFallback>
-                  </Avatar>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm font-medium">Alice Johnson</p>
-                    <Button variant="outline" size="sm">Change photo</Button>
-                  </div>
-                </div>
-                <Separator />
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`sheet-${side}-name`}>Full name</Label>
-                  <Input id={`sheet-${side}-name`} defaultValue="Alice Johnson" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`sheet-${side}-email`}>Email</Label>
-                  <Input id={`sheet-${side}-email`} type="email" defaultValue="alice@example.com" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`sheet-${side}-role`}>Job title</Label>
-                  <Input id={`sheet-${side}-role`} defaultValue="Product Designer" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`sheet-${side}-bio`}>Bio</Label>
-                  <Textarea
-                    id={`sheet-${side}-bio`}
-                    rows={3}
-                    defaultValue="I design thoughtful digital experiences. Based in San Francisco."
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <Label htmlFor={`sheet-${side}-url`}>Website</Label>
-                  <InputGroup>
-                    <InputGroupAddon align="inline-start"><InputGroupText>https://</InputGroupText></InputGroupAddon>
-                    <InputGroupInput id={`sheet-${side}-url`} placeholder="yoursite.com" />
-                  </InputGroup>
-                </div>
+              <div className="flex flex-col flex-1 overflow-hidden">
+                <Tabs defaultValue="activities" className="flex flex-col flex-1 overflow-hidden">
+                  <TabsList variant="underline" className="px-6 shrink-0">
+                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="partner">Partner detail</TabsTrigger>
+                    <TabsTrigger value="activities">Activities</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="overview" className="flex-1 px-6 py-4">
+                    <p className="text-sm text-muted-foreground">Overview content goes here.</p>
+                  </TabsContent>
+                  <TabsContent value="partner" className="flex-1 px-6 py-4">
+                    <p className="text-sm text-muted-foreground">Partner detail content goes here.</p>
+                  </TabsContent>
+                  <TabsContent value="activities" className="flex-1 overflow-y-auto px-6 py-4">
+                    <div className="flex flex-col gap-6">
+                      {/* Activity 1 — Approved */}
+                      <div className="flex gap-3">
+                        <Avatar className="size-8 shrink-0">
+                          <AvatarImage src="https://i.pravatar.cc/32?img=7" />
+                          <AvatarFallback>KS</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col gap-0.5">
+                          <p className="text-sm">
+                            <span className="font-semibold">Kunle Sadare</span>{" "}
+                            <span className="text-muted-foreground">updated</span>{" "}
+                            <span className="font-semibold">Tax Identification number</span>
+                          </p>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            Pending <RiArrowRightLine className="size-3" />
+                            <span className="text-success-dark font-medium">Approved</span>
+                            <span className="mx-1">·</span> Feb 6, 2023 at 9:24 AM
+                          </p>
+                        </div>
+                      </div>
+                      {/* Activity 2 — Declined with reason */}
+                      <div className="flex gap-3">
+                        <Avatar className="size-8 shrink-0">
+                          <AvatarImage src="https://i.pravatar.cc/32?img=7" />
+                          <AvatarFallback>KS</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <p className="text-sm">
+                              <span className="font-semibold">Kunle Sadare</span>{" "}
+                              <span className="text-muted-foreground">updated</span>{" "}
+                              <span className="font-semibold">Tax Identification number</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground flex items-center gap-1">
+                              Pending <RiArrowRightLine className="size-3" />
+                              <span className="text-error-dark font-medium">Declined</span>
+                              <span className="mx-1">·</span> Feb 6, 2023 at 9:24 AM
+                            </p>
+                          </div>
+                          <div className="rounded-md border border-dashed border-border px-3 py-2 text-xs text-muted-foreground">
+                            Reason: We could not verify your Tax Identification number
+                          </div>
+                        </div>
+                      </div>
+                      {/* Activity 3 — File attachment (external link) */}
+                      <div className="flex gap-3">
+                        <Avatar className="size-8 shrink-0">
+                          <AvatarImage src="https://i.pravatar.cc/32?img=7" />
+                          <AvatarFallback>KS</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <p className="text-sm">
+                              <span className="font-semibold">Kunle Sadare</span>{" "}
+                              <span className="text-muted-foreground">updated</span>{" "}
+                              <span className="font-semibold">Tax Identification number</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">Feb 6, 2023 at 9:24 AM</p>
+                          </div>
+                          <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-foreground w-fit">
+                            <RiFileTextLine className="size-3.5 shrink-0" />
+                            <span>GalaxoSmilt...ent.pdf</span>
+                            <RiExternalLinkLine className="size-3.5 shrink-0 text-muted-foreground" />
+                          </div>
+                        </div>
+                      </div>
+                      {/* Activity 4 — File attachment (edit) */}
+                      <div className="flex gap-3">
+                        <Avatar className="size-8 shrink-0">
+                          <AvatarImage src="https://i.pravatar.cc/32?img=7" />
+                          <AvatarFallback>KS</AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col gap-2">
+                          <div className="flex flex-col gap-0.5">
+                            <p className="text-sm">
+                              <span className="font-semibold">Kunle Sadare</span>{" "}
+                              <span className="text-muted-foreground">updated</span>{" "}
+                              <span className="font-semibold">Tax Identification number</span>
+                            </p>
+                            <p className="text-xs text-muted-foreground">Feb 6, 2023 at 9:24 AM</p>
+                          </div>
+                          <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-foreground w-fit">
+                            <RiEditLine className="size-3.5 shrink-0" />
+                            <span>GalaxoSmilt...ent.pdf</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </div>
-              <SheetFooter className="flex-row gap-2">
-                <SheetClose render={<Button variant="outline" className="flex-1" />}>Cancel</SheetClose>
-                <Button className="flex-1">Save changes</Button>
-              </SheetFooter>
             </SheetContent>
           </Sheet>
-        ))}
+          {/* Right + Bottom sheets */}
+          {(["right", "bottom"] as const).map((side) => (
+            <Sheet key={side}>
+              <SheetTrigger render={<Button variant="outline" size="sm" />}>{side}</SheetTrigger>
+              <SheetContent side={side}>
+                <SheetHeader>
+                  <SheetTitle>Edit Profile</SheetTitle>
+                  <SheetDescription>Update your personal details. Changes are saved immediately.</SheetDescription>
+                </SheetHeader>
+                <div className="flex flex-col gap-5 px-6 py-2 flex-1 overflow-y-auto">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="size-14">
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>AJ</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm font-medium">Alice Johnson</p>
+                      <Button variant="outline" size="sm">Change photo</Button>
+                    </div>
+                  </div>
+                  <Separator />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor={`sheet-${side}-name`}>Full name</Label>
+                    <Input id={`sheet-${side}-name`} defaultValue="Alice Johnson" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor={`sheet-${side}-email`}>Email</Label>
+                    <Input id={`sheet-${side}-email`} type="email" defaultValue="alice@example.com" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor={`sheet-${side}-role`}>Job title</Label>
+                    <Input id={`sheet-${side}-role`} defaultValue="Product Designer" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor={`sheet-${side}-bio`}>Bio</Label>
+                    <Textarea
+                      id={`sheet-${side}-bio`}
+                      rows={3}
+                      defaultValue="I design thoughtful digital experiences. Based in San Francisco."
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor={`sheet-${side}-url`}>Website</Label>
+                    <InputGroup>
+                      <InputGroupAddon align="inline-start"><InputGroupText>https://</InputGroupText></InputGroupAddon>
+                      <InputGroupInput id={`sheet-${side}-url`} placeholder="yoursite.com" />
+                    </InputGroup>
+                  </div>
+                </div>
+                <SheetFooter className="flex-row gap-2">
+                  <SheetClose render={<Button variant="outline" className="flex-1" />}>Cancel</SheetClose>
+                  <Button className="flex-1">Save changes</Button>
+                </SheetFooter>
+              </SheetContent>
+            </Sheet>
+          ))}
       </Row>
     </Section>
   )
@@ -1408,6 +1524,192 @@ function ComboboxSection() {
   )
 }
 
+function FormControlsSection() {
+  const [showPw, setShowPw] = useState(false)
+  const [single, setSingle] = useState("")
+  const [multi, setMulti] = useState<string[]>([])
+  const [grouped, setGrouped] = useState("")
+  const chipsAnchor = useComboboxAnchor()
+
+  return (
+    <div className="break-inside-avoid mb-6 col-span-full">
+      <div className="mb-3">
+        <h2 className="text-base font-semibold">Inputs, Input Groups &amp; Combobox</h2>
+        <p className="text-xs text-muted-foreground font-mono">input.tsx · input-group.tsx · combobox.tsx</p>
+      </div>
+      <Card>
+        <CardContent className="flex flex-col gap-6">
+
+          {/* ── Input ── */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium text-foreground/60 uppercase tracking-wider">Input</p>
+            <Row label="Default">
+              <Input className="max-w-xs" placeholder="Enter text…" />
+            </Row>
+            <Row label="Disabled">
+              <Input className="max-w-xs" placeholder="Disabled" disabled />
+            </Row>
+            <Row label="Password">
+              <Input className="max-w-xs" type="password" placeholder="Password" />
+            </Row>
+            <Row label="Invalid">
+              <Input className="max-w-xs" placeholder="Error state" aria-invalid />
+            </Row>
+          </div>
+
+          <Separator />
+
+          {/* ── Input Group ── */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium text-foreground/60 uppercase tracking-wider">Input Group</p>
+            <Row label="Icon start">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupAddon align="inline-start"><InputGroupText><RiSearchLine /></InputGroupText></InputGroupAddon>
+                <InputGroupInput placeholder="Search…" />
+              </InputGroup>
+            </Row>
+            <Row label="Text end">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupInput placeholder="Amount" />
+                <InputGroupAddon align="inline-end"><InputGroupText>USD</InputGroupText></InputGroupAddon>
+              </InputGroup>
+            </Row>
+            <Row label="Text both sides">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupAddon align="inline-start"><InputGroupText>$</InputGroupText></InputGroupAddon>
+                <InputGroupInput placeholder="0.00" />
+                <InputGroupAddon align="inline-end"><InputGroupText>USD</InputGroupText></InputGroupAddon>
+              </InputGroup>
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupAddon align="inline-start"><InputGroupText>https://</InputGroupText></InputGroupAddon>
+                <InputGroupInput placeholder="example.com" />
+              </InputGroup>
+            </Row>
+            <Row label="Button end">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupInput placeholder="Enter email" />
+                <InputGroupAddon align="inline-end"><InputGroupButton size="xs">Send</InputGroupButton></InputGroupAddon>
+              </InputGroup>
+            </Row>
+            <Row label="Password with toggle">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupAddon align="inline-start"><InputGroupText><RiLockLine /></InputGroupText></InputGroupAddon>
+                <InputGroupInput type={showPw ? "text" : "password"} placeholder="Enter password" />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton onClick={() => setShowPw((v) => !v)} aria-label={showPw ? "Hide" : "Show"}>
+                    {showPw ? <RiEyeOffLine /> : <RiEyeLine />}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </Row>
+            <Row label="Textarea">
+              <InputGroup className="w-full max-w-xs">
+                <InputGroupAddon align="block-start"><InputGroupText><RiMailLine />Message</InputGroupText></InputGroupAddon>
+                <InputGroupTextarea placeholder="Type here…" rows={3} />
+              </InputGroup>
+            </Row>
+          </div>
+
+          <Separator />
+
+          {/* ── Select ── */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium text-foreground/60 uppercase tracking-wider">Select</p>
+            <Row label="Default">
+              <Select>
+                <SelectTrigger className="w-44">
+                  <SelectValue placeholder="Select a fruit" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Fruits</SelectLabel>
+                    <SelectItem value="apple">Apple</SelectItem>
+                    <SelectItem value="banana">Banana</SelectItem>
+                    <SelectItem value="mango">Mango</SelectItem>
+                  </SelectGroup>
+                  <SelectSeparator />
+                  <SelectGroup>
+                    <SelectLabel>Vegetables</SelectLabel>
+                    <SelectItem value="carrot">Carrot</SelectItem>
+                    <SelectItem value="broccoli">Broccoli</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Row>
+            <Row label="Small">
+              <Select>
+                <SelectTrigger size="sm" className="w-40">
+                  <SelectValue placeholder="Pick one" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="one">Option one</SelectItem>
+                  <SelectItem value="two">Option two</SelectItem>
+                  <SelectItem value="three" disabled>Disabled</SelectItem>
+                </SelectContent>
+              </Select>
+            </Row>
+          </div>
+
+          <Separator />
+
+          {/* ── Combobox ── */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-medium text-foreground/60 uppercase tracking-wider">Combobox</p>
+            <Row label="Single select">
+              <Combobox value={single} onValueChange={(v) => setSingle(v ?? "")} items={comboboxFrameworks}>
+                <ComboboxInput placeholder="Select framework…" className="w-52" showTrigger showClear={!!single} />
+                <ComboboxContent>
+                  <ComboboxList>
+                    <ComboboxCollection>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxCollection>
+                    <ComboboxEmpty>No results found.</ComboboxEmpty>
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Row>
+            <Row label="Multiple (chips)">
+              <Combobox multiple value={multi} onValueChange={setMulti} items={comboboxFrameworks}>
+                <ComboboxChips ref={chipsAnchor} className="w-64">
+                  {multi.map((v) => <ComboboxChip key={v}>{v}</ComboboxChip>)}
+                  <ComboboxChipsInput placeholder={multi.length === 0 ? "Select frameworks…" : ""} />
+                </ComboboxChips>
+                <ComboboxContent anchor={chipsAnchor}>
+                  <ComboboxList>
+                    <ComboboxCollection>{(item: string) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>}</ComboboxCollection>
+                    <ComboboxEmpty>No results found.</ComboboxEmpty>
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Row>
+            <Row label="With groups">
+              <Combobox value={grouped} onValueChange={(v) => setGrouped(v ?? "")}>
+                <ComboboxInput placeholder="Select technology…" className="w-52" showTrigger showClear={!!grouped} />
+                <ComboboxContent>
+                  <ComboboxList>
+                    {comboboxGroupedItems.map((g, i) => (
+                      <ComboboxGroup key={g.group}>
+                        <ComboboxLabel>{g.group}</ComboboxLabel>
+                        {g.items.map((item) => <ComboboxItem key={item} value={item}>{item}</ComboboxItem>)}
+                        {i < comboboxGroupedItems.length - 1 && <ComboboxSeparator />}
+                      </ComboboxGroup>
+                    ))}
+                    <ComboboxEmpty>No results found.</ComboboxEmpty>
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+            </Row>
+            <Row label="Disabled">
+              <Combobox value="" items={comboboxFrameworks}>
+                <ComboboxInput placeholder="Select framework…" className="w-52" showTrigger disabled />
+              </Combobox>
+            </Row>
+          </div>
+
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 function CalendarSection() {
   const [date, setDate] = useState<Date | undefined>(undefined)
   return (
@@ -1633,7 +1935,7 @@ function SwitchSection() {
       </Row>
 
       <Row label="Controlled (notification settings)">
-        <div className="flex w-full flex-col gap-3">
+        <div className="flex w-full flex-col gap-6">
           {[
             { id: "notif",    label: "Push notifications", desc: "Receive alerts for activity",       checked: notifications, onChange: setNotifications },
             { id: "mkt",      label: "Marketing emails",   desc: "Promotions and feature updates",    checked: marketing,     onChange: setMarketing },
@@ -2043,6 +2345,7 @@ export default function ComponentsPage() {
           />
 
           <div className="columns-1 gap-6 md:columns-2 xl:columns-3">
+            <FormControlsSection />
             <ButtonSection />
             <ButtonGroupSection />
             <BadgeSection />
@@ -2050,7 +2353,6 @@ export default function ComponentsPage() {
             <AvatarSection />
             <ToggleSection />
             <ToggleGroupSection />
-            <InputSection />
             <TextareaSection />
             <CheckboxSection />
             <LabelSection />
@@ -2066,11 +2368,8 @@ export default function ComponentsPage() {
             <SheetSection />
             <DrawerSection />
             <TableSection />
-            <SelectSection />
             <CardSection />
-            <InputGroupSection />
             <FieldSection />
-            <ComboboxSection />
             <CalendarSection />
             <ChartBarSection />
             <ChartBarMultipleSection />
