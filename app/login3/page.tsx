@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupButton } from "@/components/ui/input-group"
 import { ModeToggle } from "@/components/mode-toggle"
 import { RiMailLine, RiLockLine, RiEyeLine, RiEyeOffLine } from "@remixicon/react"
+import { Alert, AlertIcon, AlertContent, AlertDescription } from "@/components/ui/alert"
 
 const heroImage = "https://www.figma.com/api/mcp/asset/75356151-20fe-49bf-818c-572f1c4b8968"
 
@@ -65,6 +66,16 @@ export default function LoginPage3() {
               Login to your Raanaa playground.
             </p>
           </div>
+
+          {/* Info alert */}
+          <Alert variant="info" level="inline">
+            <AlertIcon />
+            <AlertContent>
+              <AlertDescription>
+                No real authentication. Click Login to enter the playground.
+              </AlertDescription>
+            </AlertContent>
+          </Alert>
 
           {/* Fields */}
           <div className="flex flex-col gap-6">

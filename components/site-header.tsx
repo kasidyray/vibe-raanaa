@@ -38,7 +38,7 @@ function DefaultHeaderRight() {
       </Button>
       <Separator orientation="vertical" className="h-4 data-vertical:self-auto" />
       <DropdownMenu>
-        <DropdownMenuTrigger className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <DropdownMenuTrigger className="cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <Avatar size="sm">
             <AvatarImage src="https://i.pravatar.cc/32?img=12" alt="User avatar" />
             <AvatarFallback>IK</AvatarFallback>

@@ -185,6 +185,13 @@ function ButtonSection() {
         <Button variant="secondary">Share<RiShareLine /></Button>
         <Button variant="outline">Send<RiMailLine /></Button>
       </Row>
+      <Row label="Loading">
+        <Button loading>Default</Button>
+        <Button variant="secondary" loading>Secondary</Button>
+        <Button variant="outline" loading>Outline</Button>
+        <Button variant="ghost" loading>Ghost</Button>
+        <Button variant="destructive" loading>Destructive</Button>
+      </Row>
       <Row label="Disabled">
         <Button disabled>Default</Button>
         <Button variant="secondary" disabled>Secondary</Button>

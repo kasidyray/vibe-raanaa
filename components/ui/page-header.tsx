@@ -14,7 +14,7 @@ function PageHeader({
   className?: string
 }) {
   return (
-    <div className={cn("flex items-start justify-between gap-4", className)}>
+    <div className={cn("flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4", className)}>
       <div className="min-w-0">
         <h1 className="text-2xl font-semibold leading-tight">{title}</h1>
         {description && (
