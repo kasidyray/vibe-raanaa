@@ -62,7 +62,7 @@ export default function LoginPage3() {
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-bold text-foreground">👋 Y&apos;ello</h1>
             <p className="text-base text-muted-foreground">
-              Login to your Horizon scanning tool account.
+              Login to your Raanaa playground.
             </p>
           </div>
 
