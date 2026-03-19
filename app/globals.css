@@ -125,7 +125,7 @@
 
   /* Charts — golden ramp */
   --chart-1: oklch(0.93 0.17 98);
-  --chart-2: oklch(0.86 0.18 92);
+  --chart-2: oklch(65.014% 0.00465 271.347);
   --chart-3: oklch(0.75 0.16 72);
   --chart-4: oklch(0.60 0.13 55);
   --chart-5: oklch(0.35 0.07 45);
@@ -172,6 +172,7 @@
   --error:    oklch(0.57 0.22 27);
   --error-light:   oklch(0.80 0.10 27);
   --error-lighter: oklch(0.96 0.03 27);
+  --destructive-foreground: var(--color-red-700);
 }
 
 /* ============================================================
@@ -244,8 +245,7 @@
   --success-foreground: var(--color-emerald-400);
   --warning: var(--color-amber-500);
   --warning-foreground: var(--color-amber-400);*/
-  
-  
+
   /* ── Semantic Colors — Dark ──────────────────────────────── */
 
   /* Info */
@@ -273,7 +273,6 @@
   --error-lighter: oklch(0.22 0.06 27);
 }
 
-
 /* ── Style A: ring + border (original) ─────────────────────────────────────
    Uncomment to use. Applied in: input.tsx, select.tsx */
 /*
@@ -293,7 +292,6 @@
   }
 }
 */
-
 
 /* ── Style B: 2px primary bottom border, no bottom radius ──────────────────
    Applied in: input.tsx, select.tsx, textarea.tsx */

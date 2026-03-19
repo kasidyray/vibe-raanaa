@@ -118,7 +118,10 @@ export default function LoginPage3() {
           {/* Register */}
           <p className="text-center text-base text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <span className="cursor-pointer font-medium text-foreground underline underline-offset-4">
+            <span
+              className="cursor-pointer font-medium text-foreground underline underline-offset-4"
+              onClick={() => router.push("/login3/register")}
+            >
               Register
             </span>
           </p>

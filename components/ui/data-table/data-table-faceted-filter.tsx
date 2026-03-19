@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RiArrowDownSLine, RiFilterLine, RiSearchLine } from "@remixicon/react"
+import { RiCloseLine, RiFilterLine, RiSearchLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -58,7 +58,16 @@ function DataTableFacetedFilter({
               {count}
             </span>
           )}
-          <RiArrowDownSLine className="opacity-60" />
+          {count > 0 && (
+            <span
+              role="button"
+              aria-label="Clear filter"
+              onClick={e => { e.stopPropagation(); onSelectionChange([]) }}
+              className="ml-0.5 flex size-4 items-center justify-center rounded-full hover:bg-primary/20 transition-colors"
+            >
+              <RiCloseLine className="size-3" />
+            </span>
+          )}
         </Button>
       } />
       <PopoverContent className="w-52 gap-0 p-0" align="start" sideOffset={6}>

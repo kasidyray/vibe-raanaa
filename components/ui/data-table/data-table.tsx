@@ -20,11 +20,13 @@ function DataTable<TData>({
   variant = "plain",
   className,
   emptyMessage = "No results.",
+  onRowClick,
 }: {
   table: Table<TData>
   variant?: DataTableVariant
   className?: string
   emptyMessage?: string
+  onRowClick?: (row: TData) => void
 }) {
   return (
     <UITable className={className}>
@@ -47,7 +49,8 @@ function DataTable<TData>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() ? "selected" : undefined}
-                className="group/row border-0 hover:bg-transparent! data-[state=selected]:bg-transparent! hover:ring-1 hover:ring-inset hover:ring-border hover:rounded-md data-[state=selected]:ring-1 data-[state=selected]:ring-inset data-[state=selected]:ring-border data-[state=selected]:rounded-md"
+                className={cn("group/row border-0 hover:bg-transparent! data-[state=selected]:bg-transparent! hover:ring-1 hover:ring-inset hover:ring-border hover:rounded-md data-[state=selected]:ring-1 data-[state=selected]:ring-inset data-[state=selected]:ring-border data-[state=selected]:rounded-md", onRowClick && "cursor-pointer")}
+                onClick={onRowClick ? () => onRowClick(row.original) : undefined}
               >
                 {cells.map((cell, i) => (
                   <TableCell

@@ -15,8 +15,10 @@ import {
   RiAddLine,
   RiBriefcaseLine,
   RiBuilding2Line,
+  RiCloseLine,
   RiContractLeftRightLine,
   RiDeleteBinLine,
+  RiDownloadLine,
   RiEditLine,
   RiMailLine,
   RiMore2Line,
@@ -46,6 +48,9 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@/components/ui/empty"
 import {
+  Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerClose,
+} from "@/components/ui/drawer"
+import {
   DataTable,
   DataTableToolbar,
   DataTableSearch,
@@ -53,6 +58,7 @@ import {
   DataTableSortMenu,
   DataTableColumnToggle,
   DataTablePagination,
+  DataTableSelectionBar,
 } from "@/components/ui/data-table"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -120,11 +126,13 @@ const columns: ColumnDef<Lead>[] = [
       />
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={v => row.toggleSelected(v === true)}
-        aria-label="Select row"
-      />
+      <div onClick={e => e.stopPropagation()}>
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={v => row.toggleSelected(v === true)}
+          aria-label="Select row"
+        />
+      </div>
     ),
     size: 40,
     enableSorting: false,
@@ -174,20 +182,22 @@ const columns: ColumnDef<Lead>[] = [
     id: "actions",
     enableHiding: false,
     cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" className="ml-auto" />}>
-          <RiMore2Line />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-40">
-          <DropdownMenuGroup>
-            <DropdownMenuItem><RiUserLine />View lead</DropdownMenuItem>
-            <DropdownMenuItem><RiEditLine />Edit</DropdownMenuItem>
-            <DropdownMenuItem><RiMailLine />Send email</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive"><RiDeleteBinLine />Delete</DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div onClick={e => e.stopPropagation()}>
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="ghost" size="icon-sm" className="ml-auto" />}>
+            <RiMore2Line />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuGroup>
+              <DropdownMenuItem><RiUserLine />View lead</DropdownMenuItem>
+              <DropdownMenuItem><RiEditLine />Edit</DropdownMenuItem>
+              <DropdownMenuItem><RiMailLine />Send email</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive"><RiDeleteBinLine />Delete</DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     ),
     size: 48,
   },
@@ -202,6 +212,7 @@ function LeadsTable() {
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [jobTitleFilter, setJobTitleFilter]     = React.useState<string[]>([])
   const [companyFilter, setCompanyFilter]       = React.useState<string[]>([])
+  const [selectedLead, setSelectedLead]         = React.useState<Lead | null>(null)
 
   const columnFilters = React.useMemo<ColumnFiltersState>(() => {
     const filters: ColumnFiltersState = []
@@ -258,12 +269,6 @@ function LeadsTable() {
         )}
 
         <div className="ml-auto flex items-center gap-2">
-          {selectedCount > 0 && (
-            <Button variant="destructive" size="sm" className="rounded-md" onClick={() => setRowSelection({})}>
-              <RiDeleteBinLine />
-              Delete {selectedCount}
-            </Button>
-          )}
           <DataTableSortMenu
             sorting={sorting}
             onSortingChange={setSorting}
@@ -273,7 +278,7 @@ function LeadsTable() {
         </div>
       </DataTableToolbar>
 
-      <DataTable table={table} variant="bordered" emptyMessage="No leads found." />
+      <DataTable table={table} variant="bordered" emptyMessage="No leads found." onRowClick={setSelectedLead} />
 
       <DataTablePagination
         table={table}
@@ -281,6 +286,71 @@ function LeadsTable() {
         selectedCount={selectedCount}
         rowLabel="lead"
       />
+
+      <DataTableSelectionBar
+        count={selectedCount}
+        onClear={() => setRowSelection({})}
+        actions={[
+          { icon: RiMailLine,     label: "Send email" },
+          { icon: RiEditLine,     label: "Edit"       },
+          { icon: RiDownloadLine, label: "Export"     },
+          "separator",
+          { icon: RiDeleteBinLine, label: "Delete", variant: "destructive", onClick: () => setRowSelection({}) },
+        ]}
+      />
+
+      <Drawer direction="right" open={!!selectedLead} onOpenChange={open => !open && setSelectedLead(null)}>
+        <DrawerContent className="sm:max-w-md">
+          {selectedLead && (
+            <div className="flex flex-col h-full overflow-y-auto">
+              <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b">
+                <div className="flex items-center gap-3">
+                  <Avatar className="size-10 rounded-full">
+                    <AvatarImage src={selectedLead.avatar} alt={selectedLead.name} />
+                    <AvatarFallback>{selectedLead.name.slice(0, 2)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <DrawerTitle>{selectedLead.name}</DrawerTitle>
+                    <p className="text-sm text-muted-foreground">{selectedLead.jobTitle}</p>
+                  </div>
+                </div>
+                <DrawerClose asChild>
+                  <Button variant="ghost" size="icon-sm" aria-label="Close"><RiCloseLine /></Button>
+                </DrawerClose>
+              </DrawerHeader>
+
+              <div className="flex flex-col gap-6 p-6">
+                {/* Company */}
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Company</p>
+                  <div className="flex items-center gap-2.5">
+                    <Avatar className="size-6 rounded-sm">
+                      <AvatarImage src={selectedLead.companyLogo} alt={selectedLead.company} />
+                      <AvatarFallback className="text-[10px] rounded-sm">{selectedLead.company.slice(0, 1)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">{selectedLead.company}</span>
+                  </div>
+                </div>
+
+                {/* Contact */}
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Contact</p>
+                  <div className="flex items-center gap-2 text-sm">
+                    <RiMailLine className="size-4 text-muted-foreground shrink-0" />
+                    <span>{selectedLead.email}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-auto flex items-center gap-2 border-t p-6">
+                <Button className="flex-1"><RiMailLine />Send email</Button>
+                <Button variant="outline" size="icon"><RiEditLine /></Button>
+                <Button variant="outline" size="icon" className="text-destructive hover:text-destructive"><RiDeleteBinLine /></Button>
+              </div>
+            </div>
+          )}
+        </DrawerContent>
+      </Drawer>
     </div>
   )
 }

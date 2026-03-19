@@ -55,6 +55,7 @@ import {
   DataTableFacetedFilter,
   DataTableColumnToggle,
   DataTablePagination,
+  DataTableSelectionBar,
   type PaginationStyle,
 } from "@/components/ui/data-table"
 import {
@@ -376,12 +377,6 @@ function TasksTable({ variant = "card" }: { variant?: "card" | "plain" | "border
         )}
 
         <div className="ml-auto flex items-center gap-2">
-          {selectedCount > 0 && (
-            <Button variant="destructive" size="sm" className="rounded-md" onClick={() => setRowSelection({})}>
-              <RiDeleteBinLine />Delete {selectedCount}
-            </Button>
-          )}
-
           {/* Pagination style picker */}
           <DropdownMenu>
             <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="rounded-md" />}>
@@ -439,6 +434,16 @@ function TasksTable({ variant = "card" }: { variant?: "card" | "plain" | "border
       )}
 
       <DataTablePagination table={table} style={paginationStyle} selectedCount={selectedCount} rowLabel="task" />
+      <DataTableSelectionBar
+        count={selectedCount}
+        onClear={() => setRowSelection({})}
+        actions={[
+          { icon: RiEditLine,    label: "Edit"      },
+          { icon: RiFileCopyLine, label: "Duplicate" },
+          "separator",
+          { icon: RiDeleteBinLine, label: "Delete", variant: "destructive", onClick: () => setRowSelection({}) },
+        ]}
+      />
     </div>
   )
 }
@@ -626,15 +631,6 @@ function StudentsTable() {
         />
 
         <div className="ml-auto flex items-center gap-2">
-          {selectedCount > 0 && (
-            <>
-              <Button variant="outline" size="icon-sm" aria-label="Edit"><RiEditLine /></Button>
-              <Button variant="outline" size="icon-sm" aria-label="Duplicate"><RiFileCopyLine /></Button>
-              <Button variant="outline" size="icon-sm" aria-label="Add to group"><RiGroupLine /></Button>
-              <Button variant="destructive" size="icon-sm" aria-label="Delete" onClick={() => setRowSelection({})}><RiDeleteBinLine /></Button>
-              <div className="h-4 w-px bg-border" />
-            </>
-          )}
           <Button variant="outline" size="sm"><RiDownloadLine />Export data</Button>
           <Button variant="secondary" size="sm"><RiAddLine />Add student</Button>
         </div>
@@ -643,6 +639,19 @@ function StudentsTable() {
       <DataTable table={table} variant="bordered" emptyMessage="No students found." />
 
       <DataTablePagination table={table} style="classic" selectedCount={selectedCount} rowLabel="student" />
+      <DataTableSelectionBar
+        count={selectedCount}
+        onClear={() => setRowSelection({})}
+        label="students"
+        actions={[
+          { icon: RiEditLine,    label: "Edit"         },
+          { icon: RiFileCopyLine, label: "Duplicate"   },
+          { icon: RiGroupLine,   label: "Add to group" },
+          { icon: RiMailLine,    label: "Send email"   },
+          "separator",
+          { icon: RiDeleteBinLine, label: "Delete", variant: "destructive", onClick: () => setRowSelection({}) },
+        ]}
+      />
     </div>
   )
 }
