@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/ui/page-header"
 
 import { Avatar, AvatarFallback, AvatarImage, AvatarGroup, AvatarGroupCount, AvatarBadge } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
+import { StatusBadge } from "@/components/ui/status-badge"
 import {
   Breadcrumb, BreadcrumbList, BreadcrumbItem,
   BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis,
@@ -397,6 +398,26 @@ function BadgeSection() {
   )
 }
 
+function StatusBadgeSection() {
+  return (
+    <Section title="Status Badge" sub="status-badge.tsx">
+      <Row label="Tones">
+        <StatusBadge variant="info">Info</StatusBadge>
+        <StatusBadge variant="success">Success</StatusBadge>
+        <StatusBadge variant="warning">Warning</StatusBadge>
+        <StatusBadge variant="critical">Critical</StatusBadge>
+        <StatusBadge variant="neutral">Neutral</StatusBadge>
+        <StatusBadge variant="caution">Caution</StatusBadge>
+      </Row>
+      <Row label="Sizes">
+        <StatusBadge variant="success" size="sm">Small</StatusBadge>
+        <StatusBadge variant="success">Default</StatusBadge>
+        <StatusBadge variant="success" size="lg">Large</StatusBadge>
+      </Row>
+    </Section>
+  )
+}
+
 function AvatarSection() {
   return (
     <Section title="Avatar" sub="avatar.tsx">
@@ -438,24 +459,6 @@ function AvatarSection() {
   )
 }
 
-function InputSection() {
-  return (
-    <Section title="Input" sub="input.tsx">
-      <Row label="Default">
-        <Input className="max-w-xs" placeholder="Enter text…" />
-      </Row>
-      <Row label="Disabled">
-        <Input className="max-w-xs" placeholder="Disabled" disabled />
-      </Row>
-      <Row label="Password">
-        <Input className="max-w-xs" type="password" placeholder="Password" />
-      </Row>
-      <Row label="Invalid">
-        <Input className="max-w-xs" placeholder="Error state" aria-invalid />
-      </Row>
-    </Section>
-  )
-}
 
 function TextareaSection() {
   return (
@@ -513,6 +516,19 @@ function TabsSection() {
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview" className="mt-3 text-sm text-muted-foreground">Overview content</TabsContent>
+            <TabsContent value="analytics" className="mt-3 text-sm text-muted-foreground">Analytics content</TabsContent>
+            <TabsContent value="reports" className="mt-3 text-sm text-muted-foreground">Reports content</TabsContent>
+          </Tabs>
+        </div>
+        <div>
+          <p className="mb-2 text-xs text-muted-foreground">Pill variant</p>
+          <Tabs defaultValue="overview">
+            <TabsList variant="pill">
+              <TabsTrigger value="overview">All Users</TabsTrigger>
+              <TabsTrigger value="analytics">Deactivated Users</TabsTrigger>
+              <TabsTrigger value="reports">Recent Activities</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="mt-3 text-sm text-muted-foreground">Overview content</TabsContent>
             <TabsContent value="analytics" className="mt-3 text-sm text-muted-foreground">Analytics content</TabsContent>
@@ -1176,45 +1192,6 @@ function LabelSection() {
   )
 }
 
-function SelectSection() {
-  return (
-    <Section title="Select" sub="select.tsx">
-      <Row label="Default">
-        <Select>
-          <SelectTrigger className="w-44">
-            <SelectValue placeholder="Select a fruit" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="mango">Mango</SelectItem>
-            </SelectGroup>
-            <SelectSeparator />
-            <SelectGroup>
-              <SelectLabel>Vegetables</SelectLabel>
-              <SelectItem value="carrot">Carrot</SelectItem>
-              <SelectItem value="broccoli">Broccoli</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-      </Row>
-      <Row label="Small">
-        <Select>
-          <SelectTrigger size="sm" className="w-40">
-            <SelectValue placeholder="Pick one" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="one">Option one</SelectItem>
-            <SelectItem value="two">Option two</SelectItem>
-            <SelectItem value="three" disabled>Disabled</SelectItem>
-          </SelectContent>
-        </Select>
-      </Row>
-    </Section>
-  )
-}
 
 function CardSection() {
   return (
@@ -1291,70 +1268,6 @@ function CardSection() {
   )
 }
 
-function InputGroupSection() {
-  return (
-    <Section title="Input Group" sub="input-group.tsx">
-      <Row label="Icon start">
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupAddon align="inline-start">
-            <InputGroupText><RiSearchLine /></InputGroupText>
-          </InputGroupAddon>
-          <InputGroupInput placeholder="Search…" />
-        </InputGroup>
-      </Row>
-      <Row label="Text end">
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupInput placeholder="Amount" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupText>USD</InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-      </Row>
-      <Row label="Text both sides">
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupAddon align="inline-start">
-            <InputGroupText>$</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupInput placeholder="0.00" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupText>USD</InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupAddon align="inline-start">
-            <InputGroupText>https://</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupInput placeholder="example.com" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupText>.com</InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupInput placeholder="Enter your username" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupText>@company.com</InputGroupText>
-          </InputGroupAddon>
-        </InputGroup>
-      </Row>
-      <Row label="Button end">
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupInput placeholder="Enter email" />
-          <InputGroupAddon align="inline-end">
-            <InputGroupButton size="xs">Send</InputGroupButton>
-          </InputGroupAddon>
-        </InputGroup>
-      </Row>
-      <Row label="Textarea">
-        <InputGroup className="w-full max-w-xs">
-          <InputGroupAddon align="block-start">
-            <InputGroupText><RiMailLine />Message</InputGroupText>
-          </InputGroupAddon>
-          <InputGroupTextarea placeholder="Type here…" rows={3} />
-        </InputGroup>
-      </Row>
-    </Section>
-  )
-}
 
 function FieldSection() {
   return (
@@ -1411,12 +1324,16 @@ function SonnerSection() {
 }
 
 function DrawerSection() {
+  const [snap, setSnap] = React.useState<number | string | null>(0.4)
+
   return (
     <Section title="Drawer" sub="drawer.tsx">
       <Row label="Directions">
-        {(["bottom", "right", "left"] as const).map((dir) => (
+        {(["bottom", "top", "right", "left"] as const).map((dir) => (
           <Drawer key={dir} direction={dir}>
-            <DrawerTrigger asChild><Button variant="outline" size="sm">{dir}</Button></DrawerTrigger>
+            <DrawerTrigger asChild>
+              <Button variant="outline" size="sm">{dir}</Button>
+            </DrawerTrigger>
             <DrawerContent>
               <DrawerHeader>
                 <DrawerTitle>Terms of Service</DrawerTitle>
@@ -1427,22 +1344,118 @@ function DrawerSection() {
                   <p>Welcome to our platform. By accessing or using our services, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
                   <p>The materials contained in this platform are protected by applicable copyright and trademark law. Permission is granted to temporarily download one copy of the materials for personal, non-commercial transitory viewing only.</p>
                   <p>This licence shall automatically terminate if you violate any of these restrictions and may be terminated by us at any time. Upon terminating your viewing of these materials or upon the termination of this licence, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
-                  <p>The materials on our platform are provided on an &apos;as is&apos; basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
-                  <p>In no event shall we or our suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our platform, even if we or an authorised representative has been notified orally or in writing of the possibility of such damage.</p>
-                  <p>We have not reviewed all of the sites linked to our platform and are not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by us. Use of any such linked website is at the user&apos;s own risk.</p>
-                  <p>We may revise these terms of service at any time without notice. By using this platform you are agreeing to be bound by the then current version of these terms of service. These terms and conditions are governed by and construed in accordance with applicable law and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
-                  <p>If you have any questions about these Terms, please contact our support team. We are committed to ensuring that our users fully understand the terms under which they access and use our services.</p>
                 </div>
               </div>
               <DrawerFooter>
                 <Button>Accept</Button>
                 <DrawerClose asChild>
                   <Button variant="outline">Cancel</Button>
-              </DrawerClose>
+                </DrawerClose>
               </DrawerFooter>
             </DrawerContent>
           </Drawer>
         ))}
+      </Row>
+
+      <Row label="With form">
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button variant="outline" size="sm">Edit profile</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Edit profile</DrawerTitle>
+              <DrawerDescription>Update your account details below.</DrawerDescription>
+            </DrawerHeader>
+            <div className="flex flex-col gap-4 px-6 pb-2">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="drawer-name">Name</Label>
+                <Input id="drawer-name" placeholder="Alex Johnson" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="drawer-email">Email</Label>
+                <Input id="drawer-email" type="email" placeholder="alex@example.com" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label>Role</Label>
+                <Select>
+                  <SelectTrigger><SelectValue placeholder="Select role" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="editor">Editor</SelectItem>
+                    <SelectItem value="viewer">Viewer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">Marketing emails</p>
+                  <p className="text-xs text-muted-foreground">Receive updates and promotions</p>
+                </div>
+                <Switch />
+              </div>
+            </div>
+            <DrawerFooter>
+              <Button>Save changes</Button>
+              <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </Row>
+
+      <Row label="Snap points">
+        <Drawer
+          snapPoints={[0.4, 1]}
+          activeSnapPoint={snap}
+          setActiveSnapPoint={setSnap}
+        >
+          <DrawerTrigger asChild>
+            <Button variant="outline" size="sm">Open with snaps</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Snap points</DrawerTitle>
+              <DrawerDescription>Drag the handle up to expand to full height.</DrawerDescription>
+            </DrawerHeader>
+            <div className="flex-1 overflow-y-auto px-6 pb-4">
+              <div className="flex flex-col gap-3 text-sm text-foreground">
+                <p>This drawer snaps to two positions — 40% and full screen. Drag the handle up or down to switch between them.</p>
+                <p>Snap points are useful for progressive disclosure, surfacing a summary at the collapsed state and full detail when expanded.</p>
+                <p>You can define any number of snap points as fractions (0–1) or pixel strings like <code className="text-xs bg-muted px-1 py-0.5 rounded">320px</code>.</p>
+              </div>
+            </div>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button variant="outline">Close</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </Row>
+
+      <Row label="Non-dismissible">
+        <Drawer dismissible={false}>
+          <DrawerTrigger asChild>
+            <Button variant="outline" size="sm">Non-dismissible</Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Confirm action</DrawerTitle>
+              <DrawerDescription>This drawer cannot be dismissed by clicking the overlay or pressing Escape. You must use the buttons below.</DrawerDescription>
+            </DrawerHeader>
+            <div className="px-6 text-sm text-foreground">
+              <p>Use <code className="text-xs bg-muted px-1 py-0.5 rounded">dismissible={"{false}"}</code> to force users to make an explicit choice — useful for critical confirmations or required steps.</p>
+            </div>
+            <DrawerFooter>
+              <Button>Confirm</Button>
+              <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </Row>
     </Section>
   )
@@ -1455,79 +1468,6 @@ const comboboxGroupedItems = [
   { group: "Backend", items: ["Node.js", "Django", "Rails", "Laravel"] },
 ]
 
-function ComboboxSection() {
-  const [single, setSingle] = useState("")
-  const [multi, setMulti] = useState<string[]>([])
-  const [grouped, setGrouped] = useState("")
-  const chipsAnchor = useComboboxAnchor()
-
-  return (
-    <Section title="Combobox" sub="combobox.tsx">
-      <Row label="Single select">
-        <Combobox value={single} onValueChange={(v) => setSingle(v ?? "")} items={comboboxFrameworks}>
-          <ComboboxInput placeholder="Select framework…" className="w-52" showTrigger showClear={!!single} />
-          <ComboboxContent>
-            <ComboboxList>
-              <ComboboxCollection>
-                {(item: string) => (
-                  <ComboboxItem key={item} value={item}>{item}</ComboboxItem>
-                )}
-              </ComboboxCollection>
-              <ComboboxEmpty>No results found.</ComboboxEmpty>
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox>
-      </Row>
-
-      <Row label="Multiple (chips)">
-        <Combobox multiple value={multi} onValueChange={setMulti} items={comboboxFrameworks}>
-          <ComboboxChips ref={chipsAnchor} className="w-64">
-            {multi.map((v) => (
-              <ComboboxChip key={v}>{v}</ComboboxChip>
-            ))}
-            <ComboboxChipsInput placeholder={multi.length === 0 ? "Select frameworks…" : ""} />
-          </ComboboxChips>
-          <ComboboxContent anchor={chipsAnchor}>
-            <ComboboxList>
-              <ComboboxCollection>
-                {(item: string) => (
-                  <ComboboxItem key={item} value={item}>{item}</ComboboxItem>
-                )}
-              </ComboboxCollection>
-              <ComboboxEmpty>No results found.</ComboboxEmpty>
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox>
-      </Row>
-
-      <Row label="With groups">
-        <Combobox value={grouped} onValueChange={(v) => setGrouped(v ?? "")}>
-          <ComboboxInput placeholder="Select technology…" className="w-52" showTrigger showClear={!!grouped} />
-          <ComboboxContent>
-            <ComboboxList>
-              {comboboxGroupedItems.map((g, i) => (
-                <ComboboxGroup key={g.group}>
-                  <ComboboxLabel>{g.group}</ComboboxLabel>
-                  {g.items.map((item) => (
-                    <ComboboxItem key={item} value={item}>{item}</ComboboxItem>
-                  ))}
-                  {i < comboboxGroupedItems.length - 1 && <ComboboxSeparator />}
-                </ComboboxGroup>
-              ))}
-              <ComboboxEmpty>No results found.</ComboboxEmpty>
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox>
-      </Row>
-
-      <Row label="Disabled">
-        <Combobox value="" items={comboboxFrameworks}>
-          <ComboboxInput placeholder="Select framework…" className="w-52" showTrigger disabled />
-        </Combobox>
-      </Row>
-    </Section>
-  )
-}
 
 function FormControlsSection() {
   const [showPw, setShowPw] = useState(false)
@@ -2345,6 +2285,7 @@ export default function ComponentsPage() {
             <ButtonSection />
             <ButtonGroupSection />
             <BadgeSection />
+            <StatusBadgeSection />
             <TabsSection />
             <AvatarSection />
             <ToggleSection />

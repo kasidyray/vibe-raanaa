@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { RiDashboardLine, RiListUnordered, RiBarChartLine, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine } from "@remixicon/react"
+import { RiDashboardLine, RiListUnordered, RiBarChartLine, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine } from "@remixicon/react"
 
 const data = {
   user: {
@@ -51,6 +51,16 @@ const data = {
       title: "Data Table",
       url: "/data-table",
       icon: <RiTableLine />,
+    },
+    {
+      title: "Data Table 2",
+      url: "/data-table-2",
+      icon: <RiTableLine />,
+    },
+    {
+      title: "Leads",
+      url: "/leads",
+      icon: <RiUserLine />,
     },
     {
       title: "Analytics",

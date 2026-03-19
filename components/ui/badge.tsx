@@ -20,7 +20,7 @@ const badgeVariants = cva(
       size: {
         sm:      "h-4 px-1.5 py-1.5 text-xs [&>svg]:size-2.5!",
         default: "h-5 px-2 py-0.5 text-xs [&>svg]:size-3!",
-        lg:      "h-6 px-2.5 text-sm [&>svg]:size-3.5!",
+        lg:      "h-6 px-1.5 text-sm [&>svg]:size-3.5!",
       },
     },
     defaultVariants: {
@@ -44,7 +44,11 @@ function Badge({
   return (
     <span
       data-slot="badge"
-      className={cn(badgeVariants({ variant, size }), className)}
+      className={cn(
+        badgeVariants({ variant, size }),
+        icon && size !== "lg" && "px-1 pr-2",
+        className,
+      )}
       {...props}
     >
       {icon}

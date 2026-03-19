@@ -636,7 +636,7 @@ function StudentsTable() {
             </>
           )}
           <Button variant="outline" size="sm"><RiDownloadLine />Export data</Button>
-          <Button variant="secondary" size="sm"><RiAddLine />Add student</Button>
+          <Button size="sm"><RiAddLine />Add student</Button>
         </div>
       </DataTableToolbar>
 
@@ -659,7 +659,7 @@ const containerSizes: { value: ContainerSize; label: string }[] = [
   { value: "full",    label: "Full"    },
 ]
 
-export default function DataTablePage() {
+export default function DataTable2Page() {
   const [containerSize, setContainerSize] = React.useState<ContainerSize>("xl")
 
   const content = (
@@ -692,7 +692,7 @@ export default function DataTablePage() {
       />
       <Tabs defaultValue="plain">
         <div className="pb-4">
-          <TabsList variant="pill">
+          <TabsList variant="underline">
             <TabsTrigger value="plain">No borders</TabsTrigger>
             <TabsTrigger value="bordered">Bordered rows</TabsTrigger>
             <TabsTrigger value="card">Card table</TabsTrigger>
@@ -715,7 +715,7 @@ export default function DataTablePage() {
             <BreadcrumbList>
               <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
               <BreadcrumbSeparator />
-              <BreadcrumbItem><BreadcrumbPage>Data Table</BreadcrumbPage></BreadcrumbItem>
+              <BreadcrumbItem><BreadcrumbPage>Data Table 2</BreadcrumbPage></BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         }
