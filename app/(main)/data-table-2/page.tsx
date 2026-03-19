@@ -635,8 +635,23 @@ function StudentsTable() {
               <div className="h-4 w-px bg-border" />
             </>
           )}
-          <Button variant="outline" size="sm"><RiDownloadLine />Export data</Button>
-          <Button size="sm"><RiAddLine />Add student</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="rounded-md" />}>
+              <RiDownloadLine />
+              Export data
+              <RiArrowDownSLine className="opacity-60" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-36">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Export as</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>CSV</DropdownMenuItem>
+                <DropdownMenuItem>Excel (.xlsx)</DropdownMenuItem>
+                <DropdownMenuItem>PDF</DropdownMenuItem>
+                <DropdownMenuItem>JSON</DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </DataTableToolbar>
 
