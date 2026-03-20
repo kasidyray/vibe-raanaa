@@ -44,7 +44,7 @@ export function SettingsNav() {
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-2.5 rounded-full px-3 py-2 text-sm transition-colors",
+                "flex items-center gap-3 rounded-full px-3 py-2 text-sm transition-colors",
                 isActive
                   ? "bg-accent/70 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
@@ -70,9 +70,9 @@ export function SettingsNav() {
               href={href}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
+                "flex shrink-0 items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors",
                 isActive
-                  ? "bg-accent text-foreground"
+                  ? "bg-accent/70 text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
             >

@@ -664,11 +664,11 @@ function MemberDetailDrawer({
               {/* Permissions */}
               <div className="flex flex-col gap-3">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Permissions</p>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-4">
                   {PERMISSIONS.map(perm => {
                     const hasPermission = ROLE_MAP[member.role].permissions.includes(perm.id)
                     return (
-                      <div key={perm.id} className={cn("flex items-start gap-2.5", !hasPermission && "opacity-40")}>
+                      <div key={perm.id} className={cn("flex items-start gap-4", !hasPermission && "opacity-40")}>
                         <span className={cn("mt-0.5 shrink-0", hasPermission ? "text-foreground" : "text-muted-foreground")}>
                           {hasPermission ? <RiCheckLine className="size-4 text-success" /> : <RiCloseLine className="size-4" />}
                         </span>

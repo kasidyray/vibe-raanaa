@@ -59,7 +59,7 @@ function DataTable<TData>({
                   <TableCell
                     key={cell.id}
                     className={cn(
-                      "group-hover/row:bg-primary/3 group-data-[state=selected]/row:bg-muted",
+                      "group-hover/row:bg-accent/30 group-data-[state=selected]/row:bg-muted",
                       i === 0 && "group-hover/row:rounded-l-md group-data-[state=selected]/row:rounded-l-md",
                       i === cells.length - 1 && "group-hover/row:rounded-r-md group-data-[state=selected]/row:rounded-r-md",
                       variant === "bordered" && "border-b border-border group-hover/row:border-b-transparent group-data-[state=selected]/row:border-b-transparent [tr:has(+tr:hover)_&]:border-b-transparent [tr:has(+tr[data-state=selected])_&]:border-b-transparent",
