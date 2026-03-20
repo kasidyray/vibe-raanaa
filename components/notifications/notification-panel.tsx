@@ -101,28 +101,20 @@ export function NotificationBell() {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-lg"
-          aria-label={
-            hasUnread
-              ? `Notifications — ${unreadCount} unread`
-              : "Notifications"
-          }
-          aria-haspopup="true"
-          aria-expanded={open}
-          className="relative"
-        >
-          <RiNotification2Line
-            className={cn(
-              "transition-colors",
-              // Subtle emphasis when unread items exist
-              hasUnread && "text-foreground"
-            )}
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-lg"
+            aria-label={hasUnread ? `Notifications — ${unreadCount} unread` : "Notifications"}
+            className="relative"
           />
-          <NotificationBadge count={unreadCount} />
-        </Button>
+        }
+      >
+        <RiNotification2Line
+          className={cn("transition-colors", hasUnread && "text-foreground")}
+        />
+        <NotificationBadge count={unreadCount} />
       </PopoverTrigger>
 
       <PopoverContent
