@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
   RiAlertLine,
@@ -73,6 +73,7 @@ const ROLE_BADGE: Record<string, "info" | "warning" | "neutral"> = {
 type PageStatus = "loading" | "idle" | "sending" | "error"
 
 export default function TeamSettingsPage() {
+  const router = useRouter()
   const [status, setStatus] = React.useState<PageStatus>("loading")
   const [inviteEmail, setInviteEmail] = React.useState("")
   const [inviteRole, setInviteRole]   = React.useState("Member")
@@ -234,12 +235,10 @@ export default function TeamSettingsPage() {
             <p className="text-xs text-muted-foreground">
               Full member management in the Team page.
             </p>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/team">
-                <RiGroupLine />
-                Manage team
-                <RiArrowRightLine />
-              </Link>
+            <Button variant="outline" size="sm" onClick={() => router.push("/team")}>
+              <RiGroupLine />
+              Manage team
+              <RiArrowRightLine />
             </Button>
           </div>
         }
