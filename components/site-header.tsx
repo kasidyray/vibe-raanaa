@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
-  RiNotification2Line,
   RiQuestionLine,
   RiSettingsLine,
   RiLogoutBoxLine,
@@ -12,6 +11,7 @@ import {
 } from "@remixicon/react"
 
 import { ModeToggle } from "@/components/mode-toggle"
+import { NotificationBell } from "@/components/notifications"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,9 +30,7 @@ function DefaultHeaderRight() {
   return (
     <>
       <ModeToggle />
-      <Button variant="ghost" size="icon-lg" className="" aria-label="Notifications">
-        <RiNotification2Line />
-      </Button>
+      <NotificationBell />
       <Button variant="ghost" size="icon-lg" className="" aria-label="Help">
         <RiQuestionLine/>
       </Button>
