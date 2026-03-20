@@ -184,7 +184,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-3">
             <Avatar className="size-10">
               <AvatarImage
-                src="https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=Ikedi"
+                src="https://api.dicebear.com/9.x/micah/svg?seed=Ikedi"
                 alt="Ikedi Eze"
               />
               <AvatarFallback>IE</AvatarFallback>

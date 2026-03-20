@@ -251,7 +251,7 @@ export default function TeamSettingsPage() {
             <div className="flex items-center gap-3 min-w-0">
               <Avatar className="size-8 shrink-0">
                 <AvatarImage
-                  src={`https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${member.avatarSeed}`}
+                  src={`https://api.dicebear.com/9.x/micah/svg?seed=${member.avatarSeed}`}
                   alt={member.name}
                 />
                 <AvatarFallback>

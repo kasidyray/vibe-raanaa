@@ -46,7 +46,7 @@ export function SettingsNav() {
               className={cn(
                 "flex items-center gap-3 rounded-full px-3 py-2 text-sm transition-colors",
                 isActive
-                  ? "bg-accent/70 text-foreground"
+                  ? "bg-accent/70 text-foreground font-medium"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
             >

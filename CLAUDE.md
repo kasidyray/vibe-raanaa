@@ -25,7 +25,7 @@ These are the single source of truth. Do not deviate from them.
 
 ## Mock data conventions
 
-- Avatars: `https://api.dicebear.com/9.x/avataaars-neutral/svg?seed={FirstName}`
+- Avatars: `https://api.dicebear.com/9.x/micah/svg?seed={FirstName}`
 - Company logos: `https://api.dicebear.com/9.x/initials/svg?seed={Letter}&backgroundColor={hex}`
 - Logged-in user is always **Ikedi Eze** (`id: "usr_001"`, email: `kasidyray@gmail.com`)
 - System actors use `type: "system"`, API actors use `type: "api"` — no avatar needed

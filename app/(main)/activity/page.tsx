@@ -127,10 +127,10 @@ function ts(daysBack: number, hoursBack = 0, minutesBack = 0): string {
 }
 
 const ACTORS = {
-  ikedi:  { id: "usr_001", name: "Ikedi Eze",       avatar: "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=Ikedi",   email: "kasidyray@gmail.com",       type: "user"   as ActorType },
-  sarah:  { id: "usr_002", name: "Sarah Mitchell",   avatar: "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=Sarah",   email: "sarah@zencloud.io",         type: "user"   as ActorType },
-  robert: { id: "usr_003", name: "Robert Johnson",   avatar: "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=Robert",  email: "robertjohnson@loom.com",    type: "user"   as ActorType },
-  nathan: { id: "usr_004", name: "Nathan Reyes",     avatar: "https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=Nathan",  email: "nathanreyes@dev.co",        type: "user"   as ActorType },
+  ikedi:  { id: "usr_001", name: "Ikedi Eze",       avatar: "https://api.dicebear.com/9.x/micah/svg?seed=Ikedi",   email: "kasidyray@gmail.com",       type: "user"   as ActorType },
+  sarah:  { id: "usr_002", name: "Sarah Mitchell",   avatar: "https://api.dicebear.com/9.x/micah/svg?seed=Sarah",   email: "sarah@zencloud.io",         type: "user"   as ActorType },
+  robert: { id: "usr_003", name: "Robert Johnson",   avatar: "https://api.dicebear.com/9.x/micah/svg?seed=Robert",  email: "robertjohnson@loom.com",    type: "user"   as ActorType },
+  nathan: { id: "usr_004", name: "Nathan Reyes",     avatar: "https://api.dicebear.com/9.x/micah/svg?seed=Nathan",  email: "nathanreyes@dev.co",        type: "user"   as ActorType },
   system: { id: "sys_001", name: "System Scheduler", avatar: "",                                                                  email: "system@raana.io",           type: "system" as ActorType },
   api:    { id: "api_001", name: "prod-api-key",     avatar: "",                                                                  email: "",                          type: "api"    as ActorType },
 }
