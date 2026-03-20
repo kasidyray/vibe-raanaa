@@ -144,7 +144,7 @@ export default function PreferencesPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Preferences</h1>
           <p className="text-sm text-muted-foreground mt-1">Personalise your experience</p>
         </div>
-        <Alert variant="destructive">
+        <Alert variant="error">
           <RiAlertLine className="size-4" />
           <AlertDescription className="flex items-center justify-between gap-4">
             <span>Failed to load preferences. Please try again.</span>

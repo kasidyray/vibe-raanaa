@@ -140,7 +140,7 @@ export default function NotificationsPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Notifications</h1>
           <p className="text-sm text-muted-foreground mt-1">Choose when and how you're notified</p>
         </div>
-        <Alert variant="destructive">
+        <Alert variant="error">
           <RiAlertLine className="size-4" />
           <AlertDescription className="flex items-center justify-between gap-4">
             <span>Failed to load notification preferences.</span>

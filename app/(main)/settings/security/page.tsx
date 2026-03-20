@@ -161,7 +161,7 @@ export default function SecurityPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Security</h1>
           <p className="text-sm text-muted-foreground mt-1">Manage your password and account access</p>
         </div>
-        <Alert variant="destructive">
+        <Alert variant="error">
           <RiAlertLine className="size-4" />
           <AlertDescription className="flex items-center justify-between gap-4">
             <span>Failed to load security settings. Please try again.</span>
