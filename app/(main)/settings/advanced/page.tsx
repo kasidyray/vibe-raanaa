@@ -25,7 +25,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { SettingsSection, SettingsRow } from "@/components/settings/settings-section"
 
@@ -60,6 +59,8 @@ export default function AdvancedPage() {
   const [apiKeys, setApiKeys] = React.useState(MOCK_API_KEYS)
   const [revealedKeys, setRevealedKeys] = React.useState<Record<string, boolean>>({})
   const [deletingKey, setDeletingKey] = React.useState<string | null>(null)
+  const [keyToDelete, setKeyToDelete] = React.useState<string | null>(null)
+  const [showWorkspaceDelete, setShowWorkspaceDelete] = React.useState(false)
   const [isDeletingWorkspace, setIsDeletingWorkspace] = React.useState(false)
 
   React.useEffect(() => {
@@ -268,17 +269,19 @@ export default function AdvancedPage() {
                   </Button>
 
                   {/* Delete */}
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`Delete ${key.name} key`}
-                        className="text-muted-foreground hover:text-destructive"
-                      >
-                        <RiDeleteBinLine />
-                      </Button>
-                    </AlertDialogTrigger>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={`Delete ${key.name} key`}
+                    className="text-muted-foreground hover:text-destructive"
+                    onClick={() => setKeyToDelete(key.id)}
+                  >
+                    <RiDeleteBinLine />
+                  </Button>
+                  <AlertDialog
+                    open={keyToDelete === key.id}
+                    onOpenChange={open => { if (!open) setKeyToDelete(null) }}
+                  >
                     <AlertDialogContent>
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete API key?</AlertDialogTitle>
@@ -317,13 +320,11 @@ export default function AdvancedPage() {
           label="Delete workspace"
           description="Permanently delete this workspace, all projects, and all data. This cannot be undone."
         >
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm">
-                <RiDeleteBinLine />
-                Delete workspace
-              </Button>
-            </AlertDialogTrigger>
+          <Button variant="destructive" size="sm" onClick={() => setShowWorkspaceDelete(true)}>
+            <RiDeleteBinLine />
+            Delete workspace
+          </Button>
+          <AlertDialog open={showWorkspaceDelete} onOpenChange={setShowWorkspaceDelete}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
