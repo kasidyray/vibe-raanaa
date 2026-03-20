@@ -234,7 +234,7 @@ export default function RegisterFlowPage() {
               </p>
             </div>
 
-            <Button size="lg" className="w-full" disabled={otp.length < 6} onClick={() => setStep(2)}>
+            <Button size="lg" className="w-full" disabled={otp.length < 6} onClick={() => router.push("/dashboard")}>
               Verify OTP
             </Button>
 

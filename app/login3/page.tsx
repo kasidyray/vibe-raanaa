@@ -24,12 +24,10 @@ export default function LoginPage3() {
           alt="MTN Partners"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        {/* Yellow gradient overlay from bottom */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
 
         {/* Bottom content */}
         <div className="absolute bottom-24 left-8 right-8 flex items-start flex-col gap-8">
-          {/* MTN logo */}
           <img src="/mtn-logo.svg" alt="MTN" className="h-8 w-auto invert" />
 
           <div className="flex flex-col gap-3">
@@ -42,7 +40,6 @@ export default function LoginPage3() {
             </p>
           </div>
 
-          {/* Carousel indicators */}
           <div className="flex items-center gap-2">
             <div className="h-2 w-6 rounded-full bg-primary" />
             <div className="size-2 rounded-full bg-white/20" />
