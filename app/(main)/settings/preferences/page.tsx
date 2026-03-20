@@ -185,7 +185,7 @@ export default function PreferencesPage() {
         >
           <Select
             value={language}
-            onValueChange={setLanguage}
+            onValueChange={v => { if (v) setLanguage(v) }}
             disabled={status === "saving"}
           >
             <SelectTrigger className="w-44">
@@ -206,7 +206,7 @@ export default function PreferencesPage() {
         >
           <Select
             value={timezone}
-            onValueChange={setTimezone}
+            onValueChange={v => { if (v) setTimezone(v) }}
             disabled={status === "saving"}
           >
             <SelectTrigger className="w-56">

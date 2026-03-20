@@ -321,7 +321,7 @@ export default function NotificationsPage() {
         >
           <Select
             value={digest}
-            onValueChange={setDigest}
+            onValueChange={v => { if (v) setDigest(v) }}
             disabled={isSavingDigest}
           >
             <SelectTrigger className="w-40">

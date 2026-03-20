@@ -212,7 +212,7 @@ export default function TeamSettingsPage() {
                 <p className="text-xs text-destructive mt-1.5">{emailError}</p>
               )}
             </div>
-            <Select value={inviteRole} onValueChange={setInviteRole} disabled={isSending}>
+            <Select value={inviteRole} onValueChange={v => { if (v) setInviteRole(v) }} disabled={isSending}>
               <SelectTrigger className="w-32">
                 <SelectValue />
               </SelectTrigger>
