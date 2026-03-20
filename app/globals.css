@@ -101,7 +101,7 @@
   --primary-foreground: oklch(0.14 0 0);        /* dark text on yellow */
 
   /* Link — accessible deep blue for light mode (contrast ~5:1 on white) */
-  --link: oklch(54.211% 0.11104 93.621);
+  --link: oklch(0.14 0 0);
 
   /* Secondary — clean neutral grey */
   --secondary: oklch(0.95 0 0);

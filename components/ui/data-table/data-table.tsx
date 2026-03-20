@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { flexRender, type Table } from "@tanstack/react-table"
+import { RiSearchLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -12,6 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@/components/ui/empty"
+import { Button } from "@/components/ui/button"
 
 export type DataTableVariant = "plain" | "bordered"
 
@@ -19,7 +22,7 @@ function DataTable<TData>({
   table,
   variant = "plain",
   className,
-  emptyMessage = "No results.",
+  emptyMessage = "Try adjusting your filters or search terms.",
   onRowClick,
 }: {
   table: Table<TData>
@@ -69,9 +72,31 @@ function DataTable<TData>({
             )
           })
         ) : (
-          <TableRow>
-            <TableCell colSpan={table.getAllColumns().length} className="h-24 text-center text-muted-foreground">
-              {emptyMessage}
+          <TableRow className="hover:bg-transparent! hover:ring-0">
+            <TableCell colSpan={table.getAllColumns().length} className="p-0 pt-3">
+              {(() => {
+                const query = (table.getState().globalFilter as string) || ""
+                return (
+                  <Empty className="py-16 bg-muted/50">
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <RiSearchLine />
+                      </EmptyMedia>
+                      <EmptyTitle>No results found</EmptyTitle>
+                      <EmptyDescription>
+                        {query ? <>No results found for <strong>&ldquo;{query}&rdquo;</strong></> : emptyMessage}
+                      </EmptyDescription>
+                    </EmptyHeader>
+                    {query && (
+                      <EmptyContent>
+                        <Button variant="outline" size="sm" onClick={() => table.setGlobalFilter("")}>
+                          Clear search
+                        </Button>
+                      </EmptyContent>
+                    )}
+                  </Empty>
+                )
+              })()}
             </TableCell>
           </TableRow>
         )}

@@ -280,12 +280,14 @@ function LeadsTable() {
 
       <DataTable table={table} variant="bordered" emptyMessage="No leads found." onRowClick={setSelectedLead} />
 
-      <DataTablePagination
-        table={table}
-        style="classic"
-        selectedCount={selectedCount}
-        rowLabel="lead"
-      />
+      {table.getFilteredRowModel().rows.length > 0 && (
+        <DataTablePagination
+          table={table}
+          style="classic"
+          selectedCount={selectedCount}
+          rowLabel="lead"
+        />
+      )}
 
       <DataTableSelectionBar
         count={selectedCount}

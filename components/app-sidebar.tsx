@@ -15,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { RiDashboardLine, RiListUnordered, RiBarChartLine, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine } from "@remixicon/react"
+import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine } from "@remixicon/react"
 
 const data = {
   user: {
@@ -63,14 +63,6 @@ const data = {
       icon: <RiUserLine />,
     },
     {
-      title: "Analytics",
-      url: "/analytics",
-      icon: (
-        <RiBarChartLine
-        />
-      ),
-    },
-    {
       title: "Projects",
       url: "/projects",
       icon: (
@@ -85,6 +77,11 @@ const data = {
         <RiGroupLine
         />
       ),
+    },
+    {
+      title: "Activity",
+      url: "/activity",
+      icon: <RiHistoryLine />,
     },
   ],
   navClouds: [

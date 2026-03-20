@@ -51,6 +51,8 @@ function DataTablePagination<TData>({
   const canPrev    = table.getCanPreviousPage()
   const canNext    = table.getCanNextPage()
 
+  if (totalRows === 0) return null
+
   const infoLabel = selectedCount > 0
     ? `${selectedCount} of ${totalRows} selected`
     : `${totalRows} ${rowLabel}${totalRows !== 1 ? "s" : ""}`
