@@ -26,6 +26,7 @@ import {
 } from "@remixicon/react"
 
 import { SiteHeader } from "@/components/site-header"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import {
@@ -203,9 +204,60 @@ const columns: ColumnDef<Lead>[] = [
   },
 ]
 
+// ─── LeadsTableSkeleton ───────────────────────────────────────────────────────
+
+function LeadsTableSkeleton({ rows = 10 }: { rows?: number }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Toolbar */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-8 w-56 rounded-md" />
+        <Skeleton className="h-8 w-24 rounded-md" />
+        <Skeleton className="h-8 w-24 rounded-md" />
+        <Skeleton className="ml-auto h-8 w-24 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border">
+        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
+          <Skeleton className="size-4 rounded-sm" />
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-3 w-20 ml-4" />
+          <Skeleton className="h-3 w-16 ml-4" />
+          <Skeleton className="h-3 w-24 ml-4" />
+        </div>
+        {Array.from({ length: rows }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
+            <Skeleton className="size-4 shrink-0 rounded-sm" />
+            <div className="flex flex-1 items-center gap-2.5">
+              <Skeleton className="size-7 shrink-0 rounded-full" />
+              <Skeleton className="h-3.5 w-28" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="size-5 shrink-0 rounded-sm" />
+              <Skeleton className="h-3.5 w-24" />
+            </div>
+            <Skeleton className="h-3.5 w-32" />
+            <Skeleton className="h-3.5 w-40" />
+            <Skeleton className="size-7 rounded-md" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Leads Table ─────────────────────────────────────────────────────────────
 
 function LeadsTable() {
+  const [isTableLoading, setIsTableLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const t = setTimeout(() => setIsTableLoading(false), 1400)
+    return () => clearTimeout(t)
+  }, [])
+
   const [sorting, setSorting]                   = React.useState<SortingState>([])
   const [globalFilter, setGlobalFilter]         = React.useState("")
   const [rowSelection, setRowSelection]         = React.useState({})
@@ -237,6 +289,8 @@ function LeadsTable() {
   })
 
   const selectedCount = Object.keys(rowSelection).length
+
+  if (isTableLoading) return <LeadsTableSkeleton rows={10} />
 
   return (
     <div className="flex flex-col gap-4">

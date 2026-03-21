@@ -32,6 +32,7 @@ import {
 } from "@remixicon/react"
 
 import { SiteHeader } from "@/components/site-header"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import {
@@ -871,7 +872,69 @@ function ActivityDetailDrawer({
 
 type ViewFilter = "all" | "auth" | "data" | "system"
 
+// ─── ActivityTableSkeleton ────────────────────────────────────────────────────
+
+function ActivityTableSkeleton({ rows = 12 }: { rows?: number }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Toolbar */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-8 w-56 rounded-md" />
+        <Skeleton className="h-8 w-24 rounded-md" />
+        <Skeleton className="h-8 w-24 rounded-md" />
+        <Skeleton className="h-8 w-24 rounded-md" />
+        <Skeleton className="ml-auto h-8 w-24 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+
+      {/* Table */}
+      <div className="overflow-hidden rounded-xl border">
+        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-3 w-14 ml-4" />
+          <Skeleton className="h-3 w-20 ml-4" />
+          <Skeleton className="h-3 w-16 ml-4" />
+          <Skeleton className="h-3 w-14 ml-4" />
+          <Skeleton className="h-3 w-12 ml-auto" />
+        </div>
+        {Array.from({ length: rows }).map((_, i) => (
+          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
+            {/* Event: icon + name */}
+            <div className="flex flex-1 items-center gap-2.5">
+              <Skeleton className="size-7 shrink-0 rounded-md" />
+              <Skeleton className="h-3.5 w-36" />
+            </div>
+            {/* Actor: avatar + name */}
+            <div className="flex items-center gap-2">
+              <Skeleton className="size-6 shrink-0 rounded-full" />
+              <Skeleton className="h-3.5 w-24" />
+            </div>
+            {/* Resource: type · name */}
+            <div className="flex items-center gap-1.5">
+              <Skeleton className="h-3 w-10" />
+              <Skeleton className="h-3.5 w-32" />
+            </div>
+            {/* Category badge */}
+            <Skeleton className="h-5 w-16 rounded-md" />
+            {/* Status badge */}
+            <Skeleton className="h-5 w-20 rounded-full" />
+            {/* Timestamp */}
+            <Skeleton className="h-3.5 w-20" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function ActivityTable({ viewFilter = "all" }: { viewFilter?: ViewFilter }) {
+  const [isTableLoading, setIsTableLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const t = setTimeout(() => setIsTableLoading(false), 1400)
+    return () => clearTimeout(t)
+  }, [])
+
   const [sorting, setSorting]                   = React.useState<SortingState>([{ id: "timestamp", desc: true }])
   const [globalFilter, setGlobalFilter]         = React.useState("")
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -944,6 +1007,8 @@ function ActivityTable({ viewFilter = "all" }: { viewFilter?: ViewFilter }) {
     setDatePreset("all")
     setOnlyMine(false)
   }
+
+  if (isTableLoading) return <ActivityTableSkeleton rows={12} />
 
   return (
     <div className="flex flex-col gap-4">
