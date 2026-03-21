@@ -27,7 +27,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -41,14 +40,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import {
   DataTable,
   DataTableToolbar,
@@ -303,49 +294,54 @@ const DUE_DATE_OPTIONS  = [
 
 // ─── TasksTableSkeleton ───────────────────────────────────────────────────────
 
-function TasksTableSkeleton({ rows = 10 }: { rows?: number }) {
-  return (
-    <div className="flex flex-col gap-4">
-      {/* Toolbar */}
-      <div className="flex items-center gap-2">
-        <Skeleton className="h-8 w-56 rounded-md" />
-        <Skeleton className="h-8 w-20 rounded-md" />
-        <Skeleton className="h-8 w-20 rounded-md" />
-        <Skeleton className="h-8 w-20 rounded-md" />
-        <Skeleton className="ml-auto h-8 w-8 rounded-md" />
-      </div>
-
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border">
-        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
-          <Skeleton className="size-4 rounded-sm" />
-          <Skeleton className="h-3 w-10" />
-          <Skeleton className="h-3 w-10 ml-2" />
-          <Skeleton className="h-3 w-16 ml-4" />
-          <Skeleton className="h-3 w-16 ml-4" />
-          <Skeleton className="h-3 w-16 ml-4" />
-          <Skeleton className="h-3 w-14 ml-4" />
-        </div>
-        {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
-            <Skeleton className="size-4 shrink-0 rounded-sm" />
-            <Skeleton className="h-3 w-14 font-mono" />
-            <div className="flex flex-1 items-center gap-2">
-              <Skeleton className="h-5 w-12 rounded-md" />
-              <Skeleton className="h-3.5 w-48" />
-            </div>
-            <Skeleton className="h-5 w-20 rounded-full" />
-            <Skeleton className="h-5 w-20 rounded-md" />
-            <div className="flex items-center gap-2">
-              <Skeleton className="size-6 shrink-0 rounded-full" />
-              <Skeleton className="h-3.5 w-24" />
-            </div>
-            <Skeleton className="h-3.5 w-24" />
-          </div>
-        ))}
-      </div>
+function TasksTableSkeleton({ rows = 10, variant = "plain" }: { rows?: number; variant?: "plain" | "bordered" | "card" }) {
+  const header = (
+    <div className={cn("flex items-center gap-4 border-b px-4 py-2.5", variant === "card" && "bg-muted/40")}>
+      <Skeleton className="size-4 rounded-sm" />
+      <Skeleton className="h-3 w-10" />
+      <Skeleton className="h-3 w-10 ml-2" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-14 ml-4" />
     </div>
   )
+
+  const rows_ = Array.from({ length: rows }).map((_, i, arr) => (
+    <div key={i} className={cn("flex items-center gap-4 px-4 py-3", i < arr.length - 1 && "border-b")}>
+      <Skeleton className="size-4 shrink-0 rounded-sm" />
+      <Skeleton className="h-3 w-14 font-mono" />
+      <div className="flex flex-1 items-center gap-2">
+        <Skeleton className="h-5 w-12 rounded-md" />
+        <Skeleton className="h-3.5 w-48" />
+      </div>
+      <Skeleton className="h-5 w-20 rounded-full" />
+      <Skeleton className="h-5 w-20 rounded-md" />
+      <div className="flex items-center gap-2">
+        <Skeleton className="size-6 shrink-0 rounded-full" />
+        <Skeleton className="h-3.5 w-24" />
+      </div>
+      <Skeleton className="h-3.5 w-24" />
+    </div>
+  ))
+
+  const toolbar = (
+    <div className="flex items-center gap-2">
+      <Skeleton className="h-8 w-56 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="ml-auto h-8 w-8 rounded-md" />
+    </div>
+  )
+
+  const table = variant === "card" ? (
+    <div className="overflow-hidden rounded-xl border">{header}{rows_}</div>
+  ) : (
+    <>{header}{rows_}</>
+  )
+
+  return <div className="flex flex-col gap-4">{toolbar}{table}</div>
 }
 
 function TasksTable({ variant = "card" }: { variant?: "card" | "plain" | "bordered" }) {
@@ -395,7 +391,7 @@ function TasksTable({ variant = "card" }: { variant?: "card" | "plain" | "border
 
   const selectedCount = Object.keys(rowSelection).length
 
-  if (isTableLoading) return <TasksTableSkeleton rows={10} />
+  if (isTableLoading) return <TasksTableSkeleton rows={10} variant={variant} />
 
   return (
     <div className="flex flex-col gap-4">
@@ -456,39 +452,7 @@ function TasksTable({ variant = "card" }: { variant?: "card" | "plain" | "border
         </div>
       </DataTableToolbar>
 
-      {/* Table */}
-      {variant === "card" ? (
-        <Card className="overflow-hidden p-0">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map(hg => (
-                <TableRow key={hg.id} className="hover:bg-transparent border-t">
-                  {hg.headers.map(h => (
-                    <TableHead key={h.id}>{h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}</TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map(row => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">No tasks found.</TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </Card>
-      ) : (
-        <DataTable table={table} variant={variant} emptyMessage="No tasks found." />
-      )}
+      <DataTable table={table} variant={variant} emptyMessage="No tasks found." />
 
       <DataTablePagination table={table} style={paginationStyle} selectedCount={selectedCount} rowLabel="task" />
       <DataTableSelectionBar
@@ -642,9 +606,9 @@ function StudentsTableSkeleton({ rows = 10 }: { rows?: number }) {
         <Skeleton className="h-8 w-20 rounded-md" />
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border">
-        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
+      {/* Table — bordered variant: no outer wrapper, no header bg */}
+      <div>
+        <div className="flex items-center gap-4 border-b px-4 py-2.5">
           <Skeleton className="size-4 rounded-sm" />
           <Skeleton className="h-3 w-8" />
           <Skeleton className="h-3 w-16 ml-4" />
@@ -654,8 +618,8 @@ function StudentsTableSkeleton({ rows = 10 }: { rows?: number }) {
           <Skeleton className="h-3 w-16 ml-4" />
           <Skeleton className="h-3 w-16 ml-4" />
         </div>
-        {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
+        {Array.from({ length: rows }).map((_, i, arr) => (
+          <div key={i} className={cn("flex items-center gap-4 px-4 py-3", i < arr.length - 1 && "border-b")}>
             <Skeleton className="size-4 shrink-0 rounded-sm" />
             <Skeleton className="h-3.5 w-16" />
             <Skeleton className="h-3.5 w-32 flex-1" />

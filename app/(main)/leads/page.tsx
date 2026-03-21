@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -218,17 +219,17 @@ function LeadsTableSkeleton({ rows = 10 }: { rows?: number }) {
         <Skeleton className="h-8 w-8 rounded-md" />
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border">
-        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
+      {/* Table — bordered variant: no outer wrapper, no header bg */}
+      <div>
+        <div className="flex items-center gap-4 border-b px-4 py-2.5">
           <Skeleton className="size-4 rounded-sm" />
           <Skeleton className="h-3 w-16" />
           <Skeleton className="h-3 w-20 ml-4" />
           <Skeleton className="h-3 w-16 ml-4" />
           <Skeleton className="h-3 w-24 ml-4" />
         </div>
-        {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
+        {Array.from({ length: rows }).map((_, i, arr) => (
+          <div key={i} className={cn("flex items-center gap-4 px-4 py-3", i < arr.length - 1 && "border-b")}>
             <Skeleton className="size-4 shrink-0 rounded-sm" />
             <div className="flex flex-1 items-center gap-2.5">
               <Skeleton className="size-7 shrink-0 rounded-full" />

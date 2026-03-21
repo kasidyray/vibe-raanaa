@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -24,6 +25,7 @@ import {
   RiShieldLine,
   RiUserForbidLine,
   RiUserLine,
+  RiUserAddLine,
   RiEditLine,
   RiLockLine,
   RiEyeLine,
@@ -34,6 +36,7 @@ import {
 } from "@remixicon/react"
 import { toast } from "sonner"
 
+import { Skeleton } from "@/components/ui/skeleton"
 import { SiteHeader } from "@/components/site-header"
 import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
@@ -915,6 +918,50 @@ function buildColumns(
   ]
 }
 
+// ─── TeamTableSkeleton ────────────────────────────────────────────────────────
+
+function TeamTableSkeleton({ rows = 8 }: { rows?: number }) {
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Toolbar */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-8 w-56 rounded-md" />
+        <Skeleton className="h-8 w-20 rounded-md" />
+        <Skeleton className="h-8 w-20 rounded-md" />
+        <Skeleton className="ml-auto h-8 w-8 rounded-md" />
+      </div>
+
+      {/* Table — bordered variant: no outer wrapper, no header bg */}
+      <div>
+        <div className="flex items-center gap-3 border-b px-4 py-2.5">
+          <Skeleton className="size-4 rounded-sm" />
+          <Skeleton className="h-3 w-32" />
+          <Skeleton className="ml-auto h-3 w-16" />
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="size-8 rounded-md" />
+        </div>
+        {Array.from({ length: rows }).map((_, i, arr) => (
+          <div key={i} className={cn("flex items-center gap-3 px-4 py-3", i < arr.length - 1 && "border-b")}>
+            <Skeleton className="size-4 rounded-sm" />
+            <div className="flex flex-1 items-center gap-3">
+              <Skeleton className="size-8 rounded-full" />
+              <div className="space-y-1.5">
+                <Skeleton className="h-3.5 w-28" />
+                <Skeleton className="h-3 w-40" />
+              </div>
+            </div>
+            <Skeleton className="h-5 w-14 rounded-full" />
+            <Skeleton className="h-5 w-16 rounded-full" />
+            <Skeleton className="h-3.5 w-16" />
+            <Skeleton className="size-8 rounded-md" />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function TeamMembersTable({
   members,
   onMemberClick,
@@ -1065,6 +1112,7 @@ function TeamMembersTable({
 // ─── RolesTab ─────────────────────────────────────────────────────────────────
 
 function RolesTab({ members }: { members: Member[] }) {
+  const router = useRouter()
   const memberCountByRole = React.useMemo(() => {
     const counts: Record<string, number> = {}
     for (const m of members) {
@@ -1074,6 +1122,16 @@ function RolesTab({ members }: { members: Member[] }) {
   }, [members])
 
   return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-muted-foreground">
+          {ROLES.length} roles · Manage access levels for your workspace.
+        </p>
+        <Button size="sm" onClick={() => router.push("/create-role")}>
+          <RiAddLine />
+          Create role
+        </Button>
+      </div>
     <div className="grid gap-4 sm:grid-cols-2">
       {ROLES.map(role => (
         <div key={role.id} className="rounded-xl border bg-card p-5 flex flex-col gap-4">
@@ -1109,16 +1167,24 @@ function RolesTab({ members }: { members: Member[] }) {
         </div>
       ))}
     </div>
+    </div>
   )
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function TeamPage() {
+  const router = useRouter()
   const [containerSize, setContainerSize] = React.useState<ContainerSize>("xl")
   const [members, setMembers]             = React.useState<Member[]>(MEMBERS)
   const [inviteOpen, setInviteOpen]       = React.useState(false)
   const [selectedMember, setSelectedMember] = React.useState<Member | null>(null)
+  const [isTableLoading, setIsTableLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const t = setTimeout(() => setIsTableLoading(false), 1400)
+    return () => clearTimeout(t)
+  }, [])
 
   const handleRoleChange = React.useCallback((id: string, role: RoleId) => {
     setMembers(prev => prev.map(m => m.id === id ? { ...m, role } : m))
@@ -1173,8 +1239,8 @@ export default function TeamPage() {
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button onClick={() => setInviteOpen(true)}>
-              <RiAddLine />
+            <Button onClick={() => router.push("/invite")}>
+              <RiUserAddLine />
               Invite member
             </Button>
           </div>
@@ -1202,7 +1268,9 @@ export default function TeamPage() {
 
         {/* All members */}
         <TabsContent value="members">
-          {members.length === 0 ? (
+          {isTableLoading ? (
+            <TeamTableSkeleton rows={8} />
+          ) : members.length === 0 ? (
             <Empty className="border">
               <EmptyHeader>
                 <EmptyMedia variant="icon"><RiGroupLine /></EmptyMedia>

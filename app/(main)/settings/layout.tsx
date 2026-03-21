@@ -47,7 +47,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         above and the bottom of the page container below.
         Padding lives inside the nav and content columns individually.
       */}
-      <div className="flex flex-1 flex-col md:flex-row">
+      <div className="flex flex-1 flex-col md:flex-row md:overflow-hidden md:min-h-0">
         {/* Nav column — border-b on mobile acts as the row separator */}
         <div className="p-4 md:p-6 border-b md:border-b-0">
           <SettingsNav />
@@ -57,7 +57,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         <div className="hidden md:block w-px bg-border shrink-0" />
 
         {/* Content column */}
-        <div className="flex-1 min-w-0 flex flex-col items-center p-4 md:p-6">
+        <div className="flex-1 min-w-0 flex flex-col items-center p-4 md:p-6 md:overflow-y-auto">
           <div className="w-full max-w-3xl flex flex-col gap-6">
             {children}
           </div>

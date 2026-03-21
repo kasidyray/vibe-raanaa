@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import {
   RiUploadLine,
   RiAlertLine,
   RiRefreshLine,
+  RiArrowRightSLine,
+  RiBuildingLine,
 } from "@remixicon/react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -28,6 +31,7 @@ const MOCK_PROFILE = {
 type PageStatus = "loading" | "idle" | "saving-info" | "saving-bio" | "error"
 
 export default function ProfilePage() {
+  const router = useRouter()
   const [status, setStatus] = React.useState<PageStatus>("loading")
 
   // Personal info form state
@@ -272,6 +276,34 @@ export default function ProfilePage() {
           <p className="text-xs text-muted-foreground">{bio.length} / 160 characters</p>
         </SettingsRow>
       </SettingsSection>
+
+      {/* Business information */}
+      <div className="rounded-xl border bg-card/50 overflow-hidden">
+        <div className="px-5 py-4 border-b">
+          <p className="text-lg font-medium">Business information</p>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Required for compliance verification and to receive business payouts.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => router.push("/kyc")}
+          className="w-full flex items-center justify-between gap-4 px-5 py-4 hover:bg-accent/50 transition-colors text-left"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-muted flex items-center justify-center shrink-0">
+              <RiBuildingLine className="size-4 text-muted-foreground" />
+            </div>
+            <div>
+              <p className="text-sm font-medium">Add your business</p>
+              <p className="text-sm text-muted-foreground">
+                Provide your business details for KYC verification.
+              </p>
+            </div>
+          </div>
+          <RiArrowRightSLine className="size-4 text-muted-foreground shrink-0" />
+        </button>
+      </div>
     </div>
   )
 }

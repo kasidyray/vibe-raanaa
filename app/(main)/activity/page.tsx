@@ -887,9 +887,9 @@ function ActivityTableSkeleton({ rows = 12 }: { rows?: number }) {
         <Skeleton className="h-8 w-8 rounded-md" />
       </div>
 
-      {/* Table */}
-      <div className="overflow-hidden rounded-xl border">
-        <div className="flex items-center gap-4 border-b bg-muted/40 px-4 py-2.5">
+      {/* Table — bordered variant: no outer wrapper, no header bg */}
+      <div>
+        <div className="flex items-center gap-4 border-b px-4 py-2.5">
           <Skeleton className="h-3 w-20" />
           <Skeleton className="h-3 w-14 ml-4" />
           <Skeleton className="h-3 w-20 ml-4" />
@@ -897,8 +897,8 @@ function ActivityTableSkeleton({ rows = 12 }: { rows?: number }) {
           <Skeleton className="h-3 w-14 ml-4" />
           <Skeleton className="h-3 w-12 ml-auto" />
         </div>
-        {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 border-b px-4 py-3 last:border-b-0">
+        {Array.from({ length: rows }).map((_, i, arr) => (
+          <div key={i} className={cn("flex items-center gap-4 px-4 py-3", i < arr.length - 1 && "border-b")}>
             {/* Event: icon + name */}
             <div className="flex flex-1 items-center gap-2.5">
               <Skeleton className="size-7 shrink-0 rounded-md" />
