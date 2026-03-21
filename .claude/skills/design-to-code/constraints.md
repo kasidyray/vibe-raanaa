@@ -68,9 +68,23 @@ Every interactive page must handle all five states. Do not ship a page missing a
 |---|---|
 | **Empty** (no data yet) | `Empty` + `EmptyHeader` + `EmptyMedia` + `EmptyTitle` + `EmptyDescription` + `EmptyContent` with CTA |
 | **No results** (filters active) | Handled by `DataTable` `emptyMessage` prop — do not build custom |
-| **Loading** | `Skeleton` components matching the shape of the content |
+| **Loading** | `Skeleton` components matching the **exact shape** of the loaded content — see rules below |
 | **Error** | Inline `Alert` with retry action, or `Empty`-style with retry button |
 | **Success** | `toast.success()` from `sonner` — always fires after a mutation |
+
+### Loading skeleton rules
+
+These apply to every page and every step that fetches or simulates fetching data:
+
+- **Shape must match** — skeleton layout must mirror the real content: same number of rows, same approximate heights and widths. Never use a generic spinner or a single block.
+- **Simulate fetch on every page** — even pages with mock data must use `React.useEffect` + `setTimeout` to simulate a fetch delay, then render skeletons while `isLoading === true`.
+- **`app/(main)/` data pages** — skeleton rows should mirror table row height (`h-4` label + `h-9` input or `h-8` row). Match the column count of the real table.
+- **`app/(main)/` settings pages** — each `SettingsSection` card gets a skeleton header + N skeleton rows matching the actual rows in that section.
+- **`app/(flows)/` multi-step form pages** — the full `MultiStepLayout` shell renders immediately (header, sidebar, footer). Only the **main step content area** shows skeletons while step data loads. Use `StepSkeleton` from `components/multi-step-form/step-skeleton.tsx`.
+- **Sidebar in flows** — always render the sidebar immediately (step titles are known upfront). Never skeleton the sidebar.
+- **Footer in flows** — always render immediately with the next button disabled while step data is loading.
+- ❌ Never render a page's real content while `isLoading === true`
+- ❌ Never use `<Spinner />` as a full-page loading state — always use shape-matched skeletons
 
 ---
 

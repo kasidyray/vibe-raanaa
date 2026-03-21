@@ -22,6 +22,7 @@ import { StepFormSection } from "@/components/multi-step-form/step-form-section"
 import { StepFooter } from "@/components/multi-step-form/step-footer"
 import { CompletionState } from "@/components/multi-step-form/completion-state"
 import { useMultiStepForm } from "@/components/multi-step-form/use-multi-step-form"
+import { StepSkeleton } from "@/components/multi-step-form/step-skeleton"
 import type { StepConfig } from "@/components/multi-step-form/types"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -136,6 +137,17 @@ export default function InvitePage() {
   // Step 2: role
   const [selectedRole, setSelectedRole]     = React.useState<RoleId | "">("")
 
+  // Step-level loading — simulates fetching roles from an API on step 2 entry
+  const [isStepLoading, setIsStepLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    if (form.currentStepId === "role") {
+      setIsStepLoading(true)
+      const t = setTimeout(() => setIsStepLoading(false), 900)
+      return () => clearTimeout(t)
+    }
+  }, [form.currentStepId])
+
   // Step 1 validation
   const [errors, setErrors] = React.useState<Partial<Record<keyof InviteFormData, string>>>({})
 
@@ -215,11 +227,17 @@ export default function InvitePage() {
           onNext={handleNext}
           onCancel={() => router.push("/team")}
           isLoading={form.isSubmitting}
+          isNextDisabled={isStepLoading}
           submitLabel="Send invite"
           helperText={nextStep ? `Next: ${nextStep.title}` : undefined}
         />
       }
     >
+      {/* Step 2 shows a skeleton while roles are being "fetched" */}
+      {isStepLoading ? (
+        <StepSkeleton variant="cards" rows={3} />
+      ) : (
+      <>
       <StepHeader
         title={currentStep.title}
         description={currentStep.description}
@@ -456,6 +474,8 @@ export default function InvitePage() {
             You can revoke access at any time from the Team settings.
           </p>
         </>
+      )}
+      </>
       )}
     </MultiStepLayout>
   )

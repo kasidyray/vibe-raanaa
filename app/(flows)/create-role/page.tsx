@@ -19,6 +19,7 @@ import { StepFormSection } from "@/components/multi-step-form/step-form-section"
 import { StepFooter } from "@/components/multi-step-form/step-footer"
 import { CompletionState } from "@/components/multi-step-form/completion-state"
 import { useMultiStepForm } from "@/components/multi-step-form/use-multi-step-form"
+import { StepSkeleton } from "@/components/multi-step-form/step-skeleton"
 import type { StepConfig } from "@/components/multi-step-form/types"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -135,6 +136,17 @@ export default function CreateRolePage() {
   // Steps 2 & 3 — shared permission state
   const [selectedPerms, setSelectedPerms] = React.useState<Set<string>>(new Set())
 
+  // Step-level loading — simulates fetching permission definitions from an API
+  const [isStepLoading, setIsStepLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    if (form.currentStepId === "global" || form.currentStepId === "account") {
+      setIsStepLoading(true)
+      const t = setTimeout(() => setIsStepLoading(false), 800)
+      return () => clearTimeout(t)
+    }
+  }, [form.currentStepId])
+
   function togglePerm(id: string, checked: boolean) {
     setSelectedPerms(prev => {
       const next = new Set(prev)
@@ -213,11 +225,17 @@ export default function CreateRolePage() {
           onNext={handleNext}
           onCancel={() => router.push("/team")}
           isLoading={form.isSubmitting}
+          isNextDisabled={isStepLoading}
           submitLabel="Create role"
           helperText={nextStep ? `Next: ${nextStep.title}` : undefined}
         />
       }
     >
+      {/* Steps 2 & 3 show a skeleton while permissions are being "fetched" */}
+      {isStepLoading ? (
+        <StepSkeleton variant="toggles" rows={4} />
+      ) : (
+      <>
       <StepHeader
         title={currentStep.title}
         description={currentStep.description}
@@ -311,6 +329,8 @@ export default function CreateRolePage() {
             </div>
           </StepFormSection>
         </>
+      )}
+      </>
       )}
     </MultiStepLayout>
   )
