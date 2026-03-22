@@ -16,6 +16,7 @@ import { StepSidebar } from "@/components/multi-step-form/step-sidebar"
 import { StepHeader } from "@/components/multi-step-form/step-header"
 import { StepFormSection } from "@/components/multi-step-form/step-form-section"
 import { StepFooter } from "@/components/multi-step-form/step-footer"
+import { StepTransition } from "@/components/multi-step-form/step-transition"
 import { CompletionState } from "@/components/multi-step-form/completion-state"
 import { useMultiStepForm } from "@/components/multi-step-form/use-multi-step-form"
 import type { StepConfig } from "@/components/multi-step-form/types"
@@ -147,8 +148,7 @@ export default function BankSetupPage() {
     }
   }
 
-  const currentStep = STEPS[form.currentStepIndex]
-  const nextStep    = STEPS[form.currentStepIndex + 1]
+  const nextStep = STEPS[form.currentStepIndex + 1]
 
   function fieldError(field: string) {
     return errors[field] ? (
@@ -201,13 +201,9 @@ export default function BankSetupPage() {
         />
       }
     >
-      <StepHeader
-        title={currentStep.title}
-        description={currentStep.description}
-      />
-
       {/* ── Step 1: Account type ─────────────────────────────────────────────── */}
-      {form.currentStepId === "type" && (
+      <StepTransition index={0} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[0].title} description={STEPS[0].description} />
         <StepFormSection>
           <div className="flex flex-col gap-3">
             <AccountTypeCard
@@ -228,135 +224,133 @@ export default function BankSetupPage() {
             />
           </div>
         </StepFormSection>
-      )}
+      </StepTransition>
 
       {/* ── Step 2: Bank details ─────────────────────────────────────────────── */}
-      {form.currentStepId === "details" && (
-        <>
-          <StepFormSection title="Account holder">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-holder">Account holder name</Label>
-              <Input
-                id="bank-holder"
-                value={holderName}
-                onChange={e => setHolderName(e.target.value)}
-                placeholder={accountType === "business" ? "Acme Corporation Ltd" : "Ikedi Eze"}
-                aria-invalid={!!errors.holderName}
-              />
-              {fieldError("holderName")}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-name">Bank name</Label>
-              <Input
-                id="bank-name"
-                value={bankName}
-                onChange={e => setBankName(e.target.value)}
-                placeholder="First Bank of Nigeria"
-                aria-invalid={!!errors.bankName}
-              />
-              {fieldError("bankName")}
-            </div>
-          </StepFormSection>
-
-          <StepFormSection title="Account numbers">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-routing">Routing number</Label>
-              <Input
-                id="bank-routing"
-                value={routingNum}
-                onChange={e => setRoutingNum(e.target.value.replace(/\D/g, "").slice(0, 9))}
-                placeholder="9-digit routing number"
-                inputMode="numeric"
-                aria-invalid={!!errors.routingNum}
-              />
-              {fieldError("routingNum")}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-acct">Account number</Label>
-              <Input
-                id="bank-acct"
-                value={accountNum}
-                onChange={e => setAccountNum(e.target.value.replace(/\D/g, ""))}
-                placeholder="Enter account number"
-                inputMode="numeric"
-                aria-invalid={!!errors.accountNum}
-              />
-              {fieldError("accountNum")}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-confirm">Confirm account number</Label>
-              <Input
-                id="bank-confirm"
-                value={confirmNum}
-                onChange={e => setConfirmNum(e.target.value.replace(/\D/g, ""))}
-                placeholder="Re-enter account number"
-                inputMode="numeric"
-                aria-invalid={!!errors.confirmNum}
-              />
-              {fieldError("confirmNum")}
-            </div>
-          </StepFormSection>
-
-          <div className="flex items-start gap-2 rounded-xl border bg-info-lighter p-3">
-            <RiLockLine className="size-4 text-info shrink-0 mt-0.5" />
-            <p className="text-xs text-muted-foreground">
-              Your banking information is encrypted with 256-bit SSL and stored securely.
-              We never share your details with third parties.
-            </p>
+      <StepTransition index={1} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[1].title} description={STEPS[1].description} />
+        <StepFormSection title="Account holder">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-holder">Account holder name</Label>
+            <Input
+              id="bank-holder"
+              value={holderName}
+              onChange={e => setHolderName(e.target.value)}
+              placeholder={accountType === "business" ? "Acme Corporation Ltd" : "Ikedi Eze"}
+              aria-invalid={!!errors.holderName}
+            />
+            {fieldError("holderName")}
           </div>
-        </>
-      )}
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-name">Bank name</Label>
+            <Input
+              id="bank-name"
+              value={bankName}
+              onChange={e => setBankName(e.target.value)}
+              placeholder="First Bank of Nigeria"
+              aria-invalid={!!errors.bankName}
+            />
+            {fieldError("bankName")}
+          </div>
+        </StepFormSection>
+
+        <StepFormSection title="Account numbers">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-routing">Routing number</Label>
+            <Input
+              id="bank-routing"
+              value={routingNum}
+              onChange={e => setRoutingNum(e.target.value.replace(/\D/g, "").slice(0, 9))}
+              placeholder="9-digit routing number"
+              inputMode="numeric"
+              aria-invalid={!!errors.routingNum}
+            />
+            {fieldError("routingNum")}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-acct">Account number</Label>
+            <Input
+              id="bank-acct"
+              value={accountNum}
+              onChange={e => setAccountNum(e.target.value.replace(/\D/g, ""))}
+              placeholder="Enter account number"
+              inputMode="numeric"
+              aria-invalid={!!errors.accountNum}
+            />
+            {fieldError("accountNum")}
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-confirm">Confirm account number</Label>
+            <Input
+              id="bank-confirm"
+              value={confirmNum}
+              onChange={e => setConfirmNum(e.target.value.replace(/\D/g, ""))}
+              placeholder="Re-enter account number"
+              inputMode="numeric"
+              aria-invalid={!!errors.confirmNum}
+            />
+            {fieldError("confirmNum")}
+          </div>
+        </StepFormSection>
+
+        <div className="flex items-start gap-2 rounded-xl border bg-info-lighter p-3">
+          <RiLockLine className="size-4 text-info shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground">
+            Your banking information is encrypted with 256-bit SSL and stored securely.
+            We never share your details with third parties.
+          </p>
+        </div>
+      </StepTransition>
 
       {/* ── Step 3: Verify ──────────────────────────────────────────────────── */}
-      {form.currentStepId === "verify" && (
-        <>
-          <StepFormSection>
-            <div className="rounded-xl border bg-card p-5 flex flex-col gap-3">
-              <div className="flex items-start gap-3">
-                <RiBankLine className="size-5 text-muted-foreground shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium">Test deposit sent</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    We've sent a small test deposit of between ₦0.01 – ₦0.99 to your account ending
-                    in <span className="font-mono font-medium">••••{accountNum.slice(-4) || "0000"}</span>.
-                    Check your bank statement and enter the exact amount below.
-                  </p>
-                </div>
+      <StepTransition index={2} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[2].title} description={STEPS[2].description} />
+        <StepFormSection>
+          <div className="rounded-xl border bg-card p-5 flex flex-col gap-3">
+            <div className="flex items-start gap-3">
+              <RiBankLine className="size-5 text-muted-foreground shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium">Test deposit sent</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  We've sent a small test deposit of between ₦0.01 – ₦0.99 to your account ending
+                  in <span className="font-mono font-medium">••••{accountNum.slice(-4) || "0000"}</span>.
+                  Check your bank statement and enter the exact amount below.
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="bank-verify">Deposit amount (₦)</Label>
-              <Input
-                id="bank-verify"
-                value={verifyAmt}
-                onChange={e => setVerifyAmt(e.target.value)}
-                placeholder="e.g. 0.37"
-                inputMode="decimal"
-                aria-invalid={!!errors.verifyAmt}
-              />
-              {fieldError("verifyAmt")}
-              <p className="text-xs text-muted-foreground">
-                The deposit may take 1–2 business days to appear. You can also{" "}
-                <button
-                  type="button"
-                  className="text-primary underline underline-offset-2"
-                  onClick={() => { router.push("/settings/bank-account"); toast.info("We'll remind you to verify later.") }}
-                >
-                  verify later
-                </button>.
-              </p>
-            </div>
-          </StepFormSection>
-
-          <div className="flex items-start gap-2 rounded-xl border p-3">
-            <RiInformationLine className="size-4 text-muted-foreground shrink-0 mt-0.5" />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="bank-verify">Deposit amount (₦)</Label>
+            <Input
+              id="bank-verify"
+              value={verifyAmt}
+              onChange={e => setVerifyAmt(e.target.value)}
+              placeholder="e.g. 0.37"
+              inputMode="decimal"
+              aria-invalid={!!errors.verifyAmt}
+            />
+            {fieldError("verifyAmt")}
             <p className="text-xs text-muted-foreground">
-              You have 7 days to verify this account. Unverified accounts cannot be used to receive transfers.
+              The deposit may take 1–2 business days to appear. You can also{" "}
+              <button
+                type="button"
+                className="text-primary underline underline-offset-2"
+                onClick={() => { router.push("/settings/bank-account"); toast.info("We'll remind you to verify later.") }}
+              >
+                verify later
+              </button>.
             </p>
           </div>
-        </>
-      )}
+        </StepFormSection>
+
+        <div className="flex items-start gap-2 rounded-xl border p-3">
+          <RiInformationLine className="size-4 text-muted-foreground shrink-0 mt-0.5" />
+          <p className="text-xs text-muted-foreground">
+            You have 7 days to verify this account. Unverified accounts cannot be used to receive transfers.
+          </p>
+        </div>
+      </StepTransition>
     </MultiStepLayout>
   )
 }

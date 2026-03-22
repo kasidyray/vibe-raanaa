@@ -55,13 +55,13 @@ export function StepFooter({
       {/* Left: back or cancel */}
       <div className="flex items-center gap-1">
         {!isFirstStep && onBack && (
-          <Button variant="ghost" size="sm" onClick={onBack} type="button">
+          <Button variant="secondary" size="lg" onClick={onBack} type="button">
             <RiArrowLeftSLine />
             {backLabel}
           </Button>
         )}
         {isFirstStep && onCancel && (
-          <Button variant="ghost" size="sm" onClick={onCancel} type="button">
+          <Button variant="secondary" size="lg" onClick={onCancel} type="button">
             Cancel
           </Button>
         )}

@@ -8,6 +8,7 @@ import { StepSidebar } from "@/components/multi-step-form/step-sidebar"
 import { StepHeader } from "@/components/multi-step-form/step-header"
 import { StepFormSection } from "@/components/multi-step-form/step-form-section"
 import { StepFooter } from "@/components/multi-step-form/step-footer"
+import { StepTransition } from "@/components/multi-step-form/step-transition"
 import { CompletionState } from "@/components/multi-step-form/completion-state"
 import { useMultiStepForm } from "@/components/multi-step-form/use-multi-step-form"
 import type { StepConfig } from "@/components/multi-step-form/types"
@@ -144,8 +145,7 @@ export default function KycPage() {
     }
   }
 
-  const currentStep = STEPS[form.currentStepIndex]
-  const nextStep    = STEPS[form.currentStepIndex + 1]
+  const nextStep = STEPS[form.currentStepIndex + 1]
 
   function fieldError(field: string) {
     return errors[field] ? (
@@ -197,64 +197,59 @@ export default function KycPage() {
         />
       }
     >
-      <StepHeader
-        title={currentStep.title}
-        description={currentStep.description}
-      />
-
       {/* ── Step 1: Personal details ─────────────────────────────────────────── */}
-      {form.currentStepId === "personal" && (
-        <>
-          <StepFormSection
-            title="Your personal details"
-            description="Please provide your details exactly as printed on a government-issued ID."
-          >
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="kyc-first">Legal first name</Label>
-                <Input id="kyc-first" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Alex" aria-invalid={!!errors.firstName} />
-                {fieldError("firstName")}
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="kyc-middle">
-                  Middle name
-                  <span className="ml-1 text-muted-foreground font-normal">Optional</span>
-                </Label>
-                <Input id="kyc-middle" value={middleName} onChange={e => setMiddleName(e.target.value)} placeholder="J." />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="kyc-last">Legal last name</Label>
-                <Input id="kyc-last" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Smith" aria-invalid={!!errors.lastName} />
-                {fieldError("lastName")}
-              </div>
-            </div>
-
+      <StepTransition index={0} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[0].title} description={STEPS[0].description} />
+        <StepFormSection
+          title="Your personal details"
+          description="Please provide your details exactly as printed on a government-issued ID."
+        >
+          <div className="grid grid-cols-3 gap-3">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="kyc-dob">Date of birth</Label>
-              <Input id="kyc-dob" type="date" value={dob} onChange={e => setDob(e.target.value)} aria-invalid={!!errors.dob} />
-              {fieldError("dob")}
+              <Label htmlFor="kyc-first">Legal first name</Label>
+              <Input id="kyc-first" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Alex" aria-invalid={!!errors.firstName} />
+              {fieldError("firstName")}
             </div>
-
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="kyc-nationality">Nationality</Label>
-              <Select value={nationality} onValueChange={v => setNationality(v ?? "")}>
-                <SelectTrigger id="kyc-nationality" aria-invalid={!!errors.nationality}>
-                  <SelectValue placeholder="Select nationality" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {NATIONALITIES.map(n => <SelectItem key={n} value={n}>{n}</SelectItem>)}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {fieldError("nationality")}
+              <Label htmlFor="kyc-middle">
+                Middle name
+                <span className="ml-1 text-muted-foreground font-normal">Optional</span>
+              </Label>
+              <Input id="kyc-middle" value={middleName} onChange={e => setMiddleName(e.target.value)} placeholder="J." />
             </div>
-          </StepFormSection>
-        </>
-      )}
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="kyc-last">Legal last name</Label>
+              <Input id="kyc-last" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Smith" aria-invalid={!!errors.lastName} />
+              {fieldError("lastName")}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="kyc-dob">Date of birth</Label>
+            <Input id="kyc-dob" type="date" value={dob} onChange={e => setDob(e.target.value)} aria-invalid={!!errors.dob} />
+            {fieldError("dob")}
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="kyc-nationality">Nationality</Label>
+            <Select value={nationality} onValueChange={v => setNationality(v ?? "")}>
+              <SelectTrigger id="kyc-nationality" aria-invalid={!!errors.nationality}>
+                <SelectValue placeholder="Select nationality" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {NATIONALITIES.map(n => <SelectItem key={n} value={n}>{n}</SelectItem>)}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            {fieldError("nationality")}
+          </div>
+        </StepFormSection>
+      </StepTransition>
 
       {/* ── Step 2: Residential address ──────────────────────────────────────── */}
-      {form.currentStepId === "address" && (
+      <StepTransition index={1} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[1].title} description={STEPS[1].description} />
         <StepFormSection
           title="Residential address"
           description="If no address is specified on your ID, provide your current residential address."
@@ -310,10 +305,11 @@ export default function KycPage() {
             </div>
           </div>
         </StepFormSection>
-      )}
+      </StepTransition>
 
       {/* ── Step 3: Business information ─────────────────────────────────────── */}
-      {form.currentStepId === "business" && (
+      <StepTransition index={2} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[2].title} description={STEPS[2].description} />
         <StepFormSection
           title="Business details"
           description="This information is used to verify your business for compliance purposes."
@@ -363,46 +359,46 @@ export default function KycPage() {
             <Input id="kyc-regnum" value={bizRegNum} onChange={e => setBizRegNum(e.target.value)} placeholder="RC-1234567" />
           </div>
         </StepFormSection>
-      )}
+      </StepTransition>
 
       {/* ── Step 4: Review ───────────────────────────────────────────────────── */}
-      {form.currentStepId === "review" && (
-        <>
-          <ReviewSection title="Personal details">
-            <ReviewRow label="Full name" value={[firstName, middleName, lastName].filter(Boolean).join(" ")} />
-            <ReviewRow label="Date of birth" value={dob} />
-            <ReviewRow label="Nationality" value={nationality} />
-          </ReviewSection>
+      <StepTransition index={3} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[3].title} description={STEPS[3].description} />
 
-          <ReviewSection title="Residential address">
-            <ReviewRow label="Country" value={country} />
-            <ReviewRow label="Address" value={[address1, address2].filter(Boolean).join(", ")} />
-            <ReviewRow label="City" value={city} />
-            <ReviewRow label="State" value={state} />
-            <ReviewRow label="Postal code" value={postal} />
-          </ReviewSection>
+        <ReviewSection title="Personal details">
+          <ReviewRow label="Full name" value={[firstName, middleName, lastName].filter(Boolean).join(" ")} />
+          <ReviewRow label="Date of birth" value={dob} />
+          <ReviewRow label="Nationality" value={nationality} />
+        </ReviewSection>
 
-          <ReviewSection title="Business information">
-            <ReviewRow label="Business name" value={bizName} />
-            <ReviewRow label="Business type" value={bizType} />
-            <ReviewRow label="Industry" value={bizIndustry} />
-            <ReviewRow label="Registration no." value={bizRegNum} />
-          </ReviewSection>
+        <ReviewSection title="Residential address">
+          <ReviewRow label="Country" value={country} />
+          <ReviewRow label="Address" value={[address1, address2].filter(Boolean).join(", ")} />
+          <ReviewRow label="City" value={city} />
+          <ReviewRow label="State" value={state} />
+          <ReviewRow label="Postal code" value={postal} />
+        </ReviewSection>
 
-          <div className="flex items-start gap-2.5">
-            <Checkbox
-              id="kyc-certify"
-              checked={certify}
-              onCheckedChange={v => setCertify(!!v)}
-              aria-label="Certify information is accurate"
-            />
-            <Label htmlFor="kyc-certify" className="text-sm leading-relaxed cursor-pointer">
-              I certify that I have provided accurate and complete information, and that all details
-              match my government-issued identity documents.
-            </Label>
-          </div>
-        </>
-      )}
+        <ReviewSection title="Business information">
+          <ReviewRow label="Business name" value={bizName} />
+          <ReviewRow label="Business type" value={bizType} />
+          <ReviewRow label="Industry" value={bizIndustry} />
+          <ReviewRow label="Registration no." value={bizRegNum} />
+        </ReviewSection>
+
+        <div className="flex items-start gap-2.5">
+          <Checkbox
+            id="kyc-certify"
+            checked={certify}
+            onCheckedChange={v => setCertify(!!v)}
+            aria-label="Certify information is accurate"
+          />
+          <Label htmlFor="kyc-certify" className="text-sm leading-relaxed cursor-pointer">
+            I certify that I have provided accurate and complete information, and that all details
+            match my government-issued identity documents.
+          </Label>
+        </div>
+      </StepTransition>
     </MultiStepLayout>
   )
 }

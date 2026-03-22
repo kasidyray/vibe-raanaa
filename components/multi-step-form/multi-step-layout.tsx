@@ -14,7 +14,7 @@ type MultiStepLayoutProps = {
   // Optional step indicator shown in header ("Step 2 of 5")
   stepIndicator?: React.ReactNode
 
-  // Top progress bar — pass progress 0-100
+  // Progress bar — shown in footer above Back/Next buttons (0-100)
   showProgressBar?: boolean
   progress?: number
 
@@ -24,7 +24,7 @@ type MultiStepLayoutProps = {
   // Main step content
   children: React.ReactNode
 
-  // Sticky footer (StepFooter)
+  // Footer (StepFooter) — rendered only in the content column, not under sidebar
   footer?: React.ReactNode
 
   className?: string
@@ -77,8 +77,8 @@ export function MultiStepLayout({
           )}
           {onClose && (
             <Button
-              variant="ghost"
-              size="icon-sm"
+              variant="outline"
+              size="icon-lg"
               onClick={onClose}
               aria-label="Exit flow"
             >
@@ -87,21 +87,6 @@ export function MultiStepLayout({
           )}
         </div>
       </header>
-
-      {/* ── Progress bar ───────────────────────────────────────── */}
-      {showProgressBar && (
-        <div className="h-0.5 bg-muted shrink-0">
-          {/* width is a dynamic calculated value — inline style exception */}
-          <div
-            className="h-full bg-primary transition-all duration-500 ease-out"
-            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
-      )}
 
       {/* ── Body ───────────────────────────────────────────────── */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
@@ -112,20 +97,37 @@ export function MultiStepLayout({
           </aside>
         )}
 
-        {/* Main content — scrollable */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-2xl px-6 py-10 flex flex-col gap-8">
+        {/* Content column — main + footer stacked so footer only spans this area */}
+        <div className="flex flex-1 flex-col min-h-0 min-w-0">
+          {/* Main content — relative + overflow-hidden so StepTransition panels
+              can stack as absolute inset-0 children and animate between each other */}
+          <main className="flex-1 relative overflow-hidden">
             {children}
-          </div>
-        </main>
-      </div>
+          </main>
 
-      {/* ── Footer ─────────────────────────────────────────────── */}
-      {footer && (
-        <footer className="border-t h-16 px-6 flex items-center shrink-0 bg-background">
-          {footer}
-        </footer>
-      )}
+          {/* ── Footer — only in content column, not under sidebar ── */}
+          {footer && (
+            <div className="shrink-0 border-t bg-background">
+              {/* Progress bar at top of footer */}
+              {showProgressBar && (
+                <div className="h-0.5 bg-muted relative overflow-hidden">
+                  <div
+                    className="absolute inset-y-0 left-0 bg-primary transition-all duration-500 ease-out"
+                    style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                    role="progressbar"
+                    aria-valuenow={progress}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                  />
+                </div>
+              )}
+              <div className="h-16 px-6 flex items-center">
+                {footer}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

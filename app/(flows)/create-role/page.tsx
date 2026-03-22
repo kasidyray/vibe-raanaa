@@ -17,6 +17,7 @@ import { StepSidebar } from "@/components/multi-step-form/step-sidebar"
 import { StepHeader } from "@/components/multi-step-form/step-header"
 import { StepFormSection } from "@/components/multi-step-form/step-form-section"
 import { StepFooter } from "@/components/multi-step-form/step-footer"
+import { StepTransition } from "@/components/multi-step-form/step-transition"
 import { CompletionState } from "@/components/multi-step-form/completion-state"
 import { useMultiStepForm } from "@/components/multi-step-form/use-multi-step-form"
 import { StepSkeleton } from "@/components/multi-step-form/step-skeleton"
@@ -180,7 +181,6 @@ export default function CreateRolePage() {
     }
   }
 
-  const currentStep = STEPS[form.currentStepIndex]
   const nextStep    = STEPS[form.currentStepIndex + 1]
   const globalPerms  = PERMISSIONS.filter(p => p.group === "global")
   const accountPerms = PERMISSIONS.filter(p => p.group === "account")
@@ -231,18 +231,9 @@ export default function CreateRolePage() {
         />
       }
     >
-      {/* Steps 2 & 3 show a skeleton while permissions are being "fetched" */}
-      {isStepLoading ? (
-        <StepSkeleton variant="toggles" rows={4} />
-      ) : (
-      <>
-      <StepHeader
-        title={currentStep.title}
-        description={currentStep.description}
-      />
-
       {/* ── Step 1: Role details ─────────────────────────────────────────────── */}
-      {form.currentStepId === "details" && (
+      <StepTransition index={0} currentIndex={form.currentStepIndex}>
+        <StepHeader title={STEPS[0].title} description={STEPS[0].description} />
         <StepFormSection>
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="role-name">Role name</Label>
@@ -270,68 +261,74 @@ export default function CreateRolePage() {
             />
           </div>
         </StepFormSection>
-      )}
+      </StepTransition>
 
       {/* ── Step 2: Global permissions ───────────────────────────────────────── */}
-      {form.currentStepId === "global" && (
-        <StepFormSection>
-          <div className="flex flex-col gap-3">
-            {globalPerms.map(perm => (
-              <PermissionToggle
-                key={perm.id}
-                perm={perm}
-                checked={selectedPerms.has(perm.id)}
-                onChange={checked => togglePerm(perm.id, checked)}
-              />
-            ))}
-          </div>
-          {selectedPerms.size === 0 && (
-            <p className="text-xs text-muted-foreground">
-              No permissions selected yet. This role will have read-only access by default.
-            </p>
-          )}
-        </StepFormSection>
-      )}
+      <StepTransition index={1} currentIndex={form.currentStepIndex}>
+        {isStepLoading ? <StepSkeleton variant="toggles" rows={4} /> : (
+          <>
+            <StepHeader title={STEPS[1].title} description={STEPS[1].description} />
+            <StepFormSection>
+              <div className="flex flex-col gap-3">
+                {globalPerms.map(perm => (
+                  <PermissionToggle
+                    key={perm.id}
+                    perm={perm}
+                    checked={selectedPerms.has(perm.id)}
+                    onChange={checked => togglePerm(perm.id, checked)}
+                  />
+                ))}
+              </div>
+              {selectedPerms.size === 0 && (
+                <p className="text-xs text-muted-foreground">
+                  No permissions selected yet. This role will have read-only access by default.
+                </p>
+              )}
+            </StepFormSection>
+          </>
+        )}
+      </StepTransition>
 
       {/* ── Step 3: Account permissions ─────────────────────────────────────── */}
-      {form.currentStepId === "account" && (
-        <>
-          <StepFormSection>
-            <div className="flex flex-col gap-3">
-              {accountPerms.map(perm => (
-                <PermissionToggle
-                  key={perm.id}
-                  perm={perm}
-                  checked={selectedPerms.has(perm.id)}
-                  onChange={checked => togglePerm(perm.id, checked)}
-                />
-              ))}
-            </div>
-          </StepFormSection>
-
-          <Separator />
-
-          {/* Summary ahead of creation */}
-          <StepFormSection title="Role summary">
-            <div className="rounded-xl border bg-card p-4 flex flex-col gap-4">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Role name</p>
-                <p className="text-sm font-medium">{roleName || "—"}</p>
-                {roleDesc && <p className="text-sm text-muted-foreground mt-0.5">{roleDesc}</p>}
+      <StepTransition index={2} currentIndex={form.currentStepIndex}>
+        {isStepLoading ? <StepSkeleton variant="toggles" rows={4} /> : (
+          <>
+            <StepHeader title={STEPS[2].title} description={STEPS[2].description} />
+            <StepFormSection>
+              <div className="flex flex-col gap-3">
+                {accountPerms.map(perm => (
+                  <PermissionToggle
+                    key={perm.id}
+                    perm={perm}
+                    checked={selectedPerms.has(perm.id)}
+                    onChange={checked => togglePerm(perm.id, checked)}
+                  />
+                ))}
               </div>
+            </StepFormSection>
 
-              <Separator />
+            <Separator />
 
-              <div>
-                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Selected permissions</p>
-                <ReviewPermissionList ids={selectedPerms} perms={PERMISSIONS} />
+            {/* Summary ahead of creation */}
+            <StepFormSection title="Role summary">
+              <div className="rounded-xl border bg-card p-4 flex flex-col gap-4">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-1">Role name</p>
+                  <p className="text-sm font-medium">{roleName || "—"}</p>
+                  {roleDesc && <p className="text-sm text-muted-foreground mt-0.5">{roleDesc}</p>}
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Selected permissions</p>
+                  <ReviewPermissionList ids={selectedPerms} perms={PERMISSIONS} />
+                </div>
               </div>
-            </div>
-          </StepFormSection>
-        </>
-      )}
-      </>
-      )}
+            </StepFormSection>
+          </>
+        )}
+      </StepTransition>
     </MultiStepLayout>
   )
 }
