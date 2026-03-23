@@ -583,7 +583,7 @@ function CreateLeadFlow({
                 <span className="ml-1.5 text-xs font-normal text-muted-foreground">Optional</span>
               </Label>
               <Select value={industry} onValueChange={v => setIndustry(v ?? "")}>
-                <SelectTrigger id="lead-industry">
+                <SelectTrigger id="lead-industry" className="w-full">
                   <SelectValue placeholder="Select industry" />
                 </SelectTrigger>
                 <SelectContent>
@@ -602,7 +602,7 @@ function CreateLeadFlow({
                 <span className="ml-1.5 text-xs font-normal text-muted-foreground">Optional</span>
               </Label>
               <Select value={companySize} onValueChange={v => setCompanySize(v ?? "")}>
-                <SelectTrigger id="lead-size">
+                <SelectTrigger id="lead-size" className="w-full">
                   <SelectValue placeholder="Select size" />
                 </SelectTrigger>
                 <SelectContent>
@@ -635,7 +635,7 @@ function CreateLeadFlow({
                 <span className="ml-1.5 text-xs font-normal text-muted-foreground">Optional</span>
               </Label>
               <Select value={budget} onValueChange={v => setBudget(v ?? "")}>
-                <SelectTrigger id="lead-budget">
+                <SelectTrigger id="lead-budget" className="w-full">
                   <SelectValue placeholder="Select range" />
                 </SelectTrigger>
                 <SelectContent>
@@ -654,7 +654,7 @@ function CreateLeadFlow({
                 <span className="ml-1.5 text-xs font-normal text-muted-foreground">Optional</span>
               </Label>
               <Select value={timeline} onValueChange={v => setTimeline(v ?? "")}>
-                <SelectTrigger id="lead-timeline">
+                <SelectTrigger id="lead-timeline" className="w-full">
                   <SelectValue placeholder="Select timeline" />
                 </SelectTrigger>
                 <SelectContent>
@@ -814,7 +814,7 @@ function CreateLeadFlow({
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="lead-stage">Stage</Label>
                   <Select value={stage} onValueChange={v => setStage(v ?? "")}>
-                    <SelectTrigger id="lead-stage">
+                    <SelectTrigger id="lead-stage" className="w-full">
                       <SelectValue placeholder="Select stage" />
                     </SelectTrigger>
                     <SelectContent>
@@ -830,7 +830,7 @@ function CreateLeadFlow({
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="lead-priority">Priority</Label>
                   <Select value={priority} onValueChange={v => setPriority(v as PriorityLevel)}>
-                    <SelectTrigger id="lead-priority">
+                    <SelectTrigger id="lead-priority" className="w-full">
                       <SelectValue placeholder="Select priority" />
                     </SelectTrigger>
                     <SelectContent>
