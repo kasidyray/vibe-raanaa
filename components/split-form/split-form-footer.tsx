@@ -45,7 +45,7 @@ export function SplitFormFooter({
   isNextDisabled = false,
 }: SplitFormFooterProps) {
   return (
-    <div className="flex items-center justify-between px-8 md:px-14 h-16">
+    <div className="flex items-center justify-between px-4 h-16">
       {/* ── Left: Back or Cancel ─────────────────────────────────────────── */}
       <div>
         {!isFirst && onBack && (

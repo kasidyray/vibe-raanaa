@@ -1,120 +1,60 @@
 "use client"
 
 import * as React from "react"
-import { RiCheckLine, RiAlertLine, RiLockLine } from "@remixicon/react"
 import { cn } from "@/lib/utils"
-import type { SplitFormStatus, SplitFormNavGroup } from "./types"
+import type { StepConfig, StepStatus } from "@/lib/steps"
+import { StepIndicator } from "@/components/ui/step-indicator"
 
 type SplitFormNavProps = {
-  groups: SplitFormNavGroup[]
+  steps: StepConfig[]
   currentStepId: string
-  /** Map step id → status. Wrap your hook's status(index) with an id→index lookup. */
-  getStatus: (stepId: string) => SplitFormStatus
-  /** Called when a completed step is clicked for back-navigation. */
+  /** Get the status for any navigable step by its ID. */
+  getStatus: (stepId: string) => StepStatus
+  /** Called when a step is clicked for navigation. */
   onStepClick?: (stepId: string) => void
-}
-
-// ─── Right-side status badges ─────────────────────────────────────────────────
-
-function StepBadge({ status }: { status: SplitFormStatus }) {
-  if (status === "completed") {
-    return (
-      <span className="w-5 h-5 rounded-full bg-foreground flex items-center justify-center shrink-0">
-        <RiCheckLine className="size-3 text-background" />
-      </span>
-    )
-  }
-  if (status === "error") {
-    return (
-      <span className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center shrink-0">
-        <RiAlertLine className="size-3 text-destructive-foreground" />
-      </span>
-    )
-  }
-  // upcoming — lock icon in muted circle
-  return (
-    <span className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center shrink-0">
-      <RiLockLine className="size-2.5 text-muted-foreground" />
-    </span>
-  )
-}
-
-function GroupBadge({
-  items,
-  getStatus,
-}: {
-  items: SplitFormNavGroup["items"]
-  getStatus: (id: string) => SplitFormStatus
-}) {
-  const statuses   = items.map(i => getStatus(i.id))
-  const allDone    = statuses.every(s => s === "completed")
-  const hasError   = statuses.some(s => s === "error")
-  const anyStarted = statuses.some(s => s === "completed" || s === "current")
-
-  if (allDone) {
-    return (
-      <span className="w-5 h-5 rounded-full bg-foreground flex items-center justify-center shrink-0">
-        <RiCheckLine className="size-3 text-background" />
-      </span>
-    )
-  }
-  if (hasError) {
-    return (
-      <span className="w-5 h-5 rounded-full bg-destructive flex items-center justify-center shrink-0">
-        <RiAlertLine className="size-3 text-destructive-foreground" />
-      </span>
-    )
-  }
-  // Not started or in-progress — lock
-  return (
-    <span className="w-5 h-5 rounded-full bg-foreground/10 flex items-center justify-center shrink-0">
-      <RiLockLine className={cn("size-2.5", anyStarted ? "text-primary" : "text-muted-foreground")} />
-    </span>
-  )
+  /**
+   * "linear" (default) — only completed steps are clickable for back-navigation.
+   * "free"             — any step is clickable regardless of status.
+   */
+  mode?: "linear" | "free"
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-/**
- * Hierarchical collapsible nav for SplitFormLayout's sidebar.
- *
- * Visual pattern (Airbnb style):
- *   − Group title                            [group badge]
- *       Step title                           [step badge]
- *       Step title ◀ outlined border row
- *   + Group title (collapsed)                [group badge]
- *
- * - "−" = expanded group, "+" = collapsed group
- * - Status badges are always on the RIGHT
- * - Current step shows an outlined border row, no right badge
- * - Group containing the current step auto-opens on step change
- */
 export function SplitFormNav({
-  groups,
+  steps,
   currentStepId,
   getStatus,
   onStepClick,
+  mode = "linear",
 }: SplitFormNavProps) {
-  const currentGroupId = React.useMemo(
-    () => groups.find(g => g.items.some(i => i.id === currentStepId))?.id,
-    [groups, currentStepId],
+  // Track which grouped steps are open
+  const currentTopId = React.useMemo(
+    () => steps.find(s =>
+      s.subSteps
+        ? s.subSteps.some(sub => sub.id === currentStepId)
+        : s.id === currentStepId
+    )?.id,
+    [steps, currentStepId],
   )
 
   const [open, setOpen] = React.useState<Set<string>>(() => {
     const s = new Set<string>()
-    groups.forEach(g => { if (g.defaultOpen || g.id === currentGroupId) s.add(g.id) })
+    steps.forEach(step => {
+      if (step.subSteps && step.id === currentTopId) s.add(step.id)
+    })
     return s
   })
 
   React.useEffect(() => {
-    if (!currentGroupId) return
+    if (!currentTopId) return
     setOpen(prev => {
-      if (prev.has(currentGroupId)) return prev
+      if (prev.has(currentTopId)) return prev
       const next = new Set(prev)
-      next.add(currentGroupId)
+      next.add(currentTopId)
       return next
     })
-  }, [currentGroupId])
+  }, [currentTopId])
 
   function toggle(id: string) {
     setOpen(prev => {
@@ -125,56 +65,118 @@ export function SplitFormNav({
   }
 
   return (
-    <nav className="flex flex-col" aria-label="Form sections">
-      {groups.map(group => {
-        const isOpen = open.has(group.id)
+    <nav className="flex flex-col gap-4" aria-label="Form sections">
+      {steps.map((step, i) => {
+        const number = i + 1
+
+        // ── Flat step (no subSteps) ──────────────────────────────────────────
+        if (!step.subSteps || step.subSteps.length === 0) {
+          const s         = getStatus(step.id)
+          const isCurrent = step.id === currentStepId
+          const clickable = !!onStepClick && !isCurrent && (mode === "free" || s === "completed" || s === "error")
+
+          return (
+            <div key={step.id}>
+              <button
+                type="button"
+                onClick={clickable ? () => onStepClick!(step.id) : undefined}
+                disabled={!clickable && !isCurrent}
+                aria-current={isCurrent ? "step" : undefined}
+                className={cn(
+                  "flex items-center gap-3 w-full px-2 py-2.5 rounded-full text-left transition-colors",
+                  isCurrent  && "bg-accent/70 cursor-default",
+                  clickable  && "cursor-pointer hover:bg-accent",
+                )}
+              >
+                <StepIndicator status={s} number={number} />
+                <span className={cn(
+                  "text-sm flex-1 min-w-0 truncate transition-colors",
+                  isCurrent              && "font-medium text-foreground",
+                  !isCurrent && s === "completed" && "font-medium text-muted-foreground",
+                  !isCurrent && s === "upcoming"  && "font-medium text-muted-foreground",
+                  s === "error"          && "font-medium text-destructive",
+                )}>
+                  {step.title}
+                </span>
+                {step.optional && !isCurrent && (
+                  <span className="text-xs text-muted-foreground/50 shrink-0">Optional</span>
+                )}
+              </button>
+            </div>
+          )
+        }
+
+        // ── Grouped step (has subSteps) ──────────────────────────────────────
+        const isOpen     = open.has(step.id)
+        const statuses   = step.subSteps.map(sub => getStatus(sub.id))
+        const groupStatus: StepStatus =
+          statuses.some(s => s === "error")      ? "error"     :
+          statuses.every(s => s === "completed") ? "completed" :
+          statuses.some(s => s === "current")    ? "current"   :
+          "upcoming"
 
         return (
-          <div key={group.id}>
-            {/* ── Group header ────────────────────────────────────────────── */}
+          <div key={step.id} className="relative">
+            {/* ── Group header ── */}
             <button
               type="button"
-              onClick={() => toggle(group.id)}
-              className="flex items-center gap-2 w-full px-2 py-2.5 rounded-lg text-left hover:bg-muted/60 transition-colors"
+              onClick={() => toggle(step.id)}
+              className="flex items-center gap-3 w-full px-2 py-2.5 rounded-full text-left hover:bg-accent transition-colors cursor-pointer"
             >
-              {/* Airbnb-style − / + toggle indicator */}
-              <span className="text-muted-foreground text-sm font-medium w-4 shrink-0 text-center select-none">
-                {isOpen ? "−" : "+"}
+              <StepIndicator status={groupStatus} number={number} />
+              <span className={cn(
+                "text-sm flex-1 min-w-0 truncate transition-colors",
+                groupStatus === "current"   && "font-medium text-muted-foreground",
+                groupStatus === "completed" && "font-medium text-muted-foreground",
+                groupStatus === "upcoming"  && "font-medium text-muted-foreground",
+                groupStatus === "error"     && "font-medium text-destructive",
+              )}>
+                {step.title}
               </span>
-              <span className="text-sm font-medium flex-1 min-w-0 truncate">
-                {group.title}
-              </span>
-              <GroupBadge items={group.items} getStatus={getStatus} />
             </button>
 
-            {/* ── Step items ────────────────────────────────────────────────── */}
+            {/* Connecting line — from bottom of group circle to top of last sub-step dot */}
             {isOpen && (
-              <div className="flex flex-col gap-0.5 pl-6 mb-1">
-                {group.items.map(item => {
-                  const s         = getStatus(item.id)
-                  const isCurrent = item.id === currentStepId
-                  const clickable = s === "completed" && !!onStepClick
+              <div className="absolute left-[17px] top-[30px] bottom-[26px] w-px bg-border" />
+            )}
+
+            {/* ── Sub-step items ── */}
+            {isOpen && (
+              <div className="relative flex flex-col mb-1">
+                {step.subSteps.map(sub => {
+                  const s         = getStatus(sub.id)
+                  const isCurrent = sub.id === currentStepId
+                  const clickable = !!onStepClick && !isCurrent && (mode === "free" || s === "completed" || s === "error")
 
                   return (
                     <button
-                      key={item.id}
+                      key={sub.id}
                       type="button"
-                      onClick={clickable ? () => onStepClick!(item.id) : undefined}
+                      onClick={clickable ? () => onStepClick!(sub.id) : undefined}
                       disabled={!clickable && !isCurrent}
                       aria-current={isCurrent ? "step" : undefined}
                       className={cn(
-                        "flex items-center gap-2 w-full px-2 py-2 rounded-lg text-left text-sm transition-colors",
-                        isCurrent && "border border-foreground/25 bg-background font-medium text-foreground cursor-default",
-                        !isCurrent && s === "completed" && "text-muted-foreground cursor-pointer hover:bg-muted/50",
-                        !isCurrent && s === "error"     && "text-destructive/70 cursor-default",
-                        !isCurrent && s === "upcoming"  && "text-muted-foreground/50 cursor-default",
+                        "relative flex items-center gap-3 w-full pr-2 py-1.5 rounded-full text-left text-sm transition-colors",
+                        isCurrent  && "bg-accent/70 font-medium text-foreground cursor-default",
+                        !isCurrent && s === "error"    && "text-destructive/70",
+                        clickable  && "cursor-pointer hover:bg-accent",
                       )}
                     >
-                      <span className="flex-1 min-w-0 truncate">{item.title}</span>
-                      {item.optional && !isCurrent && (
-                        <span className="text-xs text-muted-foreground/50 shrink-0 mr-1">Optional</span>
+                      <span className="relative z-10 ml-2 w-5 flex items-center justify-center shrink-0">
+                        {s === "completed" ? (
+                          <span className="w-2 h-2 rounded-full bg-primary" />
+                        ) : s === "error" ? (
+                          <span className="w-2 h-2 rounded-full bg-destructive" />
+                        ) : isCurrent ? (
+                          <span className="w-2 h-2 rounded-full border border-primary bg-background" />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full border border-muted-foreground/30 bg-background" />
+                        )}
+                      </span>
+                      <span className="flex-1 min-w-0 truncate">{sub.title}</span>
+                      {sub.optional && !isCurrent && (
+                        <span className="text-xs text-muted-foreground/50 shrink-0">Optional</span>
                       )}
-                      {!isCurrent && <StepBadge status={s} />}
                     </button>
                   )
                 })}

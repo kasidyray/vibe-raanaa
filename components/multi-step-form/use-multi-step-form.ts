@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import type { StepStatus } from "./types"
+import type { StepConfig, StepStatus } from "@/lib/steps"
+import { flattenStepIds } from "@/lib/steps"
 
 export type UseMultiStepFormReturn<T extends Record<string, unknown>> = {
   currentStepIndex: number
@@ -12,7 +13,7 @@ export type UseMultiStepFormReturn<T extends Record<string, unknown>> = {
   isSubmitting: boolean
   isComplete: boolean
   totalSteps: number
-  // 0-100 — progress across all steps, for the top progress bar
+  // 0-100 — progress across all navigable steps, for the progress bar
   progress: number
   goNext: () => void
   goBack: () => void
@@ -25,23 +26,34 @@ export type UseMultiStepFormReturn<T extends Record<string, unknown>> = {
   clearStepError: (index: number) => void
 }
 
+export { flattenStepIds } from "@/lib/steps"
+
 /**
  * Core state machine for any multi-step form.
  *
- * @param stepIds   - ordered list of step IDs (from your StepConfig array)
- * @param initialData - optional pre-populated form values
+ * Accepts either:
+ *   - StepConfig[]  — recommended; sub-steps are flattened automatically
+ *   - string[]      — backward-compatible; treated as flat steps
  *
  * Usage:
- *   const form = useMultiStepForm(STEPS.map(s => s.id))
- *   form.currentStepId  // which step to render
- *   form.goNext()       // advance + mark current as completed
- *   form.goBack()       // go back (preserves formData)
+ *   const form = useMultiStepForm(STEPS)
+ *   form.currentStepId        // which step/sub-step to render
+ *   form.goNext()             // advance + mark current as completed
+ *   form.goBack()             // go back (preserves formData)
  *   form.getStepStatus(index) // "current" | "completed" | "upcoming" | "error"
  */
 export function useMultiStepForm<T extends Record<string, unknown>>(
-  stepIds: string[],
+  steps: StepConfig[] | string[],
   initialData: Partial<T> = {}
 ): UseMultiStepFormReturn<T> {
+  // Normalise input to a flat ordered ID list
+  const stepIds = React.useMemo<string[]>(() => {
+    if (steps.length === 0) return []
+    return typeof steps[0] === "string"
+      ? (steps as string[])
+      : flattenStepIds(steps as StepConfig[])
+  }, [steps])
+
   const [currentStepIndex, setCurrentStepIndex] = React.useState(0)
   const [formData, setFormData] = React.useState<Partial<T>>(initialData)
   const [completedSteps, setCompletedSteps] = React.useState<Set<number>>(new Set())
@@ -52,9 +64,7 @@ export function useMultiStepForm<T extends Record<string, unknown>>(
   const totalSteps = stepIds.length
   const isFirstStep = currentStepIndex === 0
   const isLastStep = currentStepIndex === totalSteps - 1
-
-  // Progress: completing step N puts you 100% through N+1 steps out of total
-  const progress = Math.round(((currentStepIndex) / totalSteps) * 100)
+  const progress = Math.round((currentStepIndex / totalSteps) * 100)
 
   function goNext() {
     if (isLastStep) return
@@ -103,7 +113,7 @@ export function useMultiStepForm<T extends Record<string, unknown>>(
 
   return {
     currentStepIndex,
-    currentStepId: stepIds[currentStepIndex],
+    currentStepId: stepIds[currentStepIndex] ?? "",
     formData,
     isFirstStep,
     isLastStep,

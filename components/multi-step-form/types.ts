@@ -1,8 +1,2 @@
-export type StepStatus = "current" | "completed" | "upcoming" | "error"
-
-export type StepConfig = {
-  id: string
-  title: string
-  description?: string
-  optional?: boolean
-}
+// Re-exported from the shared lib so existing imports stay valid.
+export type { StepStatus, SubStepConfig, StepConfig } from "@/lib/steps"

@@ -25,13 +25,30 @@ import {
 } from "@/components/ui/select"
 
 // ─── Steps ────────────────────────────────────────────────────────────────────
+//
+// "Identity" is a parent step with two sub-steps.
+// "Business information" and "Review & submit" are flat steps.
+//
+// The hook flattens this to: ["personal", "address", "business", "review"]
+// — 4 navigable steps total.
 
 const STEPS: StepConfig[] = [
-  { id: "personal",  title: "Personal details",      description: "Provide your legal name and identity information." },
-  { id: "address",   title: "Residential address",   description: "Your address as printed on your identity documents." },
-  { id: "business",  title: "Business information",  description: "Tell us about your business." },
-  { id: "review",    title: "Review & submit",        description: "Check all details before submitting for verification." },
+  {
+    id: "identity",
+    title: "Identity",
+    subSteps: [
+      { id: "personal", title: "Personal details" },
+      { id: "address",  title: "Residential address" },
+    ],
+  },
+  { id: "business", title: "Business information" },
+  { id: "review",   title: "Review & submit" },
 ]
+
+// Flat step list for "Next: …" helper text
+const FLAT_STEPS = STEPS.flatMap(s =>
+  s.subSteps ? s.subSteps : [{ id: s.id, title: s.title }]
+)
 
 const NATIONALITIES = [
   "Nigerian", "Ghanaian", "Kenyan", "South African", "British", "American",
@@ -44,7 +61,7 @@ const COUNTRIES = [
 ]
 
 const BUSINESS_TYPES = ["Sole proprietor", "Partnership", "LLC", "Corporation", "Non-profit"]
-const INDUSTRIES = ["Technology", "Finance", "Healthcare", "Retail", "Education", "Media", "Manufacturing", "Other"]
+const INDUSTRIES     = ["Technology", "Finance", "Healthcare", "Retail", "Education", "Media", "Manufacturing", "Other"]
 
 // ─── Review row ───────────────────────────────────────────────────────────────
 
@@ -72,29 +89,31 @@ function ReviewSection({ title, children }: { title: string; children: React.Rea
 
 export default function KycPage() {
   const router = useRouter()
-  const form   = useMultiStepForm(STEPS.map(s => s.id))
+  const form   = useMultiStepForm(STEPS)
 
-  // Step 1: personal
-  const [firstName, setFirstName]   = React.useState("")
-  const [middleName, setMiddleName] = React.useState("")
-  const [lastName, setLastName]     = React.useState("")
-  const [dob, setDob]               = React.useState("")
+  // Sub-step 0: personal
+  const [firstName,   setFirstName]   = React.useState("")
+  const [middleName,  setMiddleName]  = React.useState("")
+  const [lastName,    setLastName]    = React.useState("")
+  const [dob,         setDob]         = React.useState("")
   const [nationality, setNationality] = React.useState("")
 
-  // Step 2: address
-  const [country, setCountry]       = React.useState("")
-  const [address1, setAddress1]     = React.useState("")
-  const [address2, setAddress2]     = React.useState("")
-  const [city, setCity]             = React.useState("")
-  const [state, setState]           = React.useState("")
-  const [postal, setPostal]         = React.useState("")
+  // Sub-step 1: address
+  const [country,  setCountry]  = React.useState("")
+  const [address1, setAddress1] = React.useState("")
+  const [address2, setAddress2] = React.useState("")
+  const [city,     setCity]     = React.useState("")
+  const [stateName, setStateName] = React.useState("")
+  const [postal,   setPostal]   = React.useState("")
 
-  // Step 3: business
-  const [bizName, setBizName]         = React.useState("")
-  const [bizType, setBizType]         = React.useState("")
+  // Flat step 2: business
+  const [bizName,     setBizName]     = React.useState("")
+  const [bizType,     setBizType]     = React.useState("")
   const [bizIndustry, setBizIndustry] = React.useState("")
-  const [bizRegNum, setBizRegNum]     = React.useState("")
-  const [certify, setCertify]         = React.useState(false)
+  const [bizRegNum,   setBizRegNum]   = React.useState("")
+
+  // Flat step 3: review
+  const [certify, setCertify] = React.useState(false)
 
   const [errors, setErrors] = React.useState<Record<string, string>>({})
 
@@ -102,22 +121,22 @@ export default function KycPage() {
     const e: Record<string, string> = {}
 
     if (form.currentStepId === "personal") {
-      if (!firstName.trim()) e.firstName = "First name is required"
-      if (!lastName.trim())  e.lastName  = "Last name is required"
-      if (!dob.trim())       e.dob       = "Date of birth is required"
+      if (!firstName.trim()) e.firstName   = "First name is required"
+      if (!lastName.trim())  e.lastName    = "Last name is required"
+      if (!dob.trim())       e.dob         = "Date of birth is required"
       if (!nationality)      e.nationality = "Nationality is required"
     }
 
     if (form.currentStepId === "address") {
-      if (!country)          e.country   = "Country is required"
-      if (!address1.trim())  e.address1  = "Address is required"
-      if (!city.trim())      e.city      = "City is required"
+      if (!country)         e.country  = "Country is required"
+      if (!address1.trim()) e.address1 = "Address is required"
+      if (!city.trim())     e.city     = "City is required"
     }
 
     if (form.currentStepId === "business") {
-      if (!bizName.trim())  e.bizName  = "Business name is required"
-      if (!bizType)         e.bizType  = "Business type is required"
-      if (!bizIndustry)     e.bizIndustry = "Industry is required"
+      if (!bizName.trim()) e.bizName    = "Business name is required"
+      if (!bizType)        e.bizType    = "Business type is required"
+      if (!bizIndustry)    e.bizIndustry = "Industry is required"
     }
 
     if (form.currentStepId === "review") {
@@ -145,15 +164,16 @@ export default function KycPage() {
     }
   }
 
-  const nextStep = STEPS[form.currentStepIndex + 1]
-
   function fieldError(field: string) {
-    return errors[field] ? (
-      <p className="text-xs text-destructive">{errors[field]}</p>
-    ) : null
+    return errors[field]
+      ? <p className="text-xs text-destructive">{errors[field]}</p>
+      : null
   }
 
+  const nextFlatStep = FLAT_STEPS[form.currentStepIndex + 1]
+
   // ── Completion ─────────────────────────────────────────────────────────────
+
   if (form.isComplete) {
     return (
       <MultiStepLayout
@@ -193,13 +213,16 @@ export default function KycPage() {
           onCancel={() => router.push("/settings/profile")}
           isLoading={form.isSubmitting}
           submitLabel="Submit for verification"
-          helperText={nextStep ? `Next: ${nextStep.title}` : undefined}
+          helperText={nextFlatStep ? `Next: ${nextFlatStep.title}` : undefined}
         />
       }
     >
-      {/* ── Step 1: Personal details ─────────────────────────────────────────── */}
+      {/* ── 0: Personal details ──────────────────────────────────────────────── */}
       <StepTransition index={0} currentIndex={form.currentStepIndex}>
-        <StepHeader title={STEPS[0].title} description={STEPS[0].description} />
+        <StepHeader
+          title="Personal details"
+          description="Provide your legal name and identity information."
+        />
         <StepFormSection
           title="Your personal details"
           description="Please provide your details exactly as printed on a government-issued ID."
@@ -247,9 +270,12 @@ export default function KycPage() {
         </StepFormSection>
       </StepTransition>
 
-      {/* ── Step 2: Residential address ──────────────────────────────────────── */}
+      {/* ── 1: Residential address ───────────────────────────────────────────── */}
       <StepTransition index={1} currentIndex={form.currentStepIndex}>
-        <StepHeader title={STEPS[1].title} description={STEPS[1].description} />
+        <StepHeader
+          title="Residential address"
+          description="Your address as printed on your identity documents."
+        />
         <StepFormSection
           title="Residential address"
           description="If no address is specified on your ID, provide your current residential address."
@@ -294,7 +320,7 @@ export default function KycPage() {
                 State / Province
                 <span className="ml-1 text-muted-foreground font-normal">Optional</span>
               </Label>
-              <Input id="kyc-state" value={state} onChange={e => setState(e.target.value)} placeholder="Lagos State" />
+              <Input id="kyc-state" value={stateName} onChange={e => setStateName(e.target.value)} placeholder="Lagos State" />
             </div>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="kyc-postal">
@@ -307,9 +333,12 @@ export default function KycPage() {
         </StepFormSection>
       </StepTransition>
 
-      {/* ── Step 3: Business information ─────────────────────────────────────── */}
+      {/* ── 2: Business information ──────────────────────────────────────────── */}
       <StepTransition index={2} currentIndex={form.currentStepIndex}>
-        <StepHeader title={STEPS[2].title} description={STEPS[2].description} />
+        <StepHeader
+          title="Business information"
+          description="Tell us about your business."
+        />
         <StepFormSection
           title="Business details"
           description="This information is used to verify your business for compliance purposes."
@@ -361,28 +390,31 @@ export default function KycPage() {
         </StepFormSection>
       </StepTransition>
 
-      {/* ── Step 4: Review ───────────────────────────────────────────────────── */}
+      {/* ── 3: Review & submit ───────────────────────────────────────────────── */}
       <StepTransition index={3} currentIndex={form.currentStepIndex}>
-        <StepHeader title={STEPS[3].title} description={STEPS[3].description} />
+        <StepHeader
+          title="Review & submit"
+          description="Check all details before submitting for verification."
+        />
 
         <ReviewSection title="Personal details">
-          <ReviewRow label="Full name" value={[firstName, middleName, lastName].filter(Boolean).join(" ")} />
-          <ReviewRow label="Date of birth" value={dob} />
-          <ReviewRow label="Nationality" value={nationality} />
+          <ReviewRow label="Full name"        value={[firstName, middleName, lastName].filter(Boolean).join(" ")} />
+          <ReviewRow label="Date of birth"    value={dob} />
+          <ReviewRow label="Nationality"      value={nationality} />
         </ReviewSection>
 
         <ReviewSection title="Residential address">
-          <ReviewRow label="Country" value={country} />
-          <ReviewRow label="Address" value={[address1, address2].filter(Boolean).join(", ")} />
-          <ReviewRow label="City" value={city} />
-          <ReviewRow label="State" value={state} />
-          <ReviewRow label="Postal code" value={postal} />
+          <ReviewRow label="Country"          value={country} />
+          <ReviewRow label="Address"          value={[address1, address2].filter(Boolean).join(", ")} />
+          <ReviewRow label="City"             value={city} />
+          <ReviewRow label="State"            value={stateName} />
+          <ReviewRow label="Postal code"      value={postal} />
         </ReviewSection>
 
         <ReviewSection title="Business information">
-          <ReviewRow label="Business name" value={bizName} />
-          <ReviewRow label="Business type" value={bizType} />
-          <ReviewRow label="Industry" value={bizIndustry} />
+          <ReviewRow label="Business name"    value={bizName} />
+          <ReviewRow label="Business type"    value={bizType} />
+          <ReviewRow label="Industry"         value={bizIndustry} />
           <ReviewRow label="Registration no." value={bizRegNum} />
         </ReviewSection>
 

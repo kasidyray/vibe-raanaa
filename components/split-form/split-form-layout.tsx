@@ -2,12 +2,11 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 type SplitFormLayoutProps = {
   // ── Left sidebar ──────────────────────────────────────────────────────────
-  /** Large bold title at the top of the sidebar ("Submit your experience") */
-  flowTitle: string
-  /** Renders a "Save and exit" underlined link in the sidebar header */
+/** Renders a "Save and exit" underlined link in the sidebar header */
   onSaveExit?: () => void
   /** Pass a <SplitFormNav /> */
   sidebar?: React.ReactNode
@@ -57,7 +56,6 @@ type SplitFormLayoutProps = {
  * - Content is left-aligned (no mx-auto centering)
  */
 export function SplitFormLayout({
-  flowTitle,
   onSaveExit,
   sidebar,
   sectionLabel,
@@ -67,52 +65,46 @@ export function SplitFormLayout({
   className,
 }: SplitFormLayoutProps) {
   return (
-    <div className={cn("min-h-svh flex flex-row bg-background", className)}>
+    <div className={cn("min-h-svh bg-muted/40 flex flex-row", className)}>
 
-      {/* ── Sidebar ─────────────────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col w-60 xl:w-72 shrink-0 bg-muted/40 border-r">
+      {/* ── Sidebar — only rendered when nav content is provided ───────────── */}
+      {sidebar && (
+        <aside className="hidden md:flex flex-col w-80 xl:w-96 shrink-0">
 
-        {/* Logo */}
-        <div className="px-5 pt-5 pb-4 shrink-0">
-          <img
-            src="/mtn-logo.svg"
-            alt="Logo"
-            className="h-7 w-auto dark:invert"
-          />
-        </div>
+          {/* Logo */}
+          <div className="px-12 pt-7 pb-8 shrink-0">
+            <img
+              src="/mtn-logo.svg"
+              alt="Logo"
+              className="h-7 w-auto dark:invert"
+            />
+          </div>
 
-        {/* Flow title */}
-        <div className="px-5 pb-5 shrink-0">
-          <h1 className="text-xl font-bold leading-snug">{flowTitle}</h1>
-        </div>
-
-        {/* Nav — scrollable */}
-        {sidebar && (
-          <div className="flex-1 overflow-y-auto px-3 pb-8">
+          {/* Nav — scrollable */}
+          <div className="flex-1 overflow-y-auto px-10 pb-8">
             {sidebar}
           </div>
-        )}
-      </aside>
+        </aside>
+      )}
 
       {/* ── Content column ────────────────────────────────────────────────────── */}
-      <div className="flex flex-1 flex-col min-h-0 min-w-0">
+      <div className="flex flex-1 min-h-0 min-w-0 md:p-2">
+      <div className="flex flex-1 flex-col min-h-0 min-w-0 bg-background overflow-hidden md:rounded-xl md:border">
 
-        {/* Section label bar (top of content) */}
-        <div className="border-b px-8 md:px-14 py-4 shrink-0 flex items-center justify-between gap-4">
-          {sectionLabel
-            ? <span className="text-sm font-semibold">{sectionLabel}</span>
-            : <span />
-          }
-          {onSaveExit && (
-            <button
-              type="button"
-              onClick={onSaveExit}
-              className="text-sm underline underline-offset-2 text-muted-foreground hover:text-foreground transition-colors shrink-0"
-            >
-              Save and exit
-            </button>
-          )}
-        </div>
+        {/* Section label bar — only shown alongside the sidebar */}
+        {sidebar && (
+          <div className="border-b px-4 py-4 shrink-0 flex items-center justify-between gap-4">
+            {sectionLabel
+              ? <span className="text-base font-semibold">{sectionLabel}</span>
+              : <span />
+            }
+            {onSaveExit && (
+              <Button variant="outline" size="sm" onClick={onSaveExit}>
+                Save and exit
+              </Button>
+            )}
+          </div>
+        )}
 
         {/* Step panels — relative + overflow-hidden for SplitFormStep */}
         <main className="flex-1 relative overflow-hidden">
@@ -134,6 +126,7 @@ export function SplitFormLayout({
             {footer}
           </div>
         )}
+      </div>
       </div>
     </div>
   )

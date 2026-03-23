@@ -78,7 +78,7 @@ export function EmbeddedMultiStepLayout({
         {sidebar && (
           <>
             {/* Sidebar column — border-b on mobile acts as row separator */}
-            <aside className="p-4 md:p-6 border-b md:border-b-0 w-full md:w-52 shrink-0 hidden md:flex flex-col">
+            <aside className="p-4 md:p-6 border-b md:border-b-0 w-full md:w-72 shrink-0 hidden md:flex flex-col">
               {sidebar}
             </aside>
 

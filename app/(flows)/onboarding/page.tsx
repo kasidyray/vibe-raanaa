@@ -18,7 +18,7 @@ import { SplitFormStep } from "@/components/split-form/split-form-step"
 import { SplitFormHeader } from "@/components/split-form/split-form-header"
 import { SplitFormSection } from "@/components/split-form/split-form-section"
 import { SplitFormFooter } from "@/components/split-form/split-form-footer"
-import type { SplitFormNavGroup } from "@/components/split-form/types"
+import type { StepConfig } from "@/lib/steps"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -32,14 +32,13 @@ import {
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 
-// ─── Nav groups ───────────────────────────────────────────────────────────────
+// ─── Steps ────────────────────────────────────────────────────────────────────
 
-const NAV_GROUPS: SplitFormNavGroup[] = [
+const STEPS: StepConfig[] = [
   {
     id: "account",
     title: "Account setup",
-    defaultOpen: true,
-    items: [
+    subSteps: [
       { id: "profile",     title: "Your profile" },
       { id: "preferences", title: "Preferences", optional: true },
     ],
@@ -47,7 +46,7 @@ const NAV_GROUPS: SplitFormNavGroup[] = [
   {
     id: "workspace",
     title: "Your workspace",
-    items: [
+    subSteps: [
       { id: "details",  title: "Workspace details" },
       { id: "branding", title: "Branding" },
     ],
@@ -55,7 +54,7 @@ const NAV_GROUPS: SplitFormNavGroup[] = [
   {
     id: "team",
     title: "Your team",
-    items: [
+    subSteps: [
       { id: "invite", title: "Invite members", optional: true },
       { id: "roles",  title: "Configure roles", optional: true },
     ],
@@ -63,25 +62,11 @@ const NAV_GROUPS: SplitFormNavGroup[] = [
   {
     id: "launch",
     title: "Launch",
-    items: [
+    subSteps: [
       { id: "review", title: "Review & launch" },
     ],
   },
 ]
-
-// Flat ordered step ID list — must match NAV_GROUPS order
-const STEP_IDS = NAV_GROUPS.flatMap(g => g.items.map(i => i.id))
-
-// Step ID → section label for the content header bar
-const STEP_SECTION: Record<string, string> = {
-  profile:     "Account setup",
-  preferences: "Account setup",
-  details:     "Your workspace",
-  branding:    "Your workspace",
-  invite:      "Your team",
-  roles:       "Your team",
-  review:      "Launch",
-}
 
 // ─── Workspace type cards ─────────────────────────────────────────────────────
 
@@ -152,7 +137,7 @@ function ReviewRow({ label, value }: { label: string; value?: string }) {
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const form   = useSplitForm(STEP_IDS)
+  const form   = useSplitForm(STEPS)
 
   // ── Step: profile ──────────────────────────────────────────────────────────
   const [firstName, setFirstName]       = React.useState("")
@@ -190,18 +175,12 @@ export default function OnboardingPage() {
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
-  const getStatusById = (id: string) => form.status(STEP_IDS.indexOf(id))
-  const goToById      = (id: string) => form.go(STEP_IDS.indexOf(id))
-
-  // Section progress = % of steps in current group that are completed
-  const currentGroup = NAV_GROUPS.find(g => g.items.some(i => i.id === form.stepId))
-  const sectionProgress = (() => {
-    if (!currentGroup) return 0
-    const done = currentGroup.items.filter(i =>
-      form.status(STEP_IDS.indexOf(i.id)) === "completed"
-    ).length
-    return Math.round((done / currentGroup.items.length) * 100)
-  })()
+  // Section label — title of the top-level step containing the current step
+  const sectionLabel = STEPS.find(s =>
+    s.subSteps
+      ? s.subSteps.some(sub => sub.id === form.stepId)
+      : s.id === form.stepId
+  )?.title ?? ""
 
   const remaining = form.total - form.index - 1
 
@@ -210,10 +189,12 @@ export default function OnboardingPage() {
       let ok = true
       if (!firstName.trim()) { setFirstNameErr("Required"); ok = false } else setFirstNameErr("")
       if (!lastName.trim())  { setLastNameErr("Required");  ok = false } else setLastNameErr("")
-      return ok
+      if (!ok) { form.markError(form.index); return false }
+      form.clearError(form.index)
     }
     if (form.stepId === "details") {
-      if (!wsName.trim()) { setWsNameErr("Required"); return false }
+      if (!wsName.trim()) { setWsNameErr("Required"); form.markError(form.index); return false }
+      form.clearError(form.index)
       setWsNameErr("")
     }
     return true
@@ -236,9 +217,9 @@ export default function OnboardingPage() {
   // ── Completion ─────────────────────────────────────────────────────────────
   if (form.isDone) {
     return (
-      <SplitFormLayout flowTitle="Workspace setup">
-        <SplitFormStep index={0} currentIndex={0}>
-          <div className="flex flex-col items-start gap-6 max-w-lg">
+      <SplitFormLayout>
+        <div className="absolute inset-0 flex items-center justify-center p-8">
+          <div className="flex flex-col items-center text-center gap-6 max-w-lg">
             <div className="w-14 h-14 rounded-full bg-success/15 flex items-center justify-center">
               <RiCheckLine className="size-7 text-success" />
             </div>
@@ -257,23 +238,22 @@ export default function OnboardingPage() {
               </Button>
             </div>
           </div>
-        </SplitFormStep>
+        </div>
       </SplitFormLayout>
     )
   }
 
   return (
     <SplitFormLayout
-      flowTitle="Workspace setup"
       onSaveExit={() => { toast.info("Progress saved"); router.push("/dashboard") }}
-      sectionLabel={STEP_SECTION[form.stepId]}
-      sectionProgress={sectionProgress}
+      sectionLabel={sectionLabel}
+      sectionProgress={form.progress}
       sidebar={
         <SplitFormNav
-          groups={NAV_GROUPS}
+          steps={STEPS}
           currentStepId={form.stepId}
-          getStatus={getStatusById}
-          onStepClick={goToById}
+          getStatus={form.statusById}
+          onStepClick={form.goToId}
         />
       }
       footer={
