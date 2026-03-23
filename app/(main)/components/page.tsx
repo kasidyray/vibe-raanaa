@@ -1774,7 +1774,7 @@ function CalendarSection() {
 
 function DatePickerSection() {
   const [single, setSingle]   = React.useState<Date>()
-  const [another, setAnother] = React.useState<Date>(new Date())
+  const [another, setAnother] = React.useState<Date | undefined>(new Date())
 
   return (
     <Section title="Date Picker" sub="date-picker.tsx">
