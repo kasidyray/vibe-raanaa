@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/empty"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
+import { DatePicker } from "@/components/ui/date-picker"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
@@ -161,8 +162,8 @@ function CreateProjectFlow({
   const [nameError, setNameError]     = React.useState("")
 
   // ── Step: timeline ─────────────────────────────────────────────────────────
-  const [startDate, setStartDate] = React.useState("")
-  const [dueDate, setDueDate]     = React.useState("")
+  const [startDate, setStartDate] = React.useState<Date | undefined>(undefined)
+  const [dueDate, setDueDate]     = React.useState<Date | undefined>(undefined)
   const [priority, setPriority]   = React.useState("")
 
   // ── Step: permissions ──────────────────────────────────────────────────────
@@ -358,22 +359,12 @@ function CreateProjectFlow({
         <StepFormSection>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="proj-start">Start date</Label>
-              <Input
-                id="proj-start"
-                type="date"
-                value={startDate}
-                onChange={e => setStartDate(e.target.value)}
-              />
+              <Label>Start date</Label>
+              <DatePicker value={startDate} onChange={setStartDate} placeholder="Pick start date" />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="proj-due">Due date</Label>
-              <Input
-                id="proj-due"
-                type="date"
-                value={dueDate}
-                onChange={e => setDueDate(e.target.value)}
-              />
+              <Label>Due date</Label>
+              <DatePicker value={dueDate} onChange={setDueDate} placeholder="Pick due date" />
             </div>
           </div>
 
@@ -511,8 +502,8 @@ function CreateProjectFlow({
 
         <StepFormSection title="Timeline">
           <div className="rounded-xl border bg-card px-4 divide-y">
-            <ReviewRow label="Start date" value={startDate || <span className="text-muted-foreground">Not set</span>} />
-            <ReviewRow label="Due date"   value={dueDate   || <span className="text-muted-foreground">Not set</span>} />
+            <ReviewRow label="Start date" value={startDate ? startDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : <span className="text-muted-foreground">Not set</span>} />
+            <ReviewRow label="Due date"   value={dueDate   ? dueDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : <span className="text-muted-foreground">Not set</span>} />
             <ReviewRow label="Priority"   value={priority  || <span className="text-muted-foreground">Not set</span>} />
           </div>
         </StepFormSection>
@@ -599,7 +590,7 @@ export default function ProjectsPage() {
           onComplete={handleComplete}
         />
       ) : (
-        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
           <PageHeader
             title="Projects"
             description="Organise and manage all your workspace projects in one place."

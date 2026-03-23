@@ -125,7 +125,7 @@ export default function ChartsPage() {
           </Breadcrumb>
         }
       />
-      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
         <PageHeader
           title="Charts"
           description={<>All chart types available via <code className="font-mono text-xs">recharts</code> + <code className="font-mono text-xs">chart.tsx</code></>}

@@ -1195,7 +1195,7 @@ export default function ActivityPage() {
           </Breadcrumb>
         }
       />
-      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
         {containerSize === "full" ? (
           <div className="flex flex-1 flex-col gap-6">{content}</div>
         ) : (

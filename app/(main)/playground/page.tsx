@@ -47,7 +47,7 @@ export default function PlaygroundPage() {
           </Breadcrumb>
         }
       />
-      <div className="flex flex-1 flex-col gap-10 p-4 md:p-6">
+      <div className="flex flex-1 flex-col gap-10 p-4 md:p-6 md:overflow-y-auto">
         <PageHeader
           title="Playground"
           description="Explore and experiment with UI blocks and component compositions."
