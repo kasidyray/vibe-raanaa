@@ -396,6 +396,7 @@ export default function OnboardingPage() {
               <WsTypeCard
                 key={t.id}
                 {...t}
+                type={t.id}
                 selected={wsType === t.id}
                 onClick={() => setWsType(t.id)}
               />
