@@ -59,6 +59,7 @@ import {
   Tooltip, TooltipContent, TooltipProvider, TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Calendar } from "@/components/ui/calendar"
+import { DatePicker } from "@/components/ui/date-picker"
 import {
   Combobox, ComboboxInput, ComboboxContent, ComboboxList,
   ComboboxItem, ComboboxEmpty, ComboboxCollection,
@@ -116,6 +117,7 @@ import {
   RiMapPinLine, RiLink, RiBarChart2Line, RiFileTextLine, RiEditLine,
   RiLockLine, RiEyeLine, RiEyeOffLine,
 } from "@remixicon/react"
+import { IconBadge } from "@/components/ui/icon-badge"
 
 // ─── Section wrapper ────────────────────────────────────────────────────────
 
@@ -903,6 +905,105 @@ function DialogSection() {
   )
 }
 
+const ICON_BADGE_VARIANTS = ["neutral", "primary", "success", "warning", "info", "destructive"] as const
+const ICON_BADGE_SIZES = ["sm", "default", "lg", "xl"] as const
+
+function IconBadgeSection() {
+  return (
+    <Section title="Icon Badge" sub="icon-badge.tsx">
+      {/* Variants */}
+      <Row>
+        <IconBadge variant="neutral" />
+        <IconBadge variant="primary" />
+        <IconBadge variant="success" />
+        <IconBadge variant="warning" />
+        <IconBadge variant="info" />
+        <IconBadge variant="destructive" />
+      </Row>
+      {/* Sizes */}
+      <Row>
+        {ICON_BADGE_SIZES.map((size) => (
+          <IconBadge key={size} variant="warning" size={size} />
+        ))}
+      </Row>
+      {/* Dialog usage */}
+      <Row>
+        <Dialog>
+          <DialogTrigger render={<Button variant="outline" />}>Update card</DialogTrigger>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <IconBadge variant="warning" />
+              <DialogTitle>Update your card</DialogTitle>
+              <DialogDescription>Your new card will replace your current card.</DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-4 py-1">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="card-name">Name on card</Label>
+                <Input id="card-name" defaultValue="Ikedi Eze" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="card-number">Card number</Label>
+                <Input id="card-number" placeholder="Card number" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="card-expiry">Expiry date</Label>
+                  <Input id="card-expiry" placeholder="MM/DD" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="card-cvv">CVV</Label>
+                  <Input id="card-cvv" placeholder="CVV" />
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="card-default" />
+                <Label htmlFor="card-default">Set as default payment method</Label>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button className="w-full">Update card</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger render={<Button variant="destructive" size="sm" />}>Delete project</DialogTrigger>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <IconBadge variant="destructive" />
+              <DialogTitle>Delete project</DialogTitle>
+              <DialogDescription>This will permanently delete the project and all its data. This action cannot be undone.</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" className="flex-1">Cancel</Button>
+              <Button variant="destructive" className="flex-1">Delete project</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger render={<Button variant="outline" size="sm" />}>Invite team</DialogTrigger>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <IconBadge variant="success" />
+              <DialogTitle>Invite team members</DialogTitle>
+              <DialogDescription>Send invites to your team. They will receive an email to join your workspace.</DialogDescription>
+            </DialogHeader>
+            <div className="flex flex-col gap-1.5 py-1">
+              <Label htmlFor="invite-email">Email address</Label>
+              <Input id="invite-email" type="email" placeholder="colleague@company.com" />
+            </div>
+            <DialogFooter>
+              <Button variant="outline" className="flex-1">Cancel</Button>
+              <Button className="flex-1">Send invite</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </Row>
+    </Section>
+  )
+}
+
 function AlertDialogSection() {
   return (
     <Section title="Alert Dialog" sub="alert-dialog.tsx">
@@ -1669,6 +1770,27 @@ function CalendarSection() {
   )
 }
 
+// ─── DatePicker ───────────────────────────────────────────────────────────────
+
+function DatePickerSection() {
+  const [single, setSingle]   = React.useState<Date>()
+  const [another, setAnother] = React.useState<Date>(new Date())
+
+  return (
+    <Section title="Date Picker" sub="date-picker.tsx">
+      <Row label="Empty">
+        <DatePicker value={single} onChange={setSingle} placeholder="Pick a date" />
+      </Row>
+      <Row label="With value">
+        <DatePicker value={another} onChange={setAnother} />
+      </Row>
+      <Row label="Disabled">
+        <DatePicker value={single} onChange={setSingle} disabled placeholder="Not available" />
+      </Row>
+    </Section>
+  )
+}
+
 // ─── HoverCard ───────────────────────────────────────────────────────────────
 
 function HoverCardSection() {
@@ -2262,7 +2384,7 @@ export default function ComponentsPage() {
             <AlertClose />
           </Alert>
         )}
-        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
           <PageHeader
             title="Components"
             description={<>All UI components available in <code className="font-mono text-xs">components/ui/</code></>}
@@ -2300,6 +2422,7 @@ export default function ComponentsPage() {
             <DropdownSection />
             <PopoverSection />
             <DialogSection />
+            <IconBadgeSection />
             <AlertDialogSection />
             <AlertSection />
             <SheetSection />
@@ -2308,6 +2431,7 @@ export default function ComponentsPage() {
             <CardSection />
             <FieldSection />
             <CalendarSection />
+            <DatePickerSection />
             <ChartBarSection />
             <ChartBarMultipleSection />
             <ChartBarStackedSection />
