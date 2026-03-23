@@ -1273,7 +1273,7 @@ export default function TeamPage() {
           ) : members.length === 0 ? (
             <Empty className="border">
               <EmptyHeader>
-                <EmptyMedia variant="icon"><RiGroupLine /></EmptyMedia>
+                <EmptyMedia variant="stacked"><RiGroupLine /></EmptyMedia>
                 <EmptyTitle>No team members</EmptyTitle>
                 <EmptyDescription>
                   Your workspace has no members yet. Invite colleagues to start collaborating.
@@ -1302,7 +1302,7 @@ export default function TeamPage() {
           {pendingCount === 0 ? (
             <Empty className="border">
               <EmptyHeader>
-                <EmptyMedia variant="icon"><RiMailLine /></EmptyMedia>
+                <EmptyMedia variant="stacked"><RiMailLine /></EmptyMedia>
                 <EmptyTitle>No pending invites</EmptyTitle>
                 <EmptyDescription>
                   All sent invitations have been accepted. Invite more colleagues to grow your team.

@@ -104,7 +104,7 @@ export default function BankAccountPage() {
       {accounts.length === 0 ? (
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiBankLine />
             </EmptyMedia>
             <EmptyTitle>No bank account connected</EmptyTitle>

@@ -2075,7 +2075,7 @@ function EmptySection() {
       <Section title="Empty – No results" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiSearchLine /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiSearchLine /></EmptyMedia>
             <EmptyTitle>No results found</EmptyTitle>
             <EmptyDescription>
               Try adjusting your search or filters to find what you're looking for.
@@ -2090,7 +2090,7 @@ function EmptySection() {
       <Section title="Empty – No messages" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiMailLine /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiMailLine /></EmptyMedia>
             <EmptyTitle>No messages yet</EmptyTitle>
             <EmptyDescription>
               You're all caught up. New messages from your team will appear here.
@@ -2102,7 +2102,7 @@ function EmptySection() {
       <Section title="Empty – No documents" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiFileCopyLine /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiFileCopyLine /></EmptyMedia>
             <EmptyTitle>No documents</EmptyTitle>
             <EmptyDescription>
               Upload or create your first document to get started.
@@ -2120,7 +2120,7 @@ function EmptySection() {
       <Section title="Empty – No team members" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiUser2Line /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiUser2Line /></EmptyMedia>
             <EmptyTitle>Invite your team</EmptyTitle>
             <EmptyDescription>
               Collaborate with others by inviting them to your workspace.
@@ -2135,7 +2135,7 @@ function EmptySection() {
       <Section title="Empty – No tasks" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiListCheck /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiListCheck /></EmptyMedia>
             <EmptyTitle>No tasks yet</EmptyTitle>
             <EmptyDescription>
               Create your first task and start tracking your progress.
@@ -2150,7 +2150,7 @@ function EmptySection() {
       <Section title="Empty – Error state" sub="empty.tsx">
         <Empty className="border">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><RiErrorWarningLine /></EmptyMedia>
+            <EmptyMedia variant="stacked"><RiErrorWarningLine /></EmptyMedia>
             <EmptyTitle>Something went wrong</EmptyTitle>
             <EmptyDescription>
               We couldn't load this content. Please check your connection and try again.
@@ -2158,6 +2158,33 @@ function EmptySection() {
           </EmptyHeader>
           <EmptyContent>
             <Button variant="outline" size="sm">Try again</Button>
+          </EmptyContent>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – Stacked icon (no visitors)" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="stacked"><RiUser2Line /></EmptyMedia>
+            <EmptyTitle>No visitors yet</EmptyTitle>
+            <EmptyDescription>
+              Visitors to your demo will appear here.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      </Section>
+
+      <Section title="Empty – Stacked icon (no documents)" sub="empty.tsx">
+        <Empty className="border">
+          <EmptyHeader>
+            <EmptyMedia variant="stacked"><RiFileCopyLine /></EmptyMedia>
+            <EmptyTitle>No documents</EmptyTitle>
+            <EmptyDescription>
+              Upload or create a document to get started.
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button size="sm">Upload document</Button>
           </EmptyContent>
         </Empty>
       </Section>

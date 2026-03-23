@@ -42,7 +42,7 @@ export default function SearchPage() {
         />
         <Empty className="flex-1 border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiSearchLine />
             </EmptyMedia>
             <EmptyTitle>Search coming soon</EmptyTitle>

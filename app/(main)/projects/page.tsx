@@ -603,7 +603,7 @@ export default function ProjectsPage() {
           />
           <Empty className="flex-1 border">
             <EmptyHeader>
-              <EmptyMedia variant="icon">
+              <EmptyMedia variant="stacked">
                 <RiFolderLine />
               </EmptyMedia>
               <EmptyTitle>No projects yet</EmptyTitle>

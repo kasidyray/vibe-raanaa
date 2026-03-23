@@ -213,7 +213,7 @@ export default function IntegrationsPage() {
         {connected.length === 0 ? (
           <Empty className="border-0 rounded-none">
             <EmptyHeader>
-              <EmptyMedia variant="icon"><RiPlugLine /></EmptyMedia>
+              <EmptyMedia variant="stacked"><RiPlugLine /></EmptyMedia>
               <EmptyTitle>Nothing connected yet</EmptyTitle>
               <EmptyDescription>
                 Browse the available integrations below to get started.

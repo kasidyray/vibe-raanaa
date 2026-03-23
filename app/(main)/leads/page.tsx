@@ -1206,7 +1206,7 @@ export default function LeadsPage() {
         <TabsContent value="pipeline" className="flex flex-1">
           <Empty className="border">
             <EmptyHeader>
-              <EmptyMedia variant="icon">
+              <EmptyMedia variant="stacked">
                 <RiBuilding2Line />
               </EmptyMedia>
               <EmptyTitle>Pipeline view coming soon</EmptyTitle>

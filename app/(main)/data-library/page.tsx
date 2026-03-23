@@ -50,7 +50,7 @@ export default function DataLibraryPage() {
         />
         <Empty className="flex-1 border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiDatabase2Line />
             </EmptyMedia>
             <EmptyTitle>No datasets yet</EmptyTitle>

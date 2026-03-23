@@ -17,7 +17,7 @@ import { Card } from "@/components/ui/card"
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
 
-export type DataTableVariant = "plain" | "bordered" | "card"
+export type DataTableVariant = "plain" | "bordered" | "card" | "contained"
 
 function DataTable<TData>({
   table,
@@ -40,8 +40,8 @@ function DataTable<TData>({
             key={headerGroup.id}
             className={cn(
               "hover:bg-transparent! hover:ring-0",
-              variant !== "card" && "border-t",
-              variant === "card" && "bg-muted/40"
+              variant !== "card" && variant !== "contained" && "border-t",
+              (variant === "card" || variant === "contained") && "bg-muted/40"
             )}
           >
             {headerGroup.headers.map(header => (
@@ -62,7 +62,7 @@ function DataTable<TData>({
                 data-state={row.getIsSelected() ? "selected" : undefined}
                 className={cn(
                   "group/row border-0 hover:bg-transparent! data-[state=selected]:bg-transparent! hover:ring-1 hover:ring-inset hover:ring-border data-[state=selected]:ring-1 data-[state=selected]:ring-inset data-[state=selected]:ring-border",
-                  variant !== "card" && "hover:rounded-md data-[state=selected]:rounded-md",
+                  variant !== "card" && variant !== "contained" && "hover:rounded-md data-[state=selected]:rounded-md",
                   onRowClick && "cursor-pointer"
                 )}
                 onClick={onRowClick ? () => onRowClick(row.original) : undefined}
@@ -72,8 +72,8 @@ function DataTable<TData>({
                     key={cell.id}
                     className={cn(
                       "group-hover/row:bg-accent/30 group-data-[state=selected]/row:bg-muted",
-                      variant !== "card" && i === 0 && "group-hover/row:rounded-l-md group-data-[state=selected]/row:rounded-l-md",
-                      variant !== "card" && i === cells.length - 1 && "group-hover/row:rounded-r-md group-data-[state=selected]/row:rounded-r-md",
+                      variant !== "card" && variant !== "contained" && i === 0 && "group-hover/row:rounded-l-md group-data-[state=selected]/row:rounded-l-md",
+                      variant !== "card" && variant !== "contained" && i === cells.length - 1 && "group-hover/row:rounded-r-md group-data-[state=selected]/row:rounded-r-md",
                       "border-b border-border group-hover/row:border-b-transparent group-data-[state=selected]/row:border-b-transparent [tr:has(+tr:hover)_&]:border-b-transparent [tr:has(+tr[data-state=selected])_&]:border-b-transparent [tbody_tr:last-child_&]:border-b-0",
                     )}
                   >
@@ -120,6 +120,7 @@ function DataTable<TData>({
     return <Card className="overflow-hidden p-0">{tableEl}</Card>
   }
   return tableEl
+
 }
 
 export { DataTable }

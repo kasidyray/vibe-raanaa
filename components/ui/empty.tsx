@@ -32,26 +32,50 @@ const emptyMediaVariants = cva(
       variant: {
         default: "bg-transparent",
         icon: "flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-6",
+        stacked: "relative size-15",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "stacked",
     },
   }
 )
 
 function EmptyMedia({
   className,
-  variant = "default",
+  variant = "stacked",
+  children,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof emptyMediaVariants>) {
+  if (variant === "stacked") {
+    return (
+      <div
+        data-slot="empty-icon"
+        data-variant={variant}
+        className={cn(emptyMediaVariants({ variant }), className)}
+        {...props}
+      >
+        {/* back-left card */}
+        <div className="absolute inset-1 -translate-x-4 -rotate-12 rounded-xl border bg-card shadow-sm" />
+        {/* back-right card */}
+        <div className="absolute inset-1 translate-x-4 rotate-12 rounded-xl border bg-card shadow-sm" />
+        {/* front card with icon */}
+        <div className="relative z-10 flex size-full items-center justify-center rounded-xl border bg-card shadow-sm text-foreground [&_svg:not([class*='size-'])]:size-7">
+          {children}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       data-slot="empty-icon"
       data-variant={variant}
       className={cn(emptyMediaVariants({ variant, className }))}
       {...props}
-    />
+    >
+      {children}
+    </div>
   )
 }
 

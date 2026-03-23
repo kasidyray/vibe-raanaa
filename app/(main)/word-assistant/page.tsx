@@ -50,7 +50,7 @@ export default function WordAssistantPage() {
         />
         <Empty className="flex-1 border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiFileLine />
             </EmptyMedia>
             <EmptyTitle>No documents yet</EmptyTitle>

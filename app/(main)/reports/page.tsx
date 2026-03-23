@@ -50,7 +50,7 @@ export default function ReportsPage() {
         />
         <Empty className="flex-1 border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiFileChartLine />
             </EmptyMedia>
             <EmptyTitle>No reports yet</EmptyTitle>

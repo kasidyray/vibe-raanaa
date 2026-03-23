@@ -42,7 +42,7 @@ export default function HelpPage() {
         />
         <Empty className="flex-1 border">
           <EmptyHeader>
-            <EmptyMedia variant="icon">
+            <EmptyMedia variant="stacked">
               <RiQuestionLine />
             </EmptyMedia>
             <EmptyTitle>Help centre coming soon</EmptyTitle>

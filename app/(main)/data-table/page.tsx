@@ -29,6 +29,7 @@ import { StatusBadge } from "@/components/ui/status-badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -72,6 +73,7 @@ import {
   RiUserLine,
   RiMore2Line,
   RiPhoneLine,
+  RiSettings3Line,
 } from "@remixicon/react"
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -291,6 +293,227 @@ const DUE_DATE_OPTIONS  = [
 ]
 
 // ─── Tasks table ──────────────────────────────────────────────────────────────
+
+// ─── TasksTableContained ─────────────────────────────────────────────────────
+
+function TasksTableContainedSkeleton({ rows = 10 }: { rows?: number }) {
+  const toolbar = (
+    <div className="flex items-center gap-2 border-b px-4 py-3">
+      <Skeleton className="h-8 w-56 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="h-8 w-20 rounded-md" />
+      <Skeleton className="ml-auto h-8 w-8 rounded-md" />
+    </div>
+  )
+
+  const header = (
+    <div className="flex items-center gap-4 border-b px-4 py-2.5">
+      <Skeleton className="size-4 rounded-sm" />
+      <Skeleton className="h-3 w-10" />
+      <Skeleton className="h-3 w-10 ml-2" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-16 ml-4" />
+      <Skeleton className="h-3 w-14 ml-4" />
+    </div>
+  )
+
+  const rows_ = Array.from({ length: rows }).map((_, i, arr) => (
+    <div key={i} className={cn("flex items-center gap-4 px-4 py-3", i < arr.length - 1 && "border-b")}>
+      <Skeleton className="size-4 shrink-0 rounded-sm" />
+      <Skeleton className="h-3 w-14 font-mono" />
+      <div className="flex flex-1 items-center gap-2">
+        <Skeleton className="h-5 w-12 rounded-md" />
+        <Skeleton className="h-3.5 w-48" />
+      </div>
+      <Skeleton className="h-5 w-20 rounded-full" />
+      <Skeleton className="h-5 w-20 rounded-md" />
+      <div className="flex items-center gap-2">
+        <Skeleton className="size-6 shrink-0 rounded-full" />
+        <Skeleton className="h-3.5 w-24" />
+      </div>
+      <Skeleton className="h-3.5 w-24" />
+    </div>
+  ))
+
+  const pagination = (
+    <div className="flex items-center justify-between border-t px-4 py-3">
+      <Skeleton className="h-4 w-32 rounded-md" />
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-8 w-8 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="overflow-hidden rounded-xl border">
+      {toolbar}
+      {header}
+      {rows_}
+      {pagination}
+    </div>
+  )
+}
+
+function TasksTableContained() {
+  const [isTableLoading, setIsTableLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    const t = setTimeout(() => setIsTableLoading(false), 1400)
+    return () => clearTimeout(t)
+  }, [])
+
+  const [sorting, setSorting]               = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters]   = React.useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection]     = React.useState({})
+  const [globalFilter, setGlobalFilter]     = React.useState("")
+  const [paginationStyle, setPaginationStyle] = React.useState<PaginationStyle>("classic")
+
+  const statusFilter   = (columnFilters.find(f => f.id === "status")?.value   as string[]) ?? []
+  const priorityFilter = (columnFilters.find(f => f.id === "priority")?.value as string[]) ?? []
+  const dueDateFilter  = (columnFilters.find(f => f.id === "dueDate")?.value  as string[]) ?? []
+
+  function setColumnFilter(id: string, values: string[]) {
+    setColumnFilters(prev => {
+      const rest = prev.filter(f => f.id !== id)
+      return values.length ? [...rest, { id, value: values }] : rest
+    })
+  }
+
+  const hasActiveFilters = statusFilter.length > 0 || priorityFilter.length > 0 || dueDateFilter.length > 0
+
+  const table = useReactTable({
+    data: TASKS,
+    columns,
+    state: { sorting, columnFilters, columnVisibility, rowSelection, globalFilter },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: "includesString",
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 10 } },
+  })
+
+  const selectedCount = Object.keys(rowSelection).length
+
+  if (isTableLoading) return <TasksTableContainedSkeleton rows={10} />
+
+  return (
+    <div className="overflow-hidden rounded-xl border">
+      <DataTableToolbar className="border-b px-4">
+        <DataTableSearch table={table} placeholder="Search tasks..." />
+
+        <DataTableFacetedFilter
+          title="Status"
+          options={STATUS_OPTIONS}
+          selectedValues={statusFilter}
+          onSelectionChange={v => setColumnFilter("status", v)}
+        />
+
+        <DataTableFacetedFilter
+          title="Priority"
+          options={PRIORITY_OPTIONS}
+          selectedValues={priorityFilter}
+          onSelectionChange={v => setColumnFilter("priority", v)}
+        />
+
+        <DataTableFacetedFilter
+          title="Due date"
+          options={DUE_DATE_OPTIONS}
+          selectedValues={dueDateFilter}
+          onSelectionChange={v => setColumnFilter("dueDate", v)}
+          icon={<RiCalendarLine className="opacity-60" />}
+        />
+
+        {hasActiveFilters && (
+          <button
+            onClick={() => setColumnFilters([])}
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Reset
+          </button>
+        )}
+
+        <TooltipProvider>
+          <div className="ml-auto flex items-center gap-1">
+            {/* Pagination style picker */}
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger render={
+                  <DropdownMenuTrigger render={<Button variant="secondary" size="icon-sm" aria-label="Pagination style" />}>
+                    <RiContractLeftRightLine />
+                  </DropdownMenuTrigger>
+                } />
+                <TooltipContent>Pagination style</TooltipContent>
+              </Tooltip>
+              <DropdownMenuContent align="end" className="w-40">
+                <DropdownMenuGroup>
+                  {(["minimal", "numbered", "full", "simple", "classic"] as PaginationStyle[]).map(s => (
+                    <DropdownMenuCheckboxItem key={s} checked={paginationStyle === s} onClick={() => setPaginationStyle(s)}>
+                      {{ minimal: "Minimal", numbered: "Numbered", full: "Full controls", simple: "Simple", classic: "Classic" }[s]}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Column toggle */}
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger render={
+                  <DropdownMenuTrigger render={<Button variant="secondary" size="icon-sm" aria-label="Toggle columns" />}>
+                    <RiSettings3Line />
+                  </DropdownMenuTrigger>
+                } />
+                <TooltipContent>Toggle columns</TooltipContent>
+              </Tooltip>
+              <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuGroup>
+                  {table.getAllColumns().filter(col => col.getCanHide()).map(col => (
+                    <DropdownMenuCheckboxItem
+                      key={col.id}
+                      checked={col.getIsVisible()}
+                      onClick={() => col.toggleVisibility(!col.getIsVisible())}
+                    >
+                      {col.id === "dueDate" ? "Due date" : col.id.charAt(0).toUpperCase() + col.id.slice(1).replace(/([A-Z])/g, " $1")}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </TooltipProvider>
+      </DataTableToolbar>
+
+      <DataTable table={table} variant="contained" emptyMessage="No tasks found." />
+
+      <div className="border-t px-4 py-3">
+        <DataTablePagination table={table} style={paginationStyle} selectedCount={selectedCount} rowLabel="task" />
+      </div>
+
+      <DataTableSelectionBar
+        count={selectedCount}
+        onClear={() => setRowSelection({})}
+        actions={[
+          { icon: RiEditLine,    label: "Edit"      },
+          { icon: RiFileCopyLine, label: "Duplicate" },
+          "separator",
+          { icon: RiDeleteBinLine, label: "Delete", variant: "destructive", onClick: () => setRowSelection({}) },
+        ]}
+      />
+    </div>
+  )
+}
 
 // ─── TasksTableSkeleton ───────────────────────────────────────────────────────
 
@@ -775,13 +998,15 @@ export default function DataTablePage() {
             <TabsTrigger value="plain">No borders</TabsTrigger>
             <TabsTrigger value="bordered">Bordered rows</TabsTrigger>
             <TabsTrigger value="card">Card table</TabsTrigger>
+            <TabsTrigger value="contained">Contained card</TabsTrigger>
             <TabsTrigger value="students">Students</TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="plain"    className="mt-4"><TasksTable variant="plain" /></TabsContent>
-        <TabsContent value="bordered" className="mt-4"><TasksTable variant="bordered" /></TabsContent>
-        <TabsContent value="card"     className="mt-4"><TasksTable variant="card" /></TabsContent>
-        <TabsContent value="students" className="mt-4"><StudentsTable /></TabsContent>
+        <TabsContent value="plain"     className="mt-4"><TasksTable variant="plain" /></TabsContent>
+        <TabsContent value="bordered"  className="mt-4"><TasksTable variant="bordered" /></TabsContent>
+        <TabsContent value="card"      className="mt-4"><TasksTable variant="card" /></TabsContent>
+        <TabsContent value="contained" className="mt-4"><TasksTableContained /></TabsContent>
+        <TabsContent value="students"  className="mt-4"><StudentsTable /></TabsContent>
       </Tabs>
     </>
   )
