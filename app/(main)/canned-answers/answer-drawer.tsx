@@ -17,7 +17,7 @@ export function AnswerDrawer({ answer, onClose }: Props) {
   return (
     <Drawer open={!!answer} onOpenChange={(open) => !open && onClose()} direction="right">
       <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
-        <DrawerHeader className="flex items-start justify-between gap-4 border-b p-4">
+        <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
           <DrawerTitle className="text-sm font-medium leading-snug">
             {answer?.prompt}
           </DrawerTitle>

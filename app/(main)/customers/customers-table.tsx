@@ -179,7 +179,8 @@ function CreatedDateFilter({
 
 const TODAY = new Date("2026-03-25T00:00:00Z")
 
-export function CustomersTable({ tab }: { tab: CustomerTab }) {
+export function CustomersTable({ tab, customers: customersProp }: { tab: CustomerTab; customers?: Customer[] }) {
+  const customers = customersProp ?? CUSTOMERS
   const [selected, setSelected] = React.useState<Customer | null>(null)
 
   // Toolbar filter state
@@ -197,7 +198,7 @@ export function CustomersTable({ tab }: { tab: CustomerTab }) {
 
   // Filter by tab, then by created date
   const data = React.useMemo(() => {
-    let rows = filterCustomersByTab(CUSTOMERS, tab)
+    let rows = filterCustomersByTab(customers, tab)
 
     if (datePreset !== "all" && datePreset !== "custom") {
       const days = datePreset === "7d" ? 7 : datePreset === "30d" ? 30 : datePreset === "90d" ? 90 : 365
@@ -214,7 +215,7 @@ export function CustomersTable({ tab }: { tab: CustomerTab }) {
     }
 
     return rows
-  }, [tab, datePreset, customRange])
+  }, [customers, tab, datePreset, customRange])
 
   const columns = React.useMemo(() => buildColumns(setSelected), [])
 

@@ -374,6 +374,62 @@ Always suppress default hover and add top border:
 
 ---
 
+## Drawer
+
+Slide-in panel. Always use `direction="right"`. Never build a custom slide-in panel from scratch.
+
+`DrawerHeader` base class is `flex flex-row` — it lays out children horizontally by default.
+**Always include `flex-row` explicitly** in the className to make the direction clear and override any Tailwind class-order ambiguity.
+
+```tsx
+<Drawer open={open} onOpenChange={(open) => !open && onClose()} direction="right">
+  <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
+
+    {/* ── Header with avatar (entity drawer) ── */}
+    <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
+      <div className="flex items-center gap-3 min-w-0">
+        <Avatar className="size-10 rounded-full shrink-0">
+          <AvatarImage src={avatarUrl} alt={name} />
+          <AvatarFallback>{name[0]}</AvatarFallback>
+        </Avatar>
+        <div className="flex flex-col min-w-0">
+          <DrawerTitle className="text-base font-semibold leading-tight truncate">{name}</DrawerTitle>
+          <span className="text-sm text-muted-foreground truncate">{email}</span>
+          <span className="font-mono text-xs text-muted-foreground">{id}</span>
+        </div>
+      </div>
+      <DrawerClose asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Close"><RiCloseLine /></Button>
+      </DrawerClose>
+    </DrawerHeader>
+
+    {/* ── Header with title only (form drawer) ── */}
+    <DrawerHeader className="flex flex-row items-center justify-between gap-4 border-b p-4 shrink-0">
+      <DrawerTitle className="text-base font-semibold">Title</DrawerTitle>
+      <DrawerClose asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Close"><RiCloseLine /></Button>
+      </DrawerClose>
+    </DrawerHeader>
+
+    {/* ── Body ── */}
+    <div className="flex flex-col gap-6 p-4 flex-1 overflow-y-auto">
+      {/* content */}
+    </div>
+
+    {/* ── Footer ── */}
+    <div className="border-t p-4 flex items-center justify-end gap-2 shrink-0">
+      <Button variant="outline" size="sm" onClick={onClose}>Cancel</Button>
+      <Button size="sm" type="submit" form="form-id" loading={isPending}>Save</Button>
+    </div>
+
+  </DrawerContent>
+</Drawer>
+```
+
+❌ Never omit `flex-row` on `DrawerHeader` — the base is `flex flex-row` but without explicit `flex-row` in className, Tailwind class collisions across inheritance can restore `flex-col`.
+
+---
+
 ## Sidebar navigation
 
 To add a page to the sidebar, edit `components/app-sidebar.tsx` → `data.navMain`:

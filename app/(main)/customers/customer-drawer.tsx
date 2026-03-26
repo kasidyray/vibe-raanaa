@@ -26,7 +26,7 @@ export function CustomerDrawer({ customer, onClose }: Props) {
     <Drawer open={!!customer} onOpenChange={(open) => !open && onClose()} direction="right">
       <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
         {/* ── Header ────────────────────────────────────────────────────── */}
-        <DrawerHeader className="flex items-start justify-between gap-4 border-b p-4">
+        <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
           <div className="flex items-center gap-3 min-w-0">
             {customer && (() => {
               const firstName = customer.name.split(" ")[0]

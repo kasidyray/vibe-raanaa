@@ -370,15 +370,19 @@ function SidebarSeparator({
 
 function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="sidebar-content"
-      data-sidebar="content"
-      className={cn(
-        "no-scrollbar flex min-h-0 flex-1 flex-col gap-2 overflow-auto [--radius:var(--radius-xl)] group-data-[collapsible=icon]:overflow-hidden",
-        className
-      )}
-      {...props}
-    />
+    <div className="relative flex min-h-0 flex-1 flex-col">
+      <div
+        data-slot="sidebar-content"
+        data-sidebar="content"
+        className={cn(
+          "no-scrollbar flex flex-1 flex-col gap-2 overflow-auto [--radius:var(--radius-xl)] group-data-[collapsible=icon]:overflow-hidden",
+          className
+        )}
+        {...props}
+      />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-sidebar to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-sidebar to-transparent" />
+    </div>
   )
 }
 
@@ -644,7 +648,7 @@ function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        "mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 group-data-[collapsible=icon]:hidden",
+        "mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-6 py-0.5 group-data-[collapsible=icon]:hidden",
         className
       )}
       {...props}

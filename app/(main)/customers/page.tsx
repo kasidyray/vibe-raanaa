@@ -30,9 +30,11 @@ import {
   CUSTOMERS,
   containerSizes,
   type ContainerSize,
+  type Customer,
   type CustomerTab,
 } from "./data"
 import { CustomersTable, CustomersTableSkeleton } from "./customers-table"
+import { AddCustomerDrawer } from "./add-customer-drawer"
 
 // ─── Tab config ───────────────────────────────────────────────────────────────
 
@@ -52,6 +54,12 @@ export default function CustomersPage() {
   const [containerSize, setContainerSize] = React.useState<ContainerSize>("xl")
   const [isLoading, setIsLoading]         = React.useState(true)
   const [activeTab, setActiveTab]         = React.useState<CustomerTab>("all")
+  const [isAdding, setIsAdding]           = React.useState(false)
+  const [customers, setCustomers]         = React.useState<Customer[]>(CUSTOMERS)
+
+  function handleAdd(customer: Customer) {
+    setCustomers(prev => [customer, ...prev])
+  }
 
   React.useEffect(() => {
     const t = setTimeout(() => setIsLoading(false), 700)
@@ -76,11 +84,17 @@ export default function CustomersPage() {
         }
       />
 
+      <AddCustomerDrawer
+        open={isAdding}
+        onClose={() => setIsAdding(false)}
+        onAdd={handleAdd}
+      />
+
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
         <Container size={containerSize} className="flex flex-1 flex-col gap-6">
           <PageHeader
             title="Customers"
-            description={`${CUSTOMERS.length} total customers`}
+            description={`${customers.length} total customers`}
             actions={
               <div className="flex items-center gap-2">
                 <DropdownMenu>
@@ -104,7 +118,7 @@ export default function CustomersPage() {
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="sm">
+                <Button size="sm" onClick={() => setIsAdding(true)}>
                   <RiAddLine />
                   Add customer
                 </Button>
@@ -132,7 +146,7 @@ export default function CustomersPage() {
                 {isLoading ? (
                   <CustomersTableSkeleton />
                 ) : (
-                  <CustomersTable tab={t.value} />
+                  <CustomersTable tab={t.value} customers={customers} />
                 )}
               </TabsContent>
             ))}
