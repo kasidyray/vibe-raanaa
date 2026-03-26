@@ -1,0 +1,272 @@
+"use client"
+
+/**
+ * Component documentation template.
+ * Copy this file to `_docs/[slug].tsx`, fill in every field, then register
+ * the export in `page.tsx` docMap.
+ *
+ * See `.claude/skills/design-to-code/maps/component-doc-guide.md` for full
+ * authoring instructions.
+ */
+
+import { /* ComponentName */ } from "@/components/ui//* slug */"
+import {
+  // RiIconLine,
+} from "@remixicon/react"
+import type { ComponentDocData } from "../component-doc-types"
+
+// ── Anatomy preview ───────────────────────────────────────────────────────────
+
+const AnatomyPreview = () => (
+  <div className="flex flex-col items-center gap-6 py-2">
+    {/* Render the component with all visible parts */}
+    {/* <ComponentName prop="value">Label</ComponentName> */}
+    <div className="flex items-start gap-10 text-center">
+      {["① Container", "② Label" /* add more parts */].map(label => (
+        <div key={label} className="flex flex-col items-center gap-1.5">
+          <div className="h-5 w-px bg-border" />
+          <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+)
+
+// ── Context example previews ──────────────────────────────────────────────────
+
+// const Example1 = () => ( ... )
+// const Example2 = () => ( ... )
+
+// ── Do / Don't previews ───────────────────────────────────────────────────────
+
+// const DoPreview1 = () => ( ... )
+// const DontPreview1 = () => ( ... )
+
+// ── Full doc data ─────────────────────────────────────────────────────────────
+
+export const /* componentName */Doc: ComponentDocData = {
+  // ── Overview ───────────────────────────────────────────────────────────────
+  overview: {
+    what: "One sentence describing what the component is and does visually.",
+    why: "Why this component exists in the design system.",
+    problem: "What problem it solves for the user or designer.",
+    appearsIn: [
+      "Surface 1",
+      "Surface 2",
+    ],
+  },
+
+  // ── Anatomy ────────────────────────────────────────────────────────────────
+  anatomy: {
+    preview: <AnatomyPreview />,
+    parts: [
+      {
+        name: "Container",
+        description: "The outer wrapper. Describe what it carries (layout, colour, radius).",
+      },
+      {
+        name: "Label",
+        description: "The text content.",
+      },
+      // Add optional parts with optional: true
+    ],
+  },
+
+  // ── Usage ──────────────────────────────────────────────────────────────────
+  whenToUse: [
+    "Context where this is the right choice.",
+    "Another context.",
+    "Another context.",
+  ],
+  whenNotToUse: [
+    "Situation to avoid — use AlternativeComponent instead.",
+    "Another misuse scenario.",
+  ],
+
+  // ── Variants ───────────────────────────────────────────────────────────────
+  variants: [
+    {
+      name: "Variant name",
+      description: "One sentence. Colour/tone + example use cases.",
+      when: "Short phrase: when to pick this.",
+      preview: (
+        <div className="flex flex-wrap gap-2 justify-center">
+          {/* <ComponentName variant="x">Label</ComponentName> */}
+        </div>
+      ),
+    },
+  ],
+
+  // ── States ─────────────────────────────────────────────────────────────────
+  states: [
+    {
+      name: "Default",
+      description: "The base configuration.",
+      preview: <>{/* <ComponentName>Label</ComponentName> */}</>,
+    },
+    // Disabled, Loading, Error, etc.
+  ],
+
+  // ── Properties ─────────────────────────────────────────────────────────────
+  properties: [
+    {
+      name: "variant",
+      values: "option1 · option2 · option3",
+      default: "option1",
+      description: "What this prop controls.",
+    },
+    {
+      name: "size",
+      values: "sm · default · lg",
+      default: "default",
+      description: "Scale variant.",
+    },
+  ],
+
+  // ── Content guidance ───────────────────────────────────────────────────────
+  contentGuidance: [
+    {
+      rule: "Rule title",
+      detail: "One-sentence explanation of the rule and why it exists.",
+    },
+  ],
+
+  // ── Behavior ───────────────────────────────────────────────────────────────
+  behavior: [
+    "One concrete interaction or rendering rule per bullet.",
+  ],
+
+  // ── Spacing ────────────────────────────────────────────────────────────────
+  spacing: [
+    {
+      rule: "Context name",
+      detail: "Specific token or measurement to use here.",
+    },
+  ],
+
+  // ── Accessibility ──────────────────────────────────────────────────────────
+  accessibility: [
+    {
+      rule: "Keyboard / ARIA rule",
+      detail: "What to implement and why.",
+    },
+  ],
+
+  // ── Do & Don't ─────────────────────────────────────────────────────────────
+  doItems: [
+    {
+      label: "Do: short positive rule",
+      description: "Brief explanation.",
+      preview: <>{/* DoPreview1 */}</>,
+    },
+  ],
+  dontItems: [
+    {
+      label: "Don't: short negative rule",
+      description: "Brief explanation. Point to the correct alternative.",
+      preview: <>{/* DontPreview1 */}</>,
+    },
+  ],
+
+  // ── Examples in context ────────────────────────────────────────────────────
+  examplesInContext: [
+    {
+      title: "In a [surface]",
+      description: "Short description of what this example shows.",
+      preview: <>{/* Example1 */}</>,
+    },
+  ],
+
+  // ── Related components ─────────────────────────────────────────────────────
+  relatedComponents: [
+    {
+      slug: "related-slug",
+      name: "Related Component",
+      description: "What it does.",
+      when: "The specific scenario where you'd use this instead.",
+    },
+  ],
+
+  // ── Design notes ───────────────────────────────────────────────────────────
+  designNotes: [
+    "Figma mapping or token note for designers.",
+  ],
+
+  // ── Developer documentation ────────────────────────────────────────────────
+  devDoc: {
+    installation: {
+      prerequisites: [
+        "npx shadcn add @raana/mtn-tokens",
+        "npx shadcn add @raana/utils",
+      ],
+      command: "npx shadcn add @raana//* slug */",
+      importPath: `import { /* ComponentName */ } from "@/components/ui//* slug */"`,
+      notes: [
+        // "Any peer dependency notes."
+      ],
+    },
+
+    basicUsage: `import { ComponentName } from "@/components/ui/slug"
+
+<ComponentName variant="default">Label</ComponentName>`,
+
+    codeExamples: [
+      {
+        title: "All variants",
+        description: "Description of what this example shows.",
+        preview: (
+          <div className="flex flex-wrap gap-2 justify-center">
+            {/* <ComponentName variant="x">Label</ComponentName> */}
+          </div>
+        ),
+        code: `<ComponentName variant="x">Label</ComponentName>`,
+      },
+      {
+        title: "Sizes",
+        description: "sm for compact contexts, lg for headers.",
+        preview: (
+          <div className="flex items-center gap-3">
+            {/* size variants */}
+          </div>
+        ),
+        code: `<ComponentName size="sm">Small</ComponentName>
+<ComponentName>Default</ComponentName>
+<ComponentName size="lg">Large</ComponentName>`,
+      },
+    ],
+
+    apiReference: [
+      {
+        name: "variant",
+        values: `"option1" | "option2" | "option3"`,
+        default: `"option1"`,
+        description: "Semantic tone. Choose by meaning.",
+      },
+      {
+        name: "size",
+        values: `"sm" | "default" | "lg"`,
+        default: `"default"`,
+        description: "Scale of the component.",
+      },
+      {
+        name: "className",
+        values: "string",
+        default: "—",
+        description: "Extra CSS classes.",
+      },
+      {
+        name: "children",
+        values: "React.ReactNode",
+        default: "—",
+        description: "Content rendered inside the component.",
+      },
+    ],
+
+    accessibility: [
+      {
+        rule: "Implementation rule",
+        detail: "Specific ARIA attribute, keyboard behaviour, or DOM requirement.",
+      },
+    ],
+  },
+}

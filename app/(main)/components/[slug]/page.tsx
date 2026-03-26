@@ -96,10 +96,8 @@ export default function ComponentPage({
     return (
       <>
         <SiteHeader left={breadcrumb} />
-        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
-          <Container size="lg" className="flex flex-1 flex-col gap-6">
-            <ComponentDocLayout component={component!} doc={doc} />
-          </Container>
+        <div className="flex flex-1 flex-col p-4 md:p-6 md:overflow-y-auto">
+          <ComponentDocLayout component={component!} doc={doc} />
         </div>
       </>
     )

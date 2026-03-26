@@ -90,11 +90,7 @@ function DocSection({
 }) {
   return (
     <section id={id} className="scroll-mt-6 flex flex-col gap-5">
-      <div className="flex items-center gap-3">
-        <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-widest shrink-0">
-          {title}
-        </h2>
-      </div>
+      <h2 className="text-lg font-semibold text-foreground">{title}</h2>
       {children}
     </section>
   )
@@ -1044,10 +1040,10 @@ export function ComponentDocLayout({
   const statusVariant = component.status ? STATUS_VARIANT[component.status] : "neutral"
 
   return (
-    <div ref={layoutRef} className="grid gap-12 lg:grid-cols-[1fr_160px]">
+    <div ref={layoutRef} className="grid w-full lg:grid-cols-[1fr_220px]">
 
       {/* ── Left column: header + tabs + content ────────────────────────────── */}
-      <div className="flex flex-col gap-6 min-w-0">
+      <div className="flex flex-col gap-6 min-w-0 w-full max-w-3xl mx-auto px-4">
 
         {/* Header */}
         <div className="flex flex-col gap-3">
