@@ -28,9 +28,7 @@ function DeleteConfirmationPreview() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open dialog</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -56,9 +54,7 @@ function RevokeAccessPreview() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open dialog</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -84,9 +80,7 @@ function WithoutMediaPreview() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open dialog</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Remove from pipeline?</AlertDialogTitle>
@@ -109,9 +103,7 @@ function SmallSizePreview() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open dialog</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -145,9 +137,7 @@ function LoadingStatePreview() {
 
   return (
     <AlertDialog open={open} onOpenChange={(next) => { if (!isLoading) setOpen(next) }}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Open dialog</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -206,9 +196,7 @@ export const alertDialogDevelopDoc: ComponentDevDocData = {
 import { RiDeleteBinLine } from "@remixicon/react"
 
 <AlertDialog>
-  <AlertDialogTrigger asChild>
-    <Button variant="outline">Delete contact</Button>
-  </AlertDialogTrigger>
+  <Button variant="outline" onClick={() => setOpen(true)}>Delete contact</Button>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogMedia>
@@ -247,9 +235,7 @@ export function DeleteConfirmation() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Delete contact</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Delete contact</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -289,9 +275,7 @@ export function RevokeAccess() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Revoke access</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Revoke access</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -330,9 +314,7 @@ export function WithoutMedia() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Remove from pipeline</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Remove from pipeline</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Remove from pipeline?</AlertDialogTitle>
@@ -369,9 +351,7 @@ export function SmallSignOut() {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Sign out</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Sign out</Button>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -422,9 +402,7 @@ export function LoadingDialog() {
       open={open}
       onOpenChange={(next) => { if (!isLoading) setOpen(next) }}
     >
-      <AlertDialogTrigger asChild>
-        <Button variant="outline">Delete workspace</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" onClick={() => setOpen(true)}>Delete workspace</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>

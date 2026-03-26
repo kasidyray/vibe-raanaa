@@ -63,9 +63,7 @@ const WithMediaPreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Open preview</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -89,9 +87,7 @@ const WithoutMediaPreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Open preview</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Remove Emeka Nwachukwu?</AlertDialogTitle>
@@ -112,9 +108,7 @@ const SmallSizePreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Open preview</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -140,9 +134,7 @@ const DefaultStatePreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Open preview</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -175,9 +167,7 @@ const LoadingStatePreview = () => {
 
   return (
     <AlertDialog open={open} onOpenChange={(next) => { if (!isLoading) setOpen(next) }}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Open preview</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -207,9 +197,7 @@ const DestructiveStatePreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive" size="sm"><RiDeleteBinLine />Delete account</Button>
-      </AlertDialogTrigger>
+      <Button variant="destructive" size="sm" onClick={() => setOpen(true)}><RiDeleteBinLine />Delete account</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10">
@@ -235,9 +223,7 @@ const DoLabelPreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Delete contact</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Delete contact</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Ngozi Achebe?</AlertDialogTitle>
@@ -258,9 +244,7 @@ const DoMediaPreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Sign out</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Sign out</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
@@ -284,9 +268,7 @@ const DoSingleActionPreview = () => {
   const [open, setOpen] = useState(false)
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm">Revoke access</Button>
-      </AlertDialogTrigger>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Revoke access</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
