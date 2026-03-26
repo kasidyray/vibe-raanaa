@@ -1,8 +1,12 @@
+export type DocStatus = "Ready" | "In Review" | "Deprecated" | "New"
+
 export type ComponentMeta = {
   slug: string
   name: string
   description: string
   category: ComponentCategory
+  status?: DocStatus
+  tags?: string[]
 }
 
 export type ComponentCategory =
@@ -34,7 +38,7 @@ export const components: ComponentMeta[] = [
 
   // Display
   { slug: "avatar",       name: "Avatar",        description: "User or entity image with fallback initials.",      category: "Display" },
-  { slug: "badge",        name: "Badge",         description: "Coloured pill for categorical labels.",             category: "Display" },
+  { slug: "badge",        name: "Badge",         description: "Coloured pill for categorical labels.",             category: "Display", status: "Ready", tags: ["Display", "Label", "Indicator"] },
   { slug: "status-badge", name: "Status Badge",  description: "Bordered pill with a dot for live status.",        category: "Display" },
   { slug: "icon-badge",   name: "Icon Badge",    description: "Square icon container in various semantic colours.", category: "Display" },
   { slug: "card",         name: "Card",          description: "Surface container for grouped content.",            category: "Display" },
@@ -58,6 +62,7 @@ export const components: ComponentMeta[] = [
   // Feedback
   { slug: "alert",        name: "Alert",         description: "Inline message for info, success, warning, error.", category: "Feedback" },
   { slug: "progress",     name: "Progress",      description: "Shows completion percentage of a task.",           category: "Feedback" },
+  { slug: "sonner",       name: "Sonner",        description: "Toast notifications with multiple variants.",      category: "Feedback" },
   { slug: "empty",        name: "Empty State",   description: "Zero-data placeholder with optional CTA.",         category: "Feedback" },
 
   // Data

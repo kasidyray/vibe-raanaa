@@ -10,6 +10,9 @@ import {
   BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { getComponent } from "@/app/(main)/components/component-list"
+import { ComponentDocLayout } from "./component-doc-layout"
+import { badgeDoc } from "./_docs/badge"
+import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
 const exampleMap: Record<string, React.LazyExoticComponent<() => React.ReactElement>> = {
@@ -43,6 +46,7 @@ const exampleMap: Record<string, React.LazyExoticComponent<() => React.ReactElem
   separator:      React.lazy(() => import("./_examples/separator")),
   sheet:          React.lazy(() => import("./_examples/sheet")),
   skeleton:       React.lazy(() => import("./_examples/skeleton")),
+  sonner:         React.lazy(() => import("./_examples/sonner")),
   "status-badge": React.lazy(() => import("./_examples/status-badge")),
   switch:         React.lazy(() => import("./_examples/switch")),
   table:          React.lazy(() => import("./_examples/table")),
@@ -51,6 +55,11 @@ const exampleMap: Record<string, React.LazyExoticComponent<() => React.ReactElem
   toggle:         React.lazy(() => import("./_examples/toggle")),
   "toggle-group": React.lazy(() => import("./_examples/toggle-group")),
   tooltip:        React.lazy(() => import("./_examples/tooltip")),
+}
+
+// Doc data registry — add entries here as component docs are authored
+const docMap: Record<string, ComponentDocData> = {
+  badge: badgeDoc,
 }
 
 export default function ComponentPage({
@@ -65,25 +74,41 @@ export default function ComponentPage({
     notFound()
   }
 
+  const doc = docMap[slug] ?? null
   const ExamplesComponent = exampleMap[slug] ?? null
 
+  const breadcrumb = (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>{component!.name}</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  )
+
+  // ── Full documentation layout (when doc data exists) ──────────────────────
+  if (doc) {
+    return (
+      <>
+        <SiteHeader left={breadcrumb} />
+        <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+          <Container size="lg" className="flex flex-1 flex-col gap-6">
+            <ComponentDocLayout component={component!} doc={doc} />
+          </Container>
+        </div>
+      </>
+    )
+  }
+
+  // ── Fallback: simple examples layout (for undocumented components) ─────────
   return (
     <>
-      <SiteHeader
-        left={
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>{component!.name}</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        }
-      />
+      <SiteHeader left={breadcrumb} />
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
         <Container size="default" className="flex flex-1 flex-col gap-6">
           <PageHeader
