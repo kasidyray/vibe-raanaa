@@ -21,7 +21,7 @@
 
 // import { ComponentName } from "@/components/ui/slug"
 // import { RiIconLine } from "@remixicon/react"
-import type { ComponentDocData } from "../../component-doc-types"
+import type { ComponentDocData } from "../component-doc-types"
 
 // ── Anatomy preview ───────────────────────────────────────────────────────────
 
