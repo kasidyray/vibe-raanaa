@@ -5,11 +5,13 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { StatusBadge } from "@/components/ui/status-badge"
+import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs"
 import {
   RiCheckLine,
   RiCloseLine,
   RiInformationLine,
   RiArrowRightSLine,
+  RiFileCopyLine,
 } from "@remixicon/react"
 import type { ComponentMeta, DocStatus } from "@/app/(main)/components/component-list"
 import type {
@@ -22,7 +24,12 @@ import type {
   ContextExample,
   RelatedComponent,
   AnatomyPart,
+  CodeExample,
 } from "./component-doc-types"
+
+// ── Mode ──────────────────────────────────────────────────────────────────────
+
+type DocMode = "design" | "develop"
 
 // ── Nav config ────────────────────────────────────────────────────────────────
 
@@ -43,11 +50,31 @@ const NAV_SECTIONS = [
   { id: "design-notes",  label: "Design notes" },
 ]
 
+const DEV_NAV_SECTIONS = [
+  { id: "dev-installation", label: "Installation" },
+  { id: "dev-usage",        label: "Usage" },
+  { id: "dev-examples",     label: "Examples" },
+  { id: "dev-api",          label: "API reference" },
+  { id: "dev-accessibility",label: "Accessibility" },
+]
+
 const STATUS_VARIANT: Record<DocStatus, "success" | "caution" | "critical" | "info"> = {
   "Ready":      "success",
   "In Review":  "caution",
   "Deprecated": "critical",
   "New":        "info",
+}
+
+// ── Scroll container helper ───────────────────────────────────────────────────
+
+function findScrollContainer(el: HTMLElement): HTMLElement | null {
+  let parent = el.parentElement
+  while (parent) {
+    const { overflowY } = window.getComputedStyle(parent)
+    if (overflowY === "auto" || overflowY === "scroll") return parent
+    parent = parent.parentElement
+  }
+  return null
 }
 
 // ── Shared primitives ─────────────────────────────────────────────────────────
@@ -92,13 +119,161 @@ function PreviewBox({
   )
 }
 
-// ── Overview section ──────────────────────────────────────────────────────────
+// ── Code tokenizer ────────────────────────────────────────────────────────────
 
-function OverviewSection({ data }: { data: ComponentDocData["overview"] }) {
+type TokenType = "keyword" | "string" | "comment" | "literal" | "plain"
+
+interface Token { type: TokenType; value: string }
+
+const KEYWORDS = new Set([
+  "import", "export", "from", "as", "default",
+  "const", "let", "var", "function", "return", "type",
+  "interface", "class", "extends", "implements", "new",
+  "if", "else", "for", "while", "switch", "case", "break", "continue",
+  "async", "await", "try", "catch", "finally", "throw",
+  "typeof", "instanceof", "void", "in", "of",
+])
+
+const LITERALS = new Set(["true", "false", "null", "undefined"])
+
+function tokenize(code: string): Token[] {
+  const tokens: Token[] = []
+  let i = 0
+
+  while (i < code.length) {
+    // Line comment
+    if (code[i] === "/" && code[i + 1] === "/") {
+      let j = i
+      while (j < code.length && code[j] !== "\n") j++
+      tokens.push({ type: "comment", value: code.slice(i, j) })
+      i = j
+      continue
+    }
+
+    // Block comment
+    if (code[i] === "/" && code[i + 1] === "*") {
+      let j = i + 2
+      while (j < code.length - 1 && !(code[j] === "*" && code[j + 1] === "/")) j++
+      j += 2
+      tokens.push({ type: "comment", value: code.slice(i, j) })
+      i = j
+      continue
+    }
+
+    // Strings: double quote, single quote, backtick
+    if (code[i] === '"' || code[i] === "'" || code[i] === "`") {
+      const quote = code[i]
+      let j = i + 1
+      while (j < code.length && code[j] !== quote) {
+        if (code[j] === "\\") j++
+        j++
+      }
+      j++
+      tokens.push({ type: "string", value: code.slice(i, j) })
+      i = j
+      continue
+    }
+
+    // Identifier, keyword, or literal
+    if (/[a-zA-Z_$]/.test(code[i])) {
+      let j = i
+      while (j < code.length && /[a-zA-Z0-9_$]/.test(code[j])) j++
+      const word = code.slice(i, j)
+      tokens.push({
+        type: KEYWORDS.has(word) ? "keyword" : LITERALS.has(word) ? "literal" : "plain",
+        value: word,
+      })
+      i = j
+      continue
+    }
+
+    // Number
+    if (/[0-9]/.test(code[i])) {
+      let j = i
+      while (j < code.length && /[0-9.]/.test(code[j])) j++
+      tokens.push({ type: "literal", value: code.slice(i, j) })
+      i = j
+      continue
+    }
+
+    // Everything else
+    tokens.push({ type: "plain", value: code[i] })
+    i++
+  }
+
+  return tokens
+}
+
+const TOKEN_CLASS: Record<TokenType, string> = {
+  keyword: "text-destructive",
+  string:  "text-success",
+  comment: "text-muted-foreground italic",
+  literal: "text-warning",
+  plain:   "text-foreground",
+}
+
+// ── Code block ────────────────────────────────────────────────────────────────
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = React.useState(false)
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(text)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 1500)
+      }}
+      className="flex cursor-pointer items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors shrink-0"
+    >
+      {copied ? (
+        <RiCheckLine className="size-3.5 text-success" />
+      ) : (
+        <RiFileCopyLine className="size-3.5" />
+      )}
+      {copied ? "Copied" : "Copy"}
+    </button>
+  )
+}
+
+function CodeBlock({ code, title }: { code: string; title?: string }) {
+  const tokens = React.useMemo(() => tokenize(code), [code])
+  return (
+    <div className="rounded-xl border bg-muted/20 overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-2 border-b bg-muted/40">
+        <p className="text-xs font-medium text-muted-foreground">{title ?? "Code"}</p>
+        <CopyButton text={code} />
+      </div>
+      <pre className="overflow-x-auto p-4 text-xs font-mono leading-relaxed">
+        <code>
+          {tokens.map((token, i) => (
+            <span key={i} className={TOKEN_CLASS[token.type]}>{token.value}</span>
+          ))}
+        </code>
+      </pre>
+    </div>
+  )
+}
+
+// ── Design sections ───────────────────────────────────────────────────────────
+
+function OverviewSection({
+  data,
+  tags,
+}: {
+  data: ComponentDocData["overview"]
+  tags?: string[]
+}) {
   return (
     <DocSection id="overview" title="Overview">
       <div className="flex flex-col gap-4">
         <p className="text-sm text-muted-foreground leading-relaxed">{data.what}</p>
+        {tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5">
+            {tags.map(tag => (
+              <Badge key={tag} variant="neutral" size="sm">{tag}</Badge>
+            ))}
+          </div>
+        )}
         {data.appearsIn.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {data.appearsIn.map(place => (
@@ -115,8 +290,6 @@ function OverviewSection({ data }: { data: ComponentDocData["overview"] }) {
     </DocSection>
   )
 }
-
-// ── Anatomy section ───────────────────────────────────────────────────────────
 
 function AnatomySection({ data }: { data: ComponentDocData["anatomy"] }) {
   return (
@@ -150,8 +323,6 @@ function AnatomySection({ data }: { data: ComponentDocData["anatomy"] }) {
   )
 }
 
-// ── Usage section (when to use / not use) ─────────────────────────────────────
-
 function UsageSection({
   whenToUse,
   whenNotToUse,
@@ -162,7 +333,6 @@ function UsageSection({
   return (
     <DocSection id="usage" title="When to use">
       <div className="grid sm:grid-cols-2 gap-4">
-        {/* Use when */}
         <div className="rounded-xl border bg-card p-5 flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <div className="size-5 rounded-full bg-success/15 flex items-center justify-center shrink-0">
@@ -184,7 +354,6 @@ function UsageSection({
           )}
         </div>
 
-        {/* Avoid when */}
         <div className="rounded-xl border bg-card p-5 flex flex-col gap-4">
           <div className="flex items-center gap-2">
             <div className="size-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
@@ -210,8 +379,6 @@ function UsageSection({
   )
 }
 
-// ── Variants section ──────────────────────────────────────────────────────────
-
 function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
   if (!variants.length) return null
   return (
@@ -232,8 +399,6 @@ function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
     </DocSection>
   )
 }
-
-// ── States section ────────────────────────────────────────────────────────────
 
 function StatesSection({ states }: { states: ComponentState[] }) {
   if (!states.length) return null
@@ -256,21 +421,17 @@ function StatesSection({ states }: { states: ComponentState[] }) {
   )
 }
 
-// ── Properties section ────────────────────────────────────────────────────────
-
 function PropertiesSection({ properties }: { properties: PropertyDef[] }) {
   if (!properties.length) return null
   return (
     <DocSection id="properties" title="Properties">
       <div className="rounded-xl border bg-card overflow-hidden">
-        {/* Header */}
         <div className="hidden sm:grid grid-cols-[120px_1fr_80px_1fr] gap-4 px-4 py-2.5 bg-muted/50 border-b">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Property</p>
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Values</p>
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Default</p>
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Description</p>
         </div>
-        {/* Rows */}
         {properties.map((prop: PropertyDef, i: number) => (
           <div
             key={prop.name}
@@ -300,8 +461,6 @@ function PropertiesSection({ properties }: { properties: PropertyDef[] }) {
   )
 }
 
-// ── Content guidance section ──────────────────────────────────────────────────
-
 function ContentGuidanceSection({ items }: { items: GuidanceItem[] }) {
   if (!items.length) return null
   return (
@@ -318,8 +477,6 @@ function ContentGuidanceSection({ items }: { items: GuidanceItem[] }) {
   )
 }
 
-// ── Behavior section ──────────────────────────────────────────────────────────
-
 function BehaviorSection({ items }: { items: string[] }) {
   if (!items.length) return null
   return (
@@ -332,8 +489,6 @@ function BehaviorSection({ items }: { items: string[] }) {
     </DocSection>
   )
 }
-
-// ── Spacing section ───────────────────────────────────────────────────────────
 
 function SpacingSection({ items }: { items: GuidanceItem[] }) {
   if (!items.length) return null
@@ -351,8 +506,6 @@ function SpacingSection({ items }: { items: GuidanceItem[] }) {
   )
 }
 
-// ── Accessibility section ─────────────────────────────────────────────────────
-
 function AccessibilitySection({ items }: { items: GuidanceItem[] }) {
   if (!items.length) return null
   return (
@@ -369,8 +522,6 @@ function AccessibilitySection({ items }: { items: GuidanceItem[] }) {
   )
 }
 
-// ── Do & Don't section ────────────────────────────────────────────────────────
-
 function DoDontSection({
   doItems,
   dontItems,
@@ -382,7 +533,6 @@ function DoDontSection({
   return (
     <DocSection id="do-dont" title="Do & Don't">
       <div className="grid sm:grid-cols-2 gap-6">
-        {/* Do column */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div className="size-5 rounded-full bg-success/15 flex items-center justify-center shrink-0">
@@ -406,7 +556,6 @@ function DoDontSection({
           ))}
         </div>
 
-        {/* Don't column */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div className="size-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
@@ -434,8 +583,6 @@ function DoDontSection({
   )
 }
 
-// ── Examples in context section ───────────────────────────────────────────────
-
 function ExamplesSection({ examples }: { examples: ContextExample[] }) {
   if (!examples.length) return null
   return (
@@ -454,8 +601,6 @@ function ExamplesSection({ examples }: { examples: ContextExample[] }) {
     </DocSection>
   )
 }
-
-// ── Related components section ────────────────────────────────────────────────
 
 function RelatedSection({ components }: { components: RelatedComponent[] }) {
   if (!components.length) return null
@@ -484,8 +629,6 @@ function RelatedSection({ components }: { components: RelatedComponent[] }) {
   )
 }
 
-// ── Design notes section ──────────────────────────────────────────────────────
-
 function DesignNotesSection({ notes }: { notes: string[] }) {
   if (!notes.length) return null
   return (
@@ -504,29 +647,302 @@ function DesignNotesSection({ notes }: { notes: string[] }) {
   )
 }
 
+// ── Developer sections ────────────────────────────────────────────────────────
+
+// ── Package manager tab component ─────────────────────────────────────────────
+
+const PM_OPTIONS = ["npm", "pnpm", "yarn", "bun"] as const
+type PM = typeof PM_OPTIONS[number]
+
+function buildPMCommand(baseCommand: string, pm: PM): string {
+  const pkg = baseCommand.split(" add ")[1] ?? ""
+  switch (pm) {
+    case "npm":  return `npx shadcn@latest add ${pkg}`
+    case "pnpm": return `pnpm dlx shadcn@latest add ${pkg}`
+    case "yarn": return `yarn dlx shadcn@latest add ${pkg}`
+    case "bun":  return `bunx --bun shadcn@latest add ${pkg}`
+  }
+}
+
+function PMCommandBlock({ command }: { command: string }) {
+  const [active, setActive] = React.useState<PM>("npm")
+  const cmd = buildPMCommand(command, active)
+
+  return (
+    <div className="rounded-xl border overflow-hidden">
+      <div className="flex items-center justify-between px-3 py-2 border-b bg-muted/40">
+        <div className="flex gap-0.5">
+          {PM_OPTIONS.map(pm => (
+            <button
+              key={pm}
+              onClick={() => setActive(pm)}
+              className={cn(
+                "cursor-pointer px-2.5 py-1 rounded-md text-xs font-medium transition-colors",
+                active === pm
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {pm}
+            </button>
+          ))}
+        </div>
+        <CopyButton text={cmd} />
+      </div>
+      <pre className="px-4 py-3 text-xs font-mono text-foreground">
+        <code>{cmd}</code>
+      </pre>
+    </div>
+  )
+}
+
+function InstallationSection({
+  data,
+}: {
+  data: { command: string; importPath: string; prerequisites?: string[]; notes?: string[] }
+}) {
+  const tokens = React.useMemo(() => tokenize(data.importPath), [data.importPath])
+
+  return (
+    <DocSection id="dev-installation" title="Installation">
+      <div className="flex flex-col gap-6">
+
+        {/* Prerequisites */}
+        {data.prerequisites && data.prerequisites.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <p className="text-xs font-semibold text-muted-foreground">Prerequisites</p>
+            <div className="rounded-xl border overflow-hidden divide-y">
+              {data.prerequisites.map((cmd, i) => (
+                <div key={i} className="flex items-center justify-between bg-muted/20 px-4 py-3 gap-4">
+                  <code className="text-xs font-mono text-foreground">{cmd}</code>
+                  <CopyButton text={cmd} />
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Run these once per project before installing any component.{" "}
+              <a
+                href="https://github.com/kasidyray/vibe-raanaa#readme"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-2 hover:text-foreground transition-colors"
+              >
+                Setup guide →
+              </a>
+            </p>
+          </div>
+        )}
+
+        {/* Install */}
+        <div className="flex flex-col gap-2">
+          <p className="text-xs font-semibold text-muted-foreground">Install</p>
+          <PMCommandBlock command={data.command} />
+        </div>
+
+        {/* Import */}
+        <div className="flex flex-col gap-2">
+          <p className="text-xs font-semibold text-muted-foreground">Import</p>
+          <div className="rounded-xl border overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-2 border-b bg-muted/40">
+              <p className="text-xs font-medium text-muted-foreground">Usage</p>
+              <CopyButton text={data.importPath} />
+            </div>
+            <pre className="px-4 py-3 text-xs font-mono leading-relaxed">
+              <code>
+                {tokens.map((token, i) => (
+                  <span key={i} className={TOKEN_CLASS[token.type]}>{token.value}</span>
+                ))}
+              </code>
+            </pre>
+          </div>
+        </div>
+
+        {/* Notes */}
+        {data.notes && data.notes.length > 0 && (
+          <div className="rounded-xl border bg-muted/10 overflow-hidden divide-y">
+            {data.notes.map((note, i) => (
+              <p key={i} className="px-4 py-3 text-xs text-muted-foreground">{note}</p>
+            ))}
+          </div>
+        )}
+      </div>
+    </DocSection>
+  )
+}
+
+function BasicUsageSection({ code }: { code: string }) {
+  return (
+    <DocSection id="dev-usage" title="Usage">
+      <CodeBlock title="Basic usage" code={code} />
+    </DocSection>
+  )
+}
+
+function ExampleCard({ example }: { example: CodeExample }) {
+  const [tab, setTab] = React.useState<"preview" | "code">(
+    example.preview ? "preview" : "code",
+  )
+  const tokens = React.useMemo(() => tokenize(example.code), [example.code])
+
+  return (
+    <div className="flex flex-col gap-2">
+      {(example.title || example.description) && (
+        <div>
+          {example.title && <p className="text-sm font-semibold">{example.title}</p>}
+          {example.description && (
+            <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+              {example.description}
+            </p>
+          )}
+        </div>
+      )}
+      <div className="rounded-xl border overflow-hidden">
+        {/* Tab bar */}
+        <div className="flex items-center justify-between px-3 py-2 border-b bg-muted/40">
+          <div className="flex gap-0.5">
+            {example.preview && (
+              <button
+                onClick={() => setTab("preview")}
+                className={cn(
+                  "cursor-pointer px-2.5 py-1 rounded-md text-xs font-medium transition-colors",
+                  tab === "preview"
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                Preview
+              </button>
+            )}
+            <button
+              onClick={() => setTab("code")}
+              className={cn(
+                "cursor-pointer px-2.5 py-1 rounded-md text-xs font-medium transition-colors",
+                tab === "code"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              Code
+            </button>
+          </div>
+          {tab === "code" && <CopyButton text={example.code} />}
+        </div>
+
+        {/* Preview pane */}
+        {tab === "preview" && example.preview && (
+          <div className="flex items-center justify-center px-6 py-10 min-h-32 bg-muted/10">
+            {example.preview}
+          </div>
+        )}
+
+        {/* Code pane */}
+        {tab === "code" && (
+          <pre className="overflow-x-auto px-4 py-4 text-xs font-mono leading-relaxed">
+            <code>
+              {tokens.map((token, i) => (
+                <span key={i} className={TOKEN_CLASS[token.type]}>{token.value}</span>
+              ))}
+            </code>
+          </pre>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function DevExamplesSection({ examples }: { examples: CodeExample[] }) {
+  if (!examples.length) return null
+  return (
+    <DocSection id="dev-examples" title="Examples">
+      <div className="flex flex-col gap-6">
+        {examples.map((ex: CodeExample, i: number) => (
+          <ExampleCard key={i} example={ex} />
+        ))}
+      </div>
+    </DocSection>
+  )
+}
+
+function DevApiSection({ properties }: { properties: PropertyDef[] }) {
+  if (!properties.length) return null
+  return (
+    <DocSection id="dev-api" title="API reference">
+      <div className="rounded-xl border bg-card overflow-hidden">
+        <div className="hidden sm:grid grid-cols-[120px_1fr_80px_1fr] gap-4 px-4 py-2.5 bg-muted/50 border-b">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Prop</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Type</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Default</p>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Description</p>
+        </div>
+        {properties.map((prop: PropertyDef, i: number) => (
+          <div
+            key={prop.name}
+            className={cn(
+              "flex flex-col sm:grid sm:grid-cols-[120px_1fr_80px_1fr] gap-2 sm:gap-4 px-4 py-4 sm:items-start",
+              i > 0 && "border-t",
+            )}
+          >
+            <code className="text-xs font-mono font-semibold bg-muted px-1.5 py-0.5 rounded text-foreground self-start">
+              {prop.name}
+            </code>
+            <p className="text-xs text-muted-foreground font-mono leading-relaxed sm:pt-0.5">
+              {prop.values}
+            </p>
+            <code className="text-xs font-mono text-muted-foreground sm:pt-0.5">
+              {prop.default ?? "—"}
+            </code>
+            <p className="text-xs text-muted-foreground leading-relaxed sm:pt-0.5">
+              {prop.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </DocSection>
+  )
+}
+
+function DevAccessibilitySection({ items }: { items: GuidanceItem[] }) {
+  if (!items.length) return null
+  return (
+    <DocSection id="dev-accessibility" title="Accessibility">
+      <div className="grid sm:grid-cols-2 gap-3">
+        {items.map((item: GuidanceItem, i: number) => (
+          <div key={i} className="rounded-xl border bg-card p-4 flex flex-col gap-1">
+            <p className="text-sm font-medium">{item.rule}</p>
+            <p className="text-xs text-muted-foreground">{item.detail}</p>
+          </div>
+        ))}
+      </div>
+    </DocSection>
+  )
+}
+
+
 // ── Side navigation ───────────────────────────────────────────────────────────
 
 function DocSideNav({
+  sections,
   activeSection,
   onSectionClick,
 }: {
+  sections: { id: string; label: string }[]
   activeSection: string
   onSectionClick: (id: string) => void
 }) {
   return (
     <nav className="flex flex-col gap-0.5">
-      <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest px-2 pb-3">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest pb-3">
         On this page
       </p>
-      {NAV_SECTIONS.map(section => (
+      {sections.map(section => (
         <button
           key={section.id}
           onClick={() => onSectionClick(section.id)}
           className={cn(
-            "text-left px-2 py-1.5 rounded-full text-sm transition-colors w-full",
+            "cursor-pointer text-left py-1 text-sm transition-colors w-full",
             activeSection === section.id
-              ? "bg-accent text-foreground font-medium"
-              : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+              ? "text-foreground font-medium"
+              : "text-muted-foreground hover:text-foreground",
           )}
         >
           {section.label}
@@ -539,21 +955,23 @@ function DocSideNav({
 // ── Mobile section chips ──────────────────────────────────────────────────────
 
 function MobileSectionChips({
+  sections,
   activeSection,
   onSectionClick,
 }: {
+  sections: { id: string; label: string }[]
   activeSection: string
   onSectionClick: (id: string) => void
 }) {
   return (
     <div className="lg:hidden overflow-x-auto pb-1 -mx-1 px-1">
       <div className="flex gap-1.5 min-w-max">
-        {NAV_SECTIONS.map(section => (
+        {sections.map(section => (
           <button
             key={section.id}
             onClick={() => onSectionClick(section.id)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors",
+              "cursor-pointer px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors",
               activeSection === section.id
                 ? "bg-foreground text-background"
                 : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground",
@@ -576,20 +994,17 @@ export function ComponentDocLayout({
   component: ComponentMeta
   doc: ComponentDocData
 }) {
+  const [mode, setMode] = React.useState<DocMode>("design")
   const [activeSection, setActiveSection] = React.useState(NAV_SECTIONS[0].id)
   const layoutRef = React.useRef<HTMLDivElement>(null)
 
+  const hasDevDoc = !!doc.devDoc
+  const activeSections = mode === "design" ? NAV_SECTIONS : DEV_NAV_SECTIONS
+
   // ── Scroll-based active section tracking ──────────────────────────────────
   React.useEffect(() => {
-    function findScrollContainer(el: HTMLElement): HTMLElement | null {
-      let parent = el.parentElement
-      while (parent) {
-        const { overflowY } = window.getComputedStyle(parent)
-        if (overflowY === "auto" || overflowY === "scroll") return parent
-        parent = parent.parentElement
-      }
-      return null
-    }
+    const sections = mode === "design" ? NAV_SECTIONS : DEV_NAV_SECTIONS
+    setActiveSection(sections[0].id)
 
     if (!layoutRef.current) return
     const scrollEl = findScrollContainer(layoutRef.current)
@@ -598,8 +1013,8 @@ export function ComponentDocLayout({
     function update() {
       const { top: containerTop, height } = scrollEl!.getBoundingClientRect()
       const threshold = containerTop + height * 0.25
-      let active = NAV_SECTIONS[0].id
-      for (const { id } of NAV_SECTIONS) {
+      let active = sections[0].id
+      for (const { id } of sections) {
         const el = document.getElementById(id)
         if (!el) continue
         if (el.getBoundingClientRect().top < threshold) active = id
@@ -610,71 +1025,106 @@ export function ComponentDocLayout({
     scrollEl.addEventListener("scroll", update, { passive: true })
     update()
     return () => scrollEl.removeEventListener("scroll", update)
-  }, [])
+  }, [mode])
 
   function scrollToSection(id: string) {
     setActiveSection(id)
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
+  function handleModeChange(m: DocMode) {
+    setMode(m)
+    // scroll to top of content on mode switch
+    if (layoutRef.current) {
+      const scrollEl = findScrollContainer(layoutRef.current)
+      scrollEl?.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
   const statusVariant = component.status ? STATUS_VARIANT[component.status] : "neutral"
 
   return (
-    <div ref={layoutRef} className="flex flex-col gap-8">
+    <div ref={layoutRef} className="grid gap-12 lg:grid-cols-[1fr_160px]">
 
-      {/* ── Doc header ─────────────────────────────────────────────────────── */}
-      <div className="flex flex-col gap-4 pb-6 border-b">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="flex flex-col gap-1.5 min-w-0">
+      {/* ── Left column: header + tabs + content ────────────────────────────── */}
+      <div className="flex flex-col gap-6 min-w-0">
+
+        {/* Header */}
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-2xl font-semibold tracking-tight">{component.name}</h1>
-            <p className="text-sm text-muted-foreground">{component.description}</p>
+            {component.status && (
+              <StatusBadge variant={statusVariant}>{component.status}</StatusBadge>
+            )}
           </div>
-          {component.status && (
-            <StatusBadge variant={statusVariant}>
-              {component.status}
-            </StatusBadge>
-          )}
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {component.description}
+          </p>
+          <div className="mt-3">
+            {hasDevDoc ? (
+              <Tabs
+                value={mode}
+                onValueChange={(v) => handleModeChange(v as DocMode)}
+              >
+                <TabsList variant="underline">
+                  <TabsTab value="design">Design</TabsTab>
+                  <TabsTab value="develop">Develop</TabsTab>
+                </TabsList>
+              </Tabs>
+            ) : (
+              <div className="border-b" />
+            )}
+          </div>
         </div>
-        {component.tags && component.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
-            {component.tags.map(tag => (
-              <Badge key={tag} variant="neutral" size="sm">{tag}</Badge>
-            ))}
-          </div>
-        )}
+
+        {/* Mobile section chips */}
+        <MobileSectionChips
+          sections={activeSections}
+          activeSection={activeSection}
+          onSectionClick={scrollToSection}
+        />
+
+        {/* Content */}
+        <div className="flex flex-col gap-12">
+          {mode === "design" ? (
+            <>
+              <OverviewSection data={doc.overview} tags={component.tags} />
+              <AnatomySection data={doc.anatomy} />
+              <ExamplesSection examples={doc.examplesInContext} />
+              <VariantsSection variants={doc.variants} />
+              <StatesSection states={doc.states} />
+              <UsageSection whenToUse={doc.whenToUse} whenNotToUse={doc.whenNotToUse} />
+              <PropertiesSection properties={doc.properties} />
+              <DoDontSection doItems={doc.doItems} dontItems={doc.dontItems} />
+              <AccessibilitySection items={doc.accessibility} />
+              <ContentGuidanceSection items={doc.contentGuidance} />
+              <BehaviorSection items={doc.behavior} />
+              <SpacingSection items={doc.spacing} />
+              <RelatedSection components={doc.relatedComponents} />
+              <DesignNotesSection notes={doc.designNotes} />
+            </>
+          ) : doc.devDoc ? (
+            <>
+              <InstallationSection data={doc.devDoc.installation} />
+              <BasicUsageSection code={doc.devDoc.basicUsage} />
+              <DevExamplesSection examples={doc.devDoc.codeExamples} />
+              <DevApiSection properties={doc.devDoc.apiReference} />
+              <DevAccessibilitySection items={doc.devDoc.accessibility} />
+            </>
+          ) : null}
+        </div>
       </div>
 
-      {/* ── Mobile section chips ────────────────────────────────────────────── */}
-      <MobileSectionChips activeSection={activeSection} onSectionClick={scrollToSection} />
-
-      {/* ── Two-column layout ───────────────────────────────────────────────── */}
-      <div className="grid gap-10 lg:grid-cols-[200px_1fr]">
-
-        {/* Left sticky nav — desktop only */}
-        <aside className="hidden lg:block">
-          <div className="sticky top-4">
-            <DocSideNav activeSection={activeSection} onSectionClick={scrollToSection} />
-          </div>
-        </aside>
-
-        {/* Main content */}
-        <div className="flex flex-col gap-12 min-w-0">
-          <OverviewSection data={doc.overview} />
-          <AnatomySection data={doc.anatomy} />
-          <ExamplesSection examples={doc.examplesInContext} />
-          <VariantsSection variants={doc.variants} />
-          <StatesSection states={doc.states} />
-          <UsageSection whenToUse={doc.whenToUse} whenNotToUse={doc.whenNotToUse} />
-          <PropertiesSection properties={doc.properties} />
-          <DoDontSection doItems={doc.doItems} dontItems={doc.dontItems} />
-          <AccessibilitySection items={doc.accessibility} />
-          <ContentGuidanceSection items={doc.contentGuidance} />
-          <BehaviorSection items={doc.behavior} />
-          <SpacingSection items={doc.spacing} />
-          <RelatedSection components={doc.relatedComponents} />
-          <DesignNotesSection notes={doc.designNotes} />
+      {/* ── Right column: sticky "On this page" nav ─────────────────────────── */}
+      <aside className="hidden lg:block">
+        <div className="sticky top-4">
+          <DocSideNav
+            sections={activeSections}
+            activeSection={activeSection}
+            onSectionClick={scrollToSection}
+          />
         </div>
-      </div>
+      </aside>
     </div>
   )
 }

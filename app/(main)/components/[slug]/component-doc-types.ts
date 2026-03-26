@@ -60,6 +60,31 @@ export interface RelatedComponent {
   when: string
 }
 
+// ── Developer documentation ───────────────────────────────────────────────────
+
+export interface CodeExample {
+  title: string
+  description?: string
+  code: string
+  preview?: ReactNode
+}
+
+export interface ComponentDevDocData {
+  installation: {
+    /** npx shadcn add @raana/<name> */
+    command: string
+    /** import { X } from "@/components/ui/x" */
+    importPath: string
+    /** prerequisite commands to run first (e.g. tokens, utils) */
+    prerequisites?: string[]
+    notes?: string[]
+  }
+  basicUsage: string
+  codeExamples: CodeExample[]
+  apiReference: PropertyDef[]
+  accessibility: GuidanceItem[]
+}
+
 // ── Full doc data shape ───────────────────────────────────────────────────────
 
 export interface ComponentDocData {
@@ -87,4 +112,5 @@ export interface ComponentDocData {
   examplesInContext: ContextExample[]
   relatedComponents: RelatedComponent[]
   designNotes: string[]
+  devDoc?: ComponentDevDocData
 }
