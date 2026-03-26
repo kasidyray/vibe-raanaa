@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "date-picker",
+  "type": "registry:ui",
+  "dependencies": [
+    "date-fns",
+    "@remixicon/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/date-picker.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { format } from \"date-fns\"\nimport { RiCalendarLine, RiCloseLine } from \"@remixicon/react\"\nimport { cn } from \"@/lib/utils\"\nimport { Calendar } from \"@/components/ui/calendar\"\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\"\n\ntype DatePickerProps = {\n  value?: Date\n  onChange?: (date: Date | undefined) => void\n  placeholder?: string\n  disabled?: boolean\n  className?: string\n}\n\nexport function DatePicker({\n  value,\n  onChange,\n  placeholder = \"Pick a date\",\n  disabled,\n  className,\n}: DatePickerProps) {\n  return (\n    <Popover>\n      <PopoverTrigger\n        disabled={disabled}\n        className={cn(\n          \"flex h-10 w-full items-center gap-2 rounded-lg border border-input bg-input/30 px-3 text-sm transition-colors outline-none input-focus-ring\",\n          \"disabled:cursor-not-allowed disabled:opacity-50\",\n          !value && \"text-muted-foreground\",\n          className\n        )}\n      >\n        <RiCalendarLine className=\"size-4 shrink-0 text-muted-foreground\" />\n        <span className=\"flex-1 text-left\">\n          {value ? format(value, \"PPP\") : placeholder}\n        </span>\n        {value && (\n          <button\n            type=\"button\"\n            aria-label=\"Clear date\"\n            onClick={e => {\n              e.stopPropagation()\n              onChange?.(undefined)\n            }}\n            className=\"shrink-0 text-muted-foreground/60 hover:text-foreground transition-colors\"\n          >\n            <RiCloseLine className=\"size-3.5\" />\n          </button>\n        )}\n      </PopoverTrigger>\n      <PopoverContent className=\"w-auto p-0\" align=\"start\">\n        <Calendar\n          mode=\"single\"\n          selected={value}\n          onSelect={onChange}\n        />\n      </PopoverContent>\n    </Popover>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

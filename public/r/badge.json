@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/badge.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\n\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center gap-1 overflow-hidden rounded-4xl font-normal whitespace-nowrap [&>svg]:pointer-events-none [&>svg]:shrink-0\",\n  {\n    variants: {\n      variant: {\n        info:     \"bg-info-lighter text-info-dark\",\n        success:  \"bg-success-lighter text-success-dark\",\n        warning:  \"bg-warning-lighter text-warning-dark\",\n        critical: \"bg-error-lighter text-error-dark\",\n        neutral:  \"bg-secondary text-secondary-foreground\",\n        caution:  \"bg-primary/15 text-foreground dark:bg-primary/20 dark:text-primary\",\n      },\n      size: {\n        sm:      \"h-4 px-1.5 py-1.5 text-xs [&>svg]:size-2.5!\",\n        default: \"h-5 px-2 py-0.5 text-xs [&>svg]:size-3!\",\n        lg:      \"h-6 px-1.5 text-sm [&>svg]:size-3.5!\",\n      },\n    },\n    defaultVariants: {\n      variant: \"neutral\",\n      size: \"default\",\n    },\n  }\n)\n\nfunction Badge({\n  className,\n  variant,\n  size,\n  icon,\n  children,\n  ...props\n}: React.ComponentProps<\"span\"> &\n  VariantProps<typeof badgeVariants> & {\n    icon?: React.ReactNode\n  }) {\n  return (\n    <span\n      data-slot=\"badge\"\n      className={cn(\n        badgeVariants({ variant, size }),\n        icon && size !== \"lg\" && \"px-1 pr-2\",\n        className,\n      )}\n      {...props}\n    >\n      {icon}\n      {children}\n    </span>\n  )\n}\n\nexport { Badge, badgeVariants }\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

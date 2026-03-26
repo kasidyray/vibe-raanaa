@@ -1,9 +1,19 @@
 "use client"
 
 /**
- * Component documentation template.
- * Copy this file to `_docs/[slug].tsx`, fill in every field, then register
- * the export in `page.tsx` docMap.
+ * Component documentation template — DESIGN file.
+ *
+ * Each component doc is split into two files:
+ *   _docs/[slug]/design.tsx   ← this file (design sections, no devDoc)
+ *   _docs/[slug]/develop.tsx  ← developer documentation only
+ *
+ * Steps:
+ *   1. Copy this to `_docs/[slug]/design.tsx` and fill in every field.
+ *   2. Copy `_template_develop.tsx` to `_docs/[slug]/develop.tsx` and fill in.
+ *   3. Register both in `page.tsx`:
+ *        import { slugDesignDoc } from "./_docs/slug/design"
+ *        import { slugDevelopDoc } from "./_docs/slug/develop"
+ *        docMap["slug"] = { ...slugDesignDoc, devDoc: slugDevelopDoc }
  *
  * See `.claude/skills/design-to-code/maps/component-doc-guide.md` for full
  * authoring instructions.
@@ -11,7 +21,7 @@
 
 // import { ComponentName } from "@/components/ui/slug"
 // import { RiIconLine } from "@remixicon/react"
-import type { ComponentDocData } from "../component-doc-types"
+import type { ComponentDocData } from "../../component-doc-types"
 
 // ── Anatomy preview ───────────────────────────────────────────────────────────
 
@@ -42,7 +52,7 @@ const AnatomyPreview = () => (
 
 // ── Full doc data ─────────────────────────────────────────────────────────────
 
-export const /* componentName */Doc: ComponentDocData = {
+export const /* componentName */DesignDoc: Omit<ComponentDocData, "devDoc"> = {
   // ── Overview ───────────────────────────────────────────────────────────────
   overview: {
     what: "One sentence describing what the component is and does visually.",
@@ -200,7 +210,8 @@ export const /* componentName */Doc: ComponentDocData = {
       command: "npx shadcn add @raana//* slug */",
       importPath: `import { /* ComponentName */ } from "@/components/ui//* slug */"`,
       notes: [
-        // "Any peer dependency notes."
+        "One-time setup: add the registry to your components.json → \"registries\": { \"@raana\": \"https://raw.githubusercontent.com/kasidyray/vibe-raanaa/main/public/r/{name}.json\" }",
+        // "Any peer dependency notes e.g. npm install @remixicon/react"
       ],
     },
 

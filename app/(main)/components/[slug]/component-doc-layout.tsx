@@ -1081,7 +1081,7 @@ export function ComponentDocLayout({
         />
 
         {/* Content */}
-        <div className="flex flex-col gap-12">
+        <div key={mode} className="flex flex-col gap-12 animate-in fade-in slide-in-from-bottom-5 duration-100 ease-out">
           {mode === "design" ? (
             <>
               <OverviewSection data={doc.overview} tags={component.tags} />

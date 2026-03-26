@@ -11,7 +11,16 @@ import {
 } from "@/components/ui/breadcrumb"
 import { getComponent } from "@/app/(main)/components/component-list"
 import { ComponentDocLayout } from "./component-doc-layout"
-import { badgeDoc } from "./_docs/badge"
+import { alertDesignDoc } from "./_docs/alert/design"
+import { alertDevelopDoc } from "./_docs/alert/develop"
+import { alertDialogDesignDoc } from "./_docs/alert-dialog/design"
+import { alertDialogDevelopDoc } from "./_docs/alert-dialog/develop"
+import { avatarDesignDoc } from "./_docs/avatar/design"
+import { avatarDevelopDoc } from "./_docs/avatar/develop"
+import { badgeDesignDoc } from "./_docs/badge/design"
+import { badgeDevelopDoc } from "./_docs/badge/develop"
+import { buttonDesignDoc } from "./_docs/button/design"
+import { buttonDevelopDoc } from "./_docs/button/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -59,7 +68,11 @@ const exampleMap: Record<string, React.LazyExoticComponent<() => React.ReactElem
 
 // Doc data registry — add entries here as component docs are authored
 const docMap: Record<string, ComponentDocData> = {
-  badge: badgeDoc,
+  alert:          { ...alertDesignDoc, devDoc: alertDevelopDoc },
+  "alert-dialog": { ...alertDialogDesignDoc, devDoc: alertDialogDevelopDoc },
+  avatar:         { ...avatarDesignDoc, devDoc: avatarDevelopDoc },
+  badge:          { ...badgeDesignDoc, devDoc: badgeDevelopDoc },
+  button:         { ...buttonDesignDoc, devDoc: buttonDevelopDoc },
 }
 
 export default function ComponentPage({

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "page-header",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/page-header.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction PageHeader({\n  title,\n  description,\n  actions,\n  className,\n}: {\n  title: React.ReactNode\n  description?: React.ReactNode\n  actions?: React.ReactNode\n  className?: string\n}) {\n  return (\n    <div className={cn(\"flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4\", className)}>\n      <div className=\"min-w-0\">\n        <h1 className=\"text-2xl font-semibold leading-tight\">{title}</h1>\n        {description && (\n          <p className=\"mt-1 text-sm text-muted-foreground\">{description}</p>\n        )}\n      </div>\n      {actions && (\n        <div className=\"flex shrink-0 items-center gap-2\">{actions}</div>\n      )}\n    </div>\n  )\n}\n\nexport { PageHeader }\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

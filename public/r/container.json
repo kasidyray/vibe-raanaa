@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "container",
+  "type": "registry:ui",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/container.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\nexport function Container({\n  className,\n  size = \"default\",\n  ...props\n}: React.ComponentProps<\"div\"> & {\n  size?: \"sm\" | \"default\" | \"lg\" | \"xl\"\n}) {\n  return (\n    <div\n      className={cn(\n        \"w-full mx-auto\",\n        size === \"sm\"      && \"max-w-2xl\",\n        size === \"default\" && \"max-w-4xl\",\n        size === \"lg\"      && \"max-w-6xl\",\n        size === \"xl\"      && \"max-w-7xl\",\n        className,\n      )}\n      {...props}\n    />\n  )\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

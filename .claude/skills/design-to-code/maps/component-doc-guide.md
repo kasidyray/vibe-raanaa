@@ -4,23 +4,31 @@ How to author a full design + develop documentation page for any component.
 
 ---
 
-## Two steps to publish a doc
+## Three steps to publish a doc
 
-### 1. Create `app/(main)/components/[slug]/_docs/[slug].tsx`
+### 1. Create `_docs/[slug]/design.tsx`
 
-Copy `_docs/_template.tsx` and fill in every field.
+Copy `_docs/_template.tsx` to `_docs/[slug]/design.tsx` and fill in every field.
+Export name: `[slug]DesignDoc` typed as `Omit<ComponentDocData, "devDoc">`.
 
-### 2. Register it in `app/(main)/components/[slug]/page.tsx`
+### 2. Create `_docs/[slug]/develop.tsx`
+
+Fill in the `ComponentDevDocData` shape.
+Export name: `[slug]DevelopDoc` typed as `ComponentDevDocData`.
+
+### 3. Register in `app/(main)/components/[slug]/page.tsx`
 
 ```ts
 // Static imports at the top
-import { badgeDoc } from "./_docs/badge"
-import { buttonDoc } from "./_docs/button"   // ← add here
+import { badgeDesignDoc } from "./_docs/badge/design"
+import { badgeDevelopDoc } from "./_docs/badge/develop"
+import { buttonDesignDoc } from "./_docs/button/design"   // ← add here
+import { buttonDevelopDoc } from "./_docs/button/develop" // ← add here
 
 // docMap object
 const docMap: Record<string, ComponentDocData> = {
-  badge: badgeDoc,
-  button: buttonDoc,  // ← add here
+  badge: { ...badgeDesignDoc, devDoc: badgeDevelopDoc },
+  button: { ...buttonDesignDoc, devDoc: buttonDevelopDoc },  // ← add here
 }
 ```
 
@@ -33,11 +41,15 @@ That's it. The layout renders automatically.
 ```
 app/(main)/components/[slug]/
 ├── _docs/
-│   ├── _template.tsx       ← skeleton to copy
-│   ├── badge.tsx           ← example of a complete doc
-│   └── button.tsx          ← your next doc
+│   ├── _template.tsx        ← design skeleton to copy
+│   ├── badge/
+│   │   ├── design.tsx       ← design sections (no devDoc)
+│   │   └── develop.tsx      ← ComponentDevDocData only
+│   └── button/
+│       ├── design.tsx
+│       └── develop.tsx
 ├── _examples/
-│   └── badge.tsx           ← live interactive example (separate from doc previews)
+│   └── badge.tsx            ← live interactive example (separate from doc previews)
 ├── component-doc-layout.tsx
 ├── component-doc-types.ts
 └── page.tsx

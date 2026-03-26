@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "step-indicator",
+  "type": "registry:ui",
+  "dependencies": [
+    "@remixicon/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "components/ui/step-indicator.tsx",
+      "content": "import { RiAlertLine, RiCheckLine } from \"@remixicon/react\"\nimport type { StepStatus } from \"@/lib/steps\"\n\n/**\n * Mercury-style numbered step circle.\n *\n *  completed → bg-success-lighter + green ring + number\n *  current   → bg-foreground + number (inverted)\n *  error     → bg-destructive + alert icon\n *  upcoming  → muted border + number\n */\nexport function StepIndicator({ status, number }: { status: StepStatus; number: number }) {\n  if (status === \"completed\") {\n    return (\n      <span className=\"relative z-10 w-5 h-5 flex items-center justify-center shrink-0\">\n        <RiCheckLine className=\"size-4 text-success\" />\n      </span>\n    )\n  }\n  if (status === \"current\") {\n    return (\n      <span className=\"relative z-10 w-5 h-5 rounded-full bg-foreground flex items-center justify-center shrink-0\">\n        <span className=\"text-[10px] font-semibold text-background leading-none\">{number}</span>\n      </span>\n    )\n  }\n  if (status === \"error\") {\n    return (\n      <span className=\"relative z-10 w-5 h-5 flex items-center justify-center shrink-0\">\n        <RiAlertLine className=\"size-4 text-destructive\" />\n      </span>\n    )\n  }\n  return (\n    <span className=\"relative z-10 w-5 h-5 rounded-full border border-muted-foreground/30 flex items-center justify-center shrink-0\">\n      <span className=\"text-[10px] font-medium text-foreground leading-none\">{number}</span>\n    </span>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": ""
+    }
+  ]
+}

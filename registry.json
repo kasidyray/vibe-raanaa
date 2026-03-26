@@ -1,0 +1,203 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "raana-ui",
+  "homepage": "https://github.com/kasidyray/vibe-raanaa",
+  "items": [
+    {
+      "name": "utils",
+      "type": "registry:lib"
+    },
+    {
+      "name": "mtn-tokens",
+      "type": "registry:file"
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui"
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui"
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui"
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui"
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui"
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui"
+    },
+    {
+      "name": "button",
+      "type": "registry:ui"
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui"
+    },
+    {
+      "name": "card",
+      "type": "registry:ui"
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui"
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui"
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui"
+    },
+    {
+      "name": "container",
+      "type": "registry:ui"
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui"
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui"
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui"
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui"
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui"
+    },
+    {
+      "name": "field",
+      "type": "registry:ui"
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui"
+    },
+    {
+      "name": "icon-badge",
+      "type": "registry:ui"
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui"
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui"
+    },
+    {
+      "name": "input",
+      "type": "registry:ui"
+    },
+    {
+      "name": "label",
+      "type": "registry:ui"
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui"
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui"
+    },
+    {
+      "name": "password",
+      "type": "registry:ui"
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui"
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui"
+    },
+    {
+      "name": "select",
+      "type": "registry:ui"
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui"
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui"
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui"
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui"
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui"
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui"
+    },
+    {
+      "name": "status-badge",
+      "type": "registry:ui"
+    },
+    {
+      "name": "step-indicator",
+      "type": "registry:ui"
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui"
+    },
+    {
+      "name": "table",
+      "type": "registry:ui"
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui"
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui"
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui"
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui"
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui"
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui"
+    }
+  ]
+}

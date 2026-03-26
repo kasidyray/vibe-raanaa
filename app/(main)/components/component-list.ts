@@ -37,7 +37,7 @@ export const components: ComponentMeta[] = [
   { slug: "input-group",  name: "Input Group",   description: "Input with leading/trailing addons.",              category: "Inputs" },
 
   // Display
-  { slug: "avatar",       name: "Avatar",        description: "User or entity image with fallback initials.",      category: "Display" },
+  { slug: "avatar",       name: "Avatar",        description: "User or entity image with fallback initials.",      category: "Display", status: "Ready", tags: ["Display", "Identity", "Media"] },
   { slug: "badge",        name: "Badge",         description: "Coloured pill for categorical labels.",             category: "Display", status: "Ready", tags: ["Display", "Label", "Indicator"] },
   { slug: "status-badge", name: "Status Badge",  description: "Bordered pill with a dot for live status.",        category: "Display" },
   { slug: "icon-badge",   name: "Icon Badge",    description: "Square icon container in various semantic colours.", category: "Display" },
@@ -47,7 +47,7 @@ export const components: ComponentMeta[] = [
 
   // Overlay
   { slug: "dialog",        name: "Dialog",        description: "Modal dialog for focused interactions.",           category: "Overlay" },
-  { slug: "alert-dialog",  name: "Alert Dialog",  description: "Confirmation dialog for destructive actions.",    category: "Overlay" },
+  { slug: "alert-dialog",  name: "Alert Dialog",  description: "Confirmation dialog for destructive actions.",    category: "Overlay", status: "Ready", tags: ["Overlay", "Confirmation", "Destructive"] },
   { slug: "drawer",        name: "Drawer",        description: "Slide-in panel from any screen edge.",            category: "Overlay" },
   { slug: "sheet",         name: "Sheet",         description: "Bottom or side sheet for supplemental content.",   category: "Overlay" },
   { slug: "popover",       name: "Popover",       description: "Anchored floating panel for rich content.",       category: "Overlay" },
@@ -60,7 +60,7 @@ export const components: ComponentMeta[] = [
   { slug: "tabs",         name: "Tabs",          description: "Switch between related content views.",            category: "Navigation" },
 
   // Feedback
-  { slug: "alert",        name: "Alert",         description: "Inline message for info, success, warning, error.", category: "Feedback" },
+  { slug: "alert",        name: "Alert",         description: "Inline message for info, success, warning, error.", category: "Feedback", status: "Ready", tags: ["Feedback", "Inline", "Message"] },
   { slug: "progress",     name: "Progress",      description: "Shows completion percentage of a task.",           category: "Feedback" },
   { slug: "sonner",       name: "Sonner",        description: "Toast notifications with multiple variants.",      category: "Feedback" },
   { slug: "empty",        name: "Empty State",   description: "Zero-data placeholder with optional CTA.",         category: "Feedback" },
