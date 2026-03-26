@@ -2,37 +2,55 @@
 
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import { RiArrowRightSLine } from "@remixicon/react"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon?: React.ReactNode
-  }[]
-}) {
+type NavSubItem = {
+  title: string
+  url: string
+}
+
+type NavItem = {
+  title: string
+  url: string
+  icon?: React.ReactNode
+  items?: NavSubItem[]
+}
+
+export function NavMain({ items }: { items: NavItem[] }) {
   const pathname = usePathname()
   const [indicatorY, setIndicatorY] = useState<number | null>(null)
 
   useEffect(() => {
-    // data-active is set by SidebarMenuButton when isActive=true
-    const activeBtn = document.querySelector<HTMLElement>(
-      '[data-sidebar="menu-button"][data-active]'
-    )
-    if (activeBtn) {
-      const rect = activeBtn.getBoundingClientRect()
-      setIndicatorY(rect.top + rect.height / 2)
-    } else {
-      setIndicatorY(null)
+    const updateIndicator = () => {
+      const activeBtn = document.querySelector<HTMLElement>(
+        '[data-sidebar="menu-button"][data-active]'
+      )
+      if (activeBtn) {
+        const rect = activeBtn.getBoundingClientRect()
+        setIndicatorY(rect.top + rect.height / 2)
+      } else {
+        setIndicatorY(null)
+      }
     }
+    updateIndicator()
+    const scrollContainer = document.querySelector('[data-sidebar="content"]')
+    scrollContainer?.addEventListener("scroll", updateIndicator, { passive: true })
+    return () => scrollContainer?.removeEventListener("scroll", updateIndicator)
   }, [pathname])
 
   return (
@@ -48,7 +66,43 @@ export function NavMain({
         <SidebarGroupContent className="flex flex-col gap-2">
           <SidebarMenu>
             {items.map((item) => {
-              const isActive = pathname === item.url
+              const isActive = pathname === item.url || pathname.startsWith(item.url + "/")
+
+              if (item.items && item.items.length > 0) {
+                return (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen={isActive}
+                    className="group/collapsible"
+                    render={<SidebarMenuItem />}
+                  >
+                    <CollapsibleTrigger
+                      render={
+                        <SidebarMenuButton tooltip={item.title} isActive={isActive} />
+                      }
+                    >
+                      {item.icon}
+                      <span>{item.title}</span>
+                      <RiArrowRightSLine className="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items.map((sub) => (
+                          <SidebarMenuSubItem key={sub.title}>
+                            <SidebarMenuSubButton
+                              isActive={pathname === sub.url}
+                              render={<a href={sub.url} />}
+                            >
+                              <span>{sub.title}</span>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </Collapsible>
+                )
+              }
+
               return (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton

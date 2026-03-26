@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import {
   Breadcrumb,
@@ -36,6 +37,7 @@ export default function HelpPage() {
         }
       />
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+        <Container className="flex flex-1 flex-col gap-6">
         <PageHeader
           title="Get Help"
           description="Find answers, documentation, and support resources."
@@ -51,6 +53,7 @@ export default function HelpPage() {
             </EmptyDescription>
           </EmptyHeader>
         </Empty>
+        </Container>
       </div>
     </>
   )

@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,6 +39,7 @@ export default function ReportsPage() {
         }
       />
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+        <Container className="flex flex-1 flex-col gap-6">
         <PageHeader
           title="Reports"
           description="Generate and review detailed reports for your workspace."
@@ -48,7 +50,7 @@ export default function ReportsPage() {
             </Button>
           }
         />
-        <Empty className="flex-1 border">
+        <Empty className="flex-1">
           <EmptyHeader>
             <EmptyMedia variant="stacked">
               <RiFileChartLine />
@@ -65,6 +67,7 @@ export default function ReportsPage() {
             </Button>
           </EmptyContent>
         </Empty>
+        </Container>
       </div>
     </>
   )

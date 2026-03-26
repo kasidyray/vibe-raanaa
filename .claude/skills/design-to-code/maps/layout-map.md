@@ -23,19 +23,15 @@ export default function FooPage() {
   return (
     <>
       <SiteHeader left={<Breadcrumb>...</Breadcrumb>} />
-      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
-        {containerSize === "full" ? (
-          <div className="flex flex-1 flex-col gap-6">{content}</div>
-        ) : (
-          <Container size={containerSize} className="flex flex-1 flex-col gap-6">{content}</Container>
-        )}
+      <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+        <Container size={containerSize} className="flex flex-1 flex-col gap-6">{content}</Container>
       </div>
     </>
   )
 }
 ```
 
-The `containerSize === "full"` branch is mandatory — `Container` has no "full" size.
+`Container` is the de-facto width controller for all main pages. It accepts `"sm" | "default" | "lg" | "xl" | "full"` — use `"full"` for unrestricted width. It also provides the page-enter animation automatically.
 
 **PageHeader actions always include the width switcher** — see `component-apis.md` for the full switcher implementation.
 

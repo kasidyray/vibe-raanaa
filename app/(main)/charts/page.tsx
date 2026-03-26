@@ -1,6 +1,7 @@
 "use client"
 
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbList,
@@ -126,6 +127,7 @@ export default function ChartsPage() {
         }
       />
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+        <Container className="flex flex-1 flex-col gap-6">
         <PageHeader
           title="Charts"
           description={<>All chart types available via <code className="font-mono text-xs">recharts</code> + <code className="font-mono text-xs">chart.tsx</code></>}
@@ -247,10 +249,16 @@ export default function ChartsPage() {
           <ChartCard title="Area Chart">
             <ChartContainer config={desktopConfig} className="h-[200px] w-full">
               <AreaChart accessibilityLayer data={monthlyData} margin={{ left: 12, right: 12 }}>
+                <defs>
+                  <linearGradient id="fillDesktopSingle" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" />
+                <Area dataKey="desktop" type="natural" fill="url(#fillDesktopSingle)" stroke="var(--color-desktop)" strokeWidth={1.5} />
               </AreaChart>
             </ChartContainer>
           </ChartCard>
@@ -264,16 +272,16 @@ export default function ChartsPage() {
                 <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
                 <defs>
                   <linearGradient id="fillDesktop2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%"  stopColor="var(--color-desktop)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
+                    <stop offset="5%"  stopColor="var(--color-desktop)" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="fillMobile2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%"  stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                    <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
+                    <stop offset="5%"  stopColor="var(--color-mobile)" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <Area dataKey="mobile"  type="natural" fill="url(#fillMobile2)"  fillOpacity={0.4} stroke="var(--color-mobile)"  stackId="a" />
-                <Area dataKey="desktop" type="natural" fill="url(#fillDesktop2)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
+                <Area dataKey="mobile"  type="natural" fill="url(#fillMobile2)"  stroke="var(--color-mobile)"  strokeWidth={1.5} stackId="a" />
+                <Area dataKey="desktop" type="natural" fill="url(#fillDesktop2)" stroke="var(--color-desktop)" strokeWidth={1.5} stackId="a" />
               </AreaChart>
             </ChartContainer>
           </ChartCard>
@@ -285,7 +293,13 @@ export default function ChartsPage() {
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Area dataKey="revenue" type="step" fill="var(--color-revenue)" fillOpacity={0.3} stroke="var(--color-revenue)" strokeWidth={2} />
+                <defs>
+                  <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--color-revenue)" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="var(--color-revenue)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <Area dataKey="revenue" type="step" fill="url(#fillRevenue)" stroke="var(--color-revenue)" strokeWidth={1.5} />
               </AreaChart>
             </ChartContainer>
           </ChartCard>
@@ -356,6 +370,7 @@ export default function ChartsPage() {
           </ChartCard>
 
         </div>
+        </Container>
       </div>
     </>
   )

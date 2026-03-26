@@ -3,6 +3,7 @@
 import * as React from "react"
 
 import { NavDocuments } from "@/components/sidebar/nav-documents"
+import { NavExamples } from "@/components/sidebar/nav-examples"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavSecondary } from "@/components/sidebar/nav-secondary"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -15,7 +16,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine } from "@remixicon/react"
+import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine, RiMessage2Line } from "@remixicon/react"
+import { components } from "@/app/(main)/components/component-list"
 
 const data = {
   user: {
@@ -27,10 +29,7 @@ const data = {
     {
       title: "Dashboard",
       url: "/dashboard",
-      icon: (
-        <RiDashboardLine
-        />
-      ),
+      icon: <RiDashboardLine />,
     },
     {
       title: "Playground",
@@ -41,11 +40,19 @@ const data = {
       title: "Components",
       url: "/components",
       icon: <RiLayoutGridLine />,
+      items: [...components].sort((a, b) => a.name.localeCompare(b.name)).map((c) => ({ title: c.name, url: `/components/${c.slug}` })),
     },
     {
       title: "Charts",
       url: "/charts",
       icon: <RiPieChartLine />,
+    },
+  ],
+  navExamples: [
+    {
+      title: "Customers",
+      url: "/customers",
+      icon: <RiUserLine />,
     },
     {
       title: "Data Table",
@@ -65,23 +72,22 @@ const data = {
     {
       title: "Projects",
       url: "/projects",
-      icon: (
-        <RiFolderLine
-        />
-      ),
+      icon: <RiFolderLine />,
     },
     {
       title: "Team",
       url: "/team",
-      icon: (
-        <RiGroupLine
-        />
-      ),
+      icon: <RiGroupLine />,
     },
     {
       title: "Activity",
       url: "/activity",
       icon: <RiHistoryLine />,
+    },
+    {
+      title: "Canned Answers",
+      url: "/canned-answers",
+      icon: <RiMessage2Line />,
     },
   ],
   navClouds: [
@@ -211,6 +217,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavExamples items={data.navExamples} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>

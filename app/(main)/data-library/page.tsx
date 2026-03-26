@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,6 +39,7 @@ export default function DataLibraryPage() {
         }
       />
       <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+        <Container className="flex flex-1 flex-col gap-6">
         <PageHeader
           title="Data Library"
           description="Store, manage, and access your workspace data assets."
@@ -65,6 +67,7 @@ export default function DataLibraryPage() {
             </Button>
           </EmptyContent>
         </Empty>
+        </Container>
       </div>
     </>
   )

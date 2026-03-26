@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
@@ -222,7 +222,17 @@ export function ChartAreaInteractive() {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <BarChart data={filteredData} barCategoryGap="30%">
+          <AreaChart data={filteredData}>
+            <defs>
+              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.15} />
+                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0} />
+              </linearGradient>
+            </defs>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -252,9 +262,9 @@ export function ChartAreaInteractive() {
                 />
               }
             />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={[4, 4, 0, 0]} stackId="a" />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={[4, 4, 0, 0]} stackId="a" opacity={0.6} />
-          </BarChart>
+            <Area dataKey="mobile" type="natural" stroke="var(--color-mobile)" fill="url(#fillMobile)" strokeWidth={1.5} />
+            <Area dataKey="desktop" type="natural" stroke="var(--color-desktop)" fill="url(#fillDesktop)" strokeWidth={1.5} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import {
   Breadcrumb, BreadcrumbItem, BreadcrumbList,
@@ -48,6 +49,7 @@ export default function PlaygroundPage() {
         }
       />
       <div className="flex flex-1 flex-col gap-10 p-4 md:p-6 md:overflow-y-auto">
+        <Container className="flex flex-1 flex-col gap-10">
         <PageHeader
           title="Playground"
           description="Explore and experiment with UI blocks and component compositions."
@@ -132,6 +134,7 @@ export default function PlaygroundPage() {
 
         </div>
 
+        </Container>
       </div>
     </>
   )

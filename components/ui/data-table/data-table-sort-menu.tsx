@@ -36,7 +36,6 @@ function DataTableSortMenu({
         <Button
           variant="outline"
           size="sm"
-          className={cn("rounded-md", current && "border-primary/40 bg-primary/5")}
         />
       }>
         <RiArrowUpDownLine className="opacity-60" />

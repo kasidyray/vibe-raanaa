@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils"
 import { flattenStepIds } from "@/lib/steps"
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 import { Button } from "@/components/ui/button"
 import {
@@ -591,6 +592,7 @@ export default function ProjectsPage() {
         />
       ) : (
         <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+          <Container className="flex flex-1 flex-col gap-6">
           <PageHeader
             title="Projects"
             description="Organise and manage all your workspace projects in one place."
@@ -601,7 +603,7 @@ export default function ProjectsPage() {
               </Button>
             }
           />
-          <Empty className="flex-1 border">
+          <Empty className="flex-1">
             <EmptyHeader>
               <EmptyMedia variant="stacked">
                 <RiFolderLine />
@@ -618,6 +620,7 @@ export default function ProjectsPage() {
               </Button>
             </EmptyContent>
           </Empty>
+          </Container>
         </div>
       )}
     </>

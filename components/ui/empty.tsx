@@ -7,7 +7,7 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="empty"
       className={cn(
-        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-12 text-center text-balance",
+        "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-12 text-center text-balance",
         className
       )}
       {...props}
@@ -26,7 +26,7 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 const emptyMediaVariants = cva(
-  "mb-6 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -56,12 +56,18 @@ function EmptyMedia({
         {...props}
       >
         {/* back-left card */}
-        <div className="absolute inset-1 -translate-x-4 -rotate-12 rounded-xl border bg-card shadow-sm" />
+        <div className="absolute inset-0 animate-empty-float" style={{ animationDelay: "0.8s" }}>
+          <div className="absolute inset-1 -translate-x-4 -rotate-12 rounded-xl opacity-50 border bg-card shadow-sm" />
+        </div>
         {/* back-right card */}
-        <div className="absolute inset-1 translate-x-4 rotate-12 rounded-xl border bg-card shadow-sm" />
+        <div className="absolute inset-0 animate-empty-float" style={{ animationDelay: "0.4s" }}>
+          <div className="absolute inset-1 translate-x-4 rotate-12 rounded-xl opacity-50 border bg-card shadow-sm" />
+        </div>
         {/* front card with icon */}
-        <div className="relative z-10 flex size-full items-center justify-center rounded-xl border bg-card shadow-sm text-foreground [&_svg:not([class*='size-'])]:size-7">
-          {children}
+        <div className="relative z-10 size-full animate-empty-float" style={{ animationDelay: "0s" }}>
+          <div className="flex size-full items-center justify-center rounded-xl border border-dashed bg-card shadow-sm text-foreground [&_svg:not([class*='size-'])]:size-7">
+            {children}
+          </div>
         </div>
       </div>
     )

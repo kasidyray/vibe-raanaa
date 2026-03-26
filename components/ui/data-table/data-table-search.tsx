@@ -22,7 +22,7 @@ function DataTableSearch<TData>({
         placeholder={placeholder}
         value={(table.getState().globalFilter as string) ?? ""}
         onChange={e => table.setGlobalFilter(e.target.value)}
-        className="h-8 w-full rounded-md border border-input bg-transparent pl-9 pr-3 text-sm outline-none placeholder:text-muted-foreground focus:border-ring"
+        className="h-8 w-full rounded-full border border-input bg-transparent pl-9 pr-3 text-sm outline-none placeholder:text-muted-foreground focus:border-ring"
       />
     </div>
   )

@@ -25,14 +25,23 @@ function DataTable<TData>({
   className,
   emptyMessage = "Try adjusting your filters or search terms.",
   onRowClick,
+  toolbar,
+  footer,
 }: {
   table: Table<TData>
   variant?: DataTableVariant
   className?: string
   emptyMessage?: string
   onRowClick?: (row: TData) => void
+  /** Rendered above the table. For `contained`, gets a `border-b` separator automatically. */
+  toolbar?: React.ReactNode
+  /** Rendered below the table (e.g. pagination). For `contained`, gets a `border-t` separator automatically. Pass `undefined` to hide (e.g. when no rows). */
+  footer?: React.ReactNode
 }) {
-  const tableEl = (
+  const hasRows = table.getRowModel().rows.length > 0
+  const query   = (table.getState().globalFilter as string) || ""
+
+  const headerEl = (
     <UITable className={className}>
       <TableHeader>
         {table.getHeaderGroups().map(headerGroup => (
@@ -52,9 +61,9 @@ function DataTable<TData>({
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows.length ? (
-          table.getRowModel().rows.map(row => {
+      {hasRows && (
+        <TableBody>
+          {table.getRowModel().rows.map(row => {
             const cells = row.getVisibleCells()
             return (
               <TableRow
@@ -82,45 +91,73 @@ function DataTable<TData>({
                 ))}
               </TableRow>
             )
-          })
-        ) : (
-          <TableRow className="hover:bg-transparent! hover:ring-0">
-            <TableCell colSpan={table.getAllColumns().length} className="p-0 pt-3">
-              {(() => {
-                const query = (table.getState().globalFilter as string) || ""
-                return (
-                  <Empty className="py-16 bg-muted/50">
-                    <EmptyHeader>
-                      <EmptyMedia variant="icon">
-                        <RiSearchLine />
-                      </EmptyMedia>
-                      <EmptyTitle>No results found</EmptyTitle>
-                      <EmptyDescription>
-                        {query ? <>No results found for <strong>&ldquo;{query}&rdquo;</strong></> : emptyMessage}
-                      </EmptyDescription>
-                    </EmptyHeader>
-                    {query && (
-                      <EmptyContent>
-                        <Button variant="outline" size="sm" onClick={() => table.setGlobalFilter("")}>
-                          Clear search
-                        </Button>
-                      </EmptyContent>
-                    )}
-                  </Empty>
-                )
-              })()}
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
+          })}
+        </TableBody>
+      )}
     </UITable>
   )
 
-  if (variant === "card") {
-    return <Card className="overflow-hidden p-0">{tableEl}</Card>
-  }
-  return tableEl
+  const emptyEl = !hasRows ? (
+    <Empty
+      className={cn(
+        "flex-1",
+        variant === "contained" || variant === "card"
+          ? "rounded-none border-0"
+          : "bg-muted/50"
+      )}
+    >
+      <EmptyHeader>
+        <EmptyMedia variant="stacked">
+          <RiSearchLine />
+        </EmptyMedia>
+        <EmptyTitle>No results found</EmptyTitle>
+        <EmptyDescription>
+          {query ? <>No results found for <strong>&ldquo;{query}&rdquo;</strong></> : emptyMessage}
+        </EmptyDescription>
+      </EmptyHeader>
+      {query && (
+        <EmptyContent>
+          <Button variant="outline" size="sm" onClick={() => table.setGlobalFilter("")}>
+            Clear search
+          </Button>
+        </EmptyContent>
+      )}
+    </Empty>
+  ) : null
 
+  if (variant === "contained") {
+    return (
+      <div className="flex flex-col overflow-hidden rounded-xl border">
+        {toolbar && <div className="border-b px-4">{toolbar}</div>}
+        {headerEl}
+        {emptyEl}
+        {footer && <div className="border-t px-4 py-3">{footer}</div>}
+      </div>
+    )
+  }
+
+  if (variant === "card") {
+    return (
+      <div className="flex flex-col gap-4">
+        {toolbar}
+        <Card className="flex flex-col overflow-hidden p-0">
+          {headerEl}
+          {emptyEl}
+        </Card>
+        {footer}
+      </div>
+    )
+  }
+
+  // plain / bordered
+  return (
+    <div className="flex flex-col gap-4">
+      {toolbar}
+      {headerEl}
+      {emptyEl}
+      {footer}
+    </div>
+  )
 }
 
 export { DataTable }

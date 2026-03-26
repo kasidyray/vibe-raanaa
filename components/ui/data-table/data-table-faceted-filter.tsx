@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { RiCloseLine, RiFilterLine, RiSearchLine } from "@remixicon/react"
+import { RiAddCircleLine, RiCloseLine, RiFilterLine, RiSearchLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -49,9 +49,9 @@ function DataTableFacetedFilter({
         <Button
           variant="outline"
           size="sm"
-          className={cn("rounded-md", count > 0 && "border-primary/40 bg-primary/5 text-foreground")}
+          className={cn("rounded-full", count > 0 && "border-dashed border-primary/40 bg-primary/5 text-foreground")}
         >
-          {icon ?? <RiFilterLine className="opacity-60" />}
+          {icon ?? <RiAddCircleLine className="opacity-60" />}
           {title}
           {count > 0 && (
             <span className="ml-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
@@ -103,7 +103,7 @@ function DataTableFacetedFilter({
           <div className="border-t p-1">
             <button
               onClick={() => onSelectionChange([])}
-              className="w-full rounded-md px-2 py-1.5 text-center text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+              className="w-full rounded-md px-2 py-1.5 text-center text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
             >
               Clear filter
             </button>

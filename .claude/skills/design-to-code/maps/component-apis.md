@@ -62,11 +62,10 @@ Bordered pill with a coloured dot. Use for live/dynamic status only (Active, Pen
 
 ## Container
 
-Width-constrained content wrapper. Never use for full-width — use a plain `div` instead.
+De-facto width controller for all main pages. Provides the page-enter animation automatically (fade + slide-up on mount).
 
 ```tsx
-// sizes: "sm" (max-w-2xl) | "default" (max-w-4xl) | "lg" (max-w-6xl) | "xl" (max-w-7xl)
-// Does NOT support "full"
+// sizes: "sm" (max-w-2xl) | "default" (max-w-4xl) | "lg" (max-w-6xl) | "xl" (max-w-7xl) | "full" (no max-w)
 <Container size="xl" className="flex flex-1 flex-col gap-6">...</Container>
 ```
 
@@ -134,7 +133,7 @@ Use for zero-data states. Never build a custom empty state from scratch.
 ```tsx
 <Empty className="border">
   <EmptyHeader>
-    <EmptyMedia variant="icon"><RiSearchLine /></EmptyMedia>
+    <EmptyMedia variant="stacked"><RiSearchLine /></EmptyMedia>
     <EmptyTitle>Nothing here</EmptyTitle>
     <EmptyDescription>Descriptive text explaining the empty state.</EmptyDescription>
   </EmptyHeader>
@@ -144,7 +143,18 @@ Use for zero-data states. Never build a custom empty state from scratch.
 </Empty>
 ```
 
-`EmptyMedia variant="icon"` for Remix icons, `variant="image"` for illustrations.
+`EmptyMedia` variants: `"stacked"` (default, three layered cards) | `"icon"` (small muted square box) | `"image"` (for illustrations). Always use `"stacked"` unless there is a specific reason to use another variant.
+
+**Inside a `contained` table or any section that already has a border/card wrapper:** omit `className="border"` from `<Empty>` — the outer container provides the chrome.
+
+```tsx
+{/* standalone page section — keep border */}
+<Empty className="border">...</Empty>
+
+{/* inside contained table tabs or card sections — no border */}
+<Empty>...</Empty>
+```
+
 For filtered no-results states inside a `DataTable`, use the `emptyMessage` prop — do not build a separate empty component.
 
 ---
@@ -173,18 +183,34 @@ Use `variant="pill"` on data pages. Never add a `border-b` separator under pill 
 
 ## DataTable
 
-Handles rendering, empty state, and row hover/select styling internally. Always prefer this over a raw `<Table>`.
+Handles rendering, layout, empty state, and row hover/select styling internally. Always prefer this over a raw `<Table>`.
+
+Pass `toolbar` and `footer` directly — DataTable applies all variant-specific chrome (outer border, separators, spacing) automatically.
 
 ```tsx
-// variant: "plain" | "bordered"
-// emptyMessage: shown when no rows match filters
-// onRowClick: makes rows clickable, receives the row's original data object
+// variant: "plain" | "bordered" | "card" | "contained"
 <DataTable
   table={table}
-  variant="bordered"
+  variant="contained"
   emptyMessage="No items found."
   onRowClick={setSelected}
+  toolbar={<DataTableToolbar>...</DataTableToolbar>}
+  footer={
+    table.getFilteredRowModel().rows.length > 0
+      ? <DataTablePagination table={table} style="classic" rowLabel="item" />
+      : undefined
+  }
 />
+```
+
+**Layout per variant:**
+- `plain` / `bordered` — `flex flex-col gap-4` wrapper; toolbar and footer are plain siblings
+- `card` — `flex flex-col gap-4`; table is wrapped in a `<Card>`
+- `contained` — `overflow-hidden rounded-xl border` container; toolbar gets `border-b`, footer gets `border-t`
+
+Never add outer wrapper divs or `border-b`/`border-t` manually — DataTable owns all of that.
+
+`DataTableSelectionBar` is the only component that stays outside DataTable (it floats above the page).
 ```
 
 ### TanStack table setup
@@ -232,27 +258,39 @@ For `accessorFn` columns (computed values), set `id` explicitly:
 
 ### Table toolbar
 
-All toolbar controls must be `h-8`. Use `size="sm"` on Button and SelectTrigger. All controls use `rounded-md`.
+All toolbar controls must be `h-8` (`size="sm"`). Every filter uses `rounded-full border-dashed` on its trigger and shows an active state when a non-default value is selected. Never build a raw `DropdownMenu` for a toolbar filter — use one of the two filter components below.
+
+**Multi-select filter** (`DataTableFacetedFilter`) — for categorical columns where multiple values can be selected simultaneously:
+```tsx
+<DataTableFacetedFilter
+  title="Status"
+  options={["active", "inactive"]}               // string[] or { value, label }[]
+  selectedValues={statusFilter}
+  onSelectionChange={setStatusFilter}
+  icon={<RiSomeIcon className="opacity-60" />}   // optional
+/>
+```
+
+**Single-select filter** (`DataTableDropdownFilter`) — for radio-style filters like date range or frequency. Shows active state and a `×` clear button when the value differs from `defaultValue`:
+```tsx
+<DataTableDropdownFilter
+  title="Date range"
+  icon={<RiCalendarLine className="opacity-60" />}
+  options={DATE_RANGE_OPTIONS}                   // { value, label }[]
+  value={dateRange}
+  defaultValue="6d"
+  onValueChange={setDateRange}
+/>
+```
 
 ```tsx
 <DataTableToolbar>
   <DataTableSearch table={table} placeholder="Search..." />
-
-  <DataTableFacetedFilter
-    title="Status"
-    options={["active", "inactive"]}               // string[] or { value, label }[]
-    selectedValues={statusFilter}
-    onSelectionChange={setStatusFilter}
-    icon={<RiSomeIcon className="opacity-60" />}   // optional
-  />
+  <DataTableDropdownFilter ... />
+  <DataTableFacetedFilter ... />
 
   {hasActiveFilters && (
-    <button
-      onClick={resetFilters}
-      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-    >
-      Reset
-    </button>
+    <Button variant="ghost" size="sm" onClick={resetFilters}>Reset</Button>
   )}
 
   <div className="ml-auto flex items-center gap-2">
@@ -266,19 +304,16 @@ All toolbar controls must be `h-8`. Use `size="sm"` on Button and SelectTrigger.
 </DataTableToolbar>
 ```
 
-Active filter button styling:
-```tsx
-className={cn("rounded-md", isActive && "border-primary/40 bg-primary/5 text-foreground")}
-```
-
-Use `DropdownMenu` (not `Select`) for toolbar dropdowns. Bulk action buttons go on the `ml-auto` right side.
+Bulk action buttons go on the `ml-auto` right side.
 
 ### Pagination
 
-Only render when there are rows to paginate:
+Always wrap in a conditional — never render when there are no rows (prevents a stray `border-t` showing above the empty state):
 ```tsx
 {table.getFilteredRowModel().rows.length > 0 && (
-  <DataTablePagination table={table} style="classic" rowLabel="item" selectedCount={selectedCount} />
+  <div className="border-t px-4 py-3">
+    <DataTablePagination table={table} style="classic" rowLabel="item" selectedCount={selectedCount} />
+  </div>
 )}
 ```
 

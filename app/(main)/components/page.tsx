@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useState } from "react"
 import { SiteHeader } from "@/components/site-header"
+import { Container } from "@/components/ui/container"
 import { PageHeader } from "@/components/ui/page-header"
 
 import { Avatar, AvatarFallback, AvatarImage, AvatarGroup, AvatarGroupCount, AvatarBadge } from "@/components/ui/avatar"
@@ -2306,10 +2307,16 @@ function ChartAreaSection() {
     <Section title="Area Chart" sub="chart.tsx">
       <ChartContainer config={chartDesktopConfig} className="h-[200px] w-full">
         <AreaChart accessibilityLayer data={chartMonthlyData} margin={{ left: 12, right: 12 }}>
+          <defs>
+            <linearGradient id="fillDesktopSingle" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0} />
+            </linearGradient>
+          </defs>
           <CartesianGrid vertical={false} />
           <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
           <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-          <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" />
+          <Area dataKey="desktop" type="natural" fill="url(#fillDesktopSingle)" stroke="var(--color-desktop)" strokeWidth={1.5} />
         </AreaChart>
       </ChartContainer>
     </Section>
@@ -2326,16 +2333,16 @@ function ChartAreaGradientSection() {
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <defs>
             <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
+              <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
+              <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.15} />
+              <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0} />
             </linearGradient>
           </defs>
-          <Area dataKey="mobile" type="natural" fill="url(#fillMobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" />
-          <Area dataKey="desktop" type="natural" fill="url(#fillDesktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
+          <Area dataKey="mobile" type="natural" fill="url(#fillMobile)" stroke="var(--color-mobile)" strokeWidth={1.5} stackId="a" />
+          <Area dataKey="desktop" type="natural" fill="url(#fillDesktop)" stroke="var(--color-desktop)" strokeWidth={1.5} stackId="a" />
         </AreaChart>
       </ChartContainer>
     </Section>
@@ -2412,6 +2419,7 @@ export default function ComponentsPage() {
           </Alert>
         )}
         <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+          <Container className="flex flex-1 flex-col gap-6">
           <PageHeader
             title="Components"
             description={<>All UI components available in <code className="font-mono text-xs">components/ui/</code></>}
@@ -2475,6 +2483,7 @@ export default function ComponentsPage() {
             <ProgressSection />
             <EmptySection />
           </div>
+          </Container>
         </div>
     </>
   )

@@ -15,7 +15,7 @@ const badgeVariants = cva(
         warning:  "bg-warning-lighter text-warning-dark",
         critical: "bg-error-lighter text-error-dark",
         neutral:  "bg-secondary text-secondary-foreground",
-        caution:  "bg-primary/15 text-foreground dark:bg-primary/20 dark:text-primary",
+        caution:  "bg-primary/15 text-foreground dark:bg-primary/15 dark:text-primary",
       },
       size: {
         sm:      "h-4 px-1.5 py-1.5 text-xs [&>svg]:size-2.5!",

@@ -30,9 +30,8 @@ function DataTableColumnToggle<TData>({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="rounded-md" />}>
+      <DropdownMenuTrigger render={<Button variant="secondary" size="icon-sm" className="" />}>
         <RiSettings3Line />
-        Columns
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
         <DropdownMenuGroup>

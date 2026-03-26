@@ -317,3 +317,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes empty-float {
+  0%   { transform: translateY(0);    }
+  100% { transform: translateY(-6px); }
+}
+
+@theme inline {
+  --animate-empty-float: empty-float 0.9s ease-in-out infinite alternate;
+}
