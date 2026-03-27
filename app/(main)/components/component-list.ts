@@ -27,7 +27,7 @@ export const components: ComponentMeta[] = [
   { slug: "checkbox",     name: "Checkbox",      description: "Binary on/off selection.",                          category: "Inputs", status: "Ready", tags: ["Inputs", "Form", "Selection"] },
   { slug: "switch",       name: "Switch",        description: "Toggle a setting on or off.",                       category: "Inputs", status: "Ready", tags: ["Inputs", "Form", "Toggle"] },
   { slug: "select",       name: "Select",        description: "Choose one item from a dropdown list.",             category: "Inputs", status: "Ready", tags: ["Inputs", "Form", "Dropdown"] },
-  { slug: "combobox",     name: "Combobox",      description: "Searchable select with optional multi-select.",     category: "Inputs" },
+  { slug: "combobox",     name: "Combobox",      description: "Searchable select with optional multi-select.",     category: "Inputs", status: "Ready", tags: ["Inputs", "Form", "Search", "Multi-select"] },
   { slug: "toggle",       name: "Toggle",        description: "Pressable button that holds an active state.",      category: "Inputs" },
   { slug: "toggle-group", name: "Toggle Group",  description: "A group of toggles where one can be active.",      category: "Inputs" },
   { slug: "date-picker",  name: "Date Picker",   description: "Pick a single date from a calendar popover.",       category: "Inputs" },
@@ -67,7 +67,7 @@ export const components: ComponentMeta[] = [
 
   // Data
   { slug: "table",        name: "Table",         description: "Raw HTML table primitives.",                       category: "Data" },
-  { slug: "data-table",   name: "Data Table",    description: "Full-featured sortable, filterable data table.",   category: "Data" },
+  { slug: "data-table",   name: "Data Table",    description: "Full-featured sortable, filterable data table.",   category: "Data", status: "Ready", tags: ["Data", "Table", "Filter", "Sort", "Pagination"] },
 
   // Layout
   { slug: "label",        name: "Label",         description: "Accessible form label associated with an input.",  category: "Layout" },

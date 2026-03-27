@@ -39,6 +39,10 @@ import { switchDesignDoc } from "./_docs/switch/design"
 import { switchDevelopDoc } from "./_docs/switch/develop"
 import { selectDesignDoc } from "./_docs/select/design"
 import { selectDevelopDoc } from "./_docs/select/develop"
+import { comboboxDesignDoc } from "./_docs/combobox/design"
+import { comboboxDevelopDoc } from "./_docs/combobox/develop"
+import { dataTableDesignDoc } from "./_docs/data-table/design"
+import { dataTableDevelopDoc } from "./_docs/data-table/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -99,7 +103,9 @@ const docMap: Record<string, ComponentDocData> = {
   textarea:       { ...textareaDesignDoc, devDoc: textareaDevelopDoc },
   checkbox:       { ...checkboxDesignDoc, devDoc: checkboxDevelopDoc },
   switch:         { ...switchDesignDoc, devDoc: switchDevelopDoc },
-  select:         { ...selectDesignDoc, devDoc: selectDevelopDoc },
+  select:         { ...selectDesignDoc,     devDoc: selectDevelopDoc },
+  combobox:       { ...comboboxDesignDoc,   devDoc: comboboxDevelopDoc },
+  "data-table":   { ...dataTableDesignDoc,  devDoc: dataTableDevelopDoc },
 }
 
 export default function ComponentPage({
