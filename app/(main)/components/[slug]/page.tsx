@@ -29,6 +29,16 @@ import { calendarDesignDoc } from "./_docs/calendar/design"
 import { calendarDevelopDoc } from "./_docs/calendar/develop"
 import { cardDesignDoc } from "./_docs/card/design"
 import { cardDevelopDoc } from "./_docs/card/develop"
+import { inputDesignDoc } from "./_docs/input/design"
+import { inputDevelopDoc } from "./_docs/input/develop"
+import { textareaDesignDoc } from "./_docs/textarea/design"
+import { textareaDevelopDoc } from "./_docs/textarea/develop"
+import { checkboxDesignDoc } from "./_docs/checkbox/design"
+import { checkboxDevelopDoc } from "./_docs/checkbox/develop"
+import { switchDesignDoc } from "./_docs/switch/design"
+import { switchDevelopDoc } from "./_docs/switch/develop"
+import { selectDesignDoc } from "./_docs/select/design"
+import { selectDevelopDoc } from "./_docs/select/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -85,6 +95,11 @@ const docMap: Record<string, ComponentDocData> = {
   "button-group": { ...buttonGroupDesignDoc, devDoc: buttonGroupDevelopDoc },
   calendar:       { ...calendarDesignDoc, devDoc: calendarDevelopDoc },
   card:           { ...cardDesignDoc, devDoc: cardDevelopDoc },
+  input:          { ...inputDesignDoc, devDoc: inputDevelopDoc },
+  textarea:       { ...textareaDesignDoc, devDoc: textareaDevelopDoc },
+  checkbox:       { ...checkboxDesignDoc, devDoc: checkboxDevelopDoc },
+  switch:         { ...switchDesignDoc, devDoc: switchDevelopDoc },
+  select:         { ...selectDesignDoc, devDoc: selectDevelopDoc },
 }
 
 export default function ComponentPage({
