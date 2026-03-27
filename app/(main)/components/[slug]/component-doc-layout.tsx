@@ -4,6 +4,14 @@ import * as React from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer"
 import { StatusBadge } from "@/components/ui/status-badge"
 import { Tabs, TabsList, TabsTab } from "@/components/ui/tabs"
 import {
@@ -12,6 +20,7 @@ import {
   RiInformationLine,
   RiArrowRightSLine,
   RiFileCopyLine,
+  RiCodeLine,
 } from "@remixicon/react"
 import type { ComponentMeta, DocStatus } from "@/app/(main)/components/component-list"
 import type {
@@ -579,19 +588,74 @@ function DoDontSection({
   )
 }
 
+function ExampleInContext({ example }: { example: ContextExample }) {
+  const [open, setOpen] = React.useState(false)
+  const tokens = React.useMemo(
+    () => (example.code ? tokenize(example.code) : []),
+    [example.code],
+  )
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-sm font-semibold">{example.title}</p>
+          {example.description && (
+            <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">
+              {example.description}
+            </p>
+          )}
+        </div>
+        {example.code && (
+          <Button variant="ghost" size="sm" onClick={() => setOpen(true)}>
+            <RiCodeLine />
+            View code
+          </Button>
+        )}
+      </div>
+
+      {/* Preview */}
+      <PreviewBox className="py-10">
+        {example.preview}
+      </PreviewBox>
+
+      {/* Code drawer */}
+      {example.code && (
+        <Drawer open={open} onOpenChange={setOpen} direction="right">
+          <DrawerContent size="2xl" className="overflow-hidden">
+            <DrawerHeader>
+              <DrawerTitle>{example.title}</DrawerTitle>
+              <div className="flex items-center gap-3">
+                <CopyButton text={example.code} />
+                <DrawerClose />
+              </div>
+            </DrawerHeader>
+            <div className="flex-1 overflow-y-auto overflow-x-auto p-4">
+              <pre className="text-xs font-mono leading-relaxed min-w-max">
+                <code>
+                  {tokens.map((token, i) => (
+                    <span key={i} className={TOKEN_CLASS[token.type]}>
+                      {token.value}
+                    </span>
+                  ))}
+                </code>
+              </pre>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      )}
+    </div>
+  )
+}
+
 function ExamplesSection({ examples }: { examples: ContextExample[] }) {
   if (!examples.length) return null
   return (
     <DocSection id="examples" title="Examples in context">
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         {examples.map((example: ContextExample, i: number) => (
-          <div key={i} className="flex flex-col gap-3">
-            <div>
-              <p className="text-sm font-semibold">{example.title}</p>
-              <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{example.description}</p>
-            </div>
-            {example.preview}
-          </div>
+          <ExampleInContext key={i} example={example} />
         ))}
       </div>
     </DocSection>

@@ -378,22 +378,38 @@ Always suppress default hover and add top border:
 
 Slide-in panel. Always use `direction="right"`. Never build a custom slide-in panel from scratch.
 
-`DrawerHeader` base class is `flex flex-row` — it lays out children horizontally by default.
-**Always include `flex-row` explicitly** in the className to make the direction clear and override any Tailwind class-order ambiguity.
+**Default styles (do not re-declare these):**
+- `DrawerContent` — already `flex flex-col`, default width `sm:max-w-sm`
+- `DrawerHeader` — already `flex flex-row items-center justify-between gap-4 border-b p-4 shrink-0`
+- `DrawerTitle` — already `text-base font-medium text-foreground`
+- `DrawerDescription` — already `text-sm text-muted-foreground`
+
+Only pass className to override what differs from the default. Do not re-declare flex direction, font size, or colour tokens that the component already provides.
+
+Common real overrides:
+- `<DrawerHeader className="items-start">` — when header content is tall (avatar + multi-line text)
+- `<DrawerContent className="overflow-y-auto">` — when DrawerContent itself is the scroll container
+- `<DrawerContent size="lg">` — wider drawer
+
+**Width** — use the `size` prop. Never pass max-width classes via `className`.
+```tsx
+// sizes: "sm" (default) | "md" | "lg" | "xl" | "2xl"
+<DrawerContent size="lg">
+```
 
 ```tsx
 <Drawer open={open} onOpenChange={(open) => !open && onClose()} direction="right">
-  <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
+  <DrawerContent>
 
     {/* ── Header with avatar (entity drawer) ── */}
-    <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
+    <DrawerHeader className="items-start">
       <div className="flex items-center gap-3 min-w-0">
         <Avatar className="size-10 rounded-full shrink-0">
           <AvatarImage src={avatarUrl} alt={name} />
           <AvatarFallback>{name[0]}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col min-w-0">
-          <DrawerTitle className="text-base font-semibold leading-tight truncate">{name}</DrawerTitle>
+          <DrawerTitle className="leading-tight truncate">{name}</DrawerTitle>
           <span className="text-sm text-muted-foreground truncate">{email}</span>
           <span className="font-mono text-xs text-muted-foreground">{id}</span>
         </div>
@@ -404,8 +420,8 @@ Slide-in panel. Always use `direction="right"`. Never build a custom slide-in pa
     </DrawerHeader>
 
     {/* ── Header with title only (form drawer) ── */}
-    <DrawerHeader className="flex flex-row items-center justify-between gap-4 border-b p-4 shrink-0">
-      <DrawerTitle className="text-base font-semibold">Title</DrawerTitle>
+    <DrawerHeader>
+      <DrawerTitle>Title</DrawerTitle>
       <DrawerClose asChild>
         <Button variant="ghost" size="icon-sm" aria-label="Close"><RiCloseLine /></Button>
       </DrawerClose>
@@ -425,8 +441,6 @@ Slide-in panel. Always use `direction="right"`. Never build a custom slide-in pa
   </DrawerContent>
 </Drawer>
 ```
-
-❌ Never omit `flex-row` on `DrawerHeader` — the base is `flex flex-row` but without explicit `flex-row` in className, Tailwind class collisions across inheritance can restore `flex-col`.
 
 ---
 

@@ -21,6 +21,14 @@ import { badgeDesignDoc } from "./_docs/badge/design"
 import { badgeDevelopDoc } from "./_docs/badge/develop"
 import { buttonDesignDoc } from "./_docs/button/design"
 import { buttonDevelopDoc } from "./_docs/button/develop"
+import { breadcrumbDesignDoc } from "./_docs/breadcrumb/design"
+import { breadcrumbDevelopDoc } from "./_docs/breadcrumb/develop"
+import { buttonGroupDesignDoc } from "./_docs/button-group/design"
+import { buttonGroupDevelopDoc } from "./_docs/button-group/develop"
+import { calendarDesignDoc } from "./_docs/calendar/design"
+import { calendarDevelopDoc } from "./_docs/calendar/develop"
+import { cardDesignDoc } from "./_docs/card/design"
+import { cardDevelopDoc } from "./_docs/card/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -72,7 +80,11 @@ const docMap: Record<string, ComponentDocData> = {
   "alert-dialog": { ...alertDialogDesignDoc, devDoc: alertDialogDevelopDoc },
   avatar:         { ...avatarDesignDoc, devDoc: avatarDevelopDoc },
   badge:          { ...badgeDesignDoc, devDoc: badgeDevelopDoc },
+  breadcrumb:     { ...breadcrumbDesignDoc, devDoc: breadcrumbDevelopDoc },
   button:         { ...buttonDesignDoc, devDoc: buttonDevelopDoc },
+  "button-group": { ...buttonGroupDesignDoc, devDoc: buttonGroupDevelopDoc },
+  calendar:       { ...calendarDesignDoc, devDoc: calendarDevelopDoc },
+  card:           { ...cardDesignDoc, devDoc: cardDevelopDoc },
 }
 
 export default function ComponentPage({

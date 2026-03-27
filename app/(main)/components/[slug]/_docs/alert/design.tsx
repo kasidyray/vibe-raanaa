@@ -701,18 +701,90 @@ export const alertDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       description:
         "An inline-level error alert sits above the affected field after a failed invite attempt — scoped, specific, and out of the way of the rest of the form.",
       preview: <FormAlertExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="p-4 border-b">
+    <p className="text-sm font-semibold">Invite team member</p>
+  </div>
+  <div className="p-4 flex flex-col gap-4">
+    <Alert variant="error" level="inline">
+      <AlertIcon />
+      <AlertContent>
+        <AlertTitle>This email is already a member</AlertTitle>
+        <AlertDescription>
+          Emeka Nwachukwu (emeka@mtn.ng) already has access to this workspace.
+        </AlertDescription>
+      </AlertContent>
+    </Alert>
+    <div>
+      <label className="text-sm font-medium mb-1.5 block">Email address</label>
+      <Input defaultValue="emeka@mtn.ng" className="border-destructive" />
+    </div>
+    <div className="flex justify-end gap-2">
+      <Button variant="outline" size="sm">Cancel</Button>
+      <Button size="sm">Send invite</Button>
+    </div>
+  </div>
+</div>`,
     },
     {
       title: "In a settings page",
       description:
         "A section-level warning inside a settings card draws attention to a security gap without blocking the user from completing other tasks on the page.",
       preview: <SettingsPageAlertExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-lg">
+  <div className="p-4 border-b">
+    <p className="text-sm font-semibold">Security settings</p>
+    <p className="text-xs text-muted-foreground mt-0.5">Manage authentication and access controls</p>
+  </div>
+  <div className="p-4 flex flex-col gap-4">
+    <Alert variant="warning" level="section">
+      <AlertIcon />
+      <AlertContent>
+        <AlertTitle>Two-factor authentication is off</AlertTitle>
+        <AlertDescription>
+          Your account is more vulnerable without 2FA. Enable it, especially for admin accounts.
+        </AlertDescription>
+        <AlertActions>
+          <a href="#" className="text-sm font-medium underline underline-offset-2">Enable 2FA</a>
+          <a href="#" className="text-sm font-medium underline underline-offset-2 opacity-70">Remind me later</a>
+        </AlertActions>
+      </AlertContent>
+    </Alert>
+    <div className="flex items-center justify-between py-2 border-b">
+      <div>
+        <p className="text-sm font-medium">Password</p>
+        <p className="text-xs text-muted-foreground">Last changed 6 months ago</p>
+      </div>
+      <Button variant="ghost" size="sm">Change</Button>
+    </div>
+    <div className="flex items-center justify-between py-2">
+      <div>
+        <p className="text-sm font-medium">Active sessions</p>
+        <p className="text-xs text-muted-foreground">3 devices logged in</p>
+      </div>
+      <Button variant="ghost" size="sm">View all</Button>
+    </div>
+  </div>
+</div>`,
     },
     {
       title: "As a page-level banner",
       description:
         "A page-level info alert stretches the full width of the content area, below the app header, to announce a platform-wide change that affects all users.",
       preview: <PageBannerExample />,
+      code: `<Alert variant="info" level="page">
+  <AlertIcon />
+  <AlertContent>
+    <AlertTitle>New data export format available</AlertTitle>
+    <AlertDescription>
+      Exports now support XLSX in addition to CSV. This applies to all reports across your workspace.
+    </AlertDescription>
+    <AlertActions>
+      <a href="#" className="text-sm font-medium underline underline-offset-2">Read the changelog</a>
+    </AlertActions>
+  </AlertContent>
+  <AlertClose />
+</Alert>`,
     },
   ],
 

@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  RiCloseLine,
   RiCodeLine,
   RiDownloadLine,
   RiRefreshLine,
@@ -53,7 +52,7 @@ export function ActivityDetailDrawer({
             <div className="flex flex-col h-full overflow-y-auto">
 
               {/* Header */}
-              <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b">
+              <DrawerHeader className="items-start">
                 <div className="flex items-start gap-3 min-w-0">
                   <span className="shrink-0 flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground [&>svg]:size-4 mt-0.5">
                     {cat.icon}
@@ -63,11 +62,7 @@ export function ActivityDetailDrawer({
                     <p className="text-sm text-muted-foreground mt-0.5 leading-snug">{event.summary}</p>
                   </div>
                 </div>
-                <DrawerClose asChild>
-                  <Button variant="ghost" size="icon-sm" className="shrink-0 mt-0.5" aria-label="Close">
-                    <RiCloseLine />
-                  </Button>
-                </DrawerClose>
+                <DrawerClose className="mt-0.5" />
               </DrawerHeader>
 
               <div className="flex flex-col divide-y divide-border">

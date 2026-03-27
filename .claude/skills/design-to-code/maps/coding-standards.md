@@ -136,6 +136,27 @@ if (customers.length > MAX_DISPLAY_ROWS) { ... }
 
 ---
 
+## Interactive element cursors
+
+Every clickable element that is not a native `<Button>` component must have `cursor-pointer` explicitly in its className.
+
+Tailwind v4 does not set `cursor: pointer` on `<button>` by default. Native `<Button>` from `@/components/ui/button` already includes it — but raw `<button>`, `<a>`, and custom trigger elements do not.
+
+```tsx
+// Good — cursor is explicit
+<button className="cursor-pointer flex items-center gap-1.5 ...">View code</button>
+
+// Good — Button component already includes cursor-pointer
+<Button variant="ghost" size="sm">Close</Button>
+
+// Bad — looks like text, not interactive
+<button className="flex items-center gap-1.5 ...">View code</button>
+```
+
+Add `cursor-pointer` to the "done" checklist for every component that introduces a raw `<button>` or interactive `<div>`/`<a>`.
+
+---
+
 ## Import order
 
 Group imports in this order, separated by a blank line:
@@ -169,6 +190,7 @@ A page or feature is not done until:
 - [ ] All five states render correctly: loading skeleton, empty, no-results, error, success
 - [ ] Every mutation has a loading button state and success/error toast
 - [ ] All icon-only buttons have `aria-label`
+- [ ] Every raw `<button>` (not `<Button>`) has `cursor-pointer` in its className
 - [ ] All form inputs are associated with a `Label` via `htmlFor` / `id`
 - [ ] No raw hex colours, no Tailwind colour scale, no inline styles
 - [ ] No hardcoded option arrays inline in JSX

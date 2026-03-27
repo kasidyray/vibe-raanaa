@@ -51,6 +51,8 @@ export interface ContextExample {
   title: string
   description: string
   preview: ReactNode
+  /** Optional JSX code string shown when the user clicks "View code" */
+  code?: string
 }
 
 export interface RelatedComponent {

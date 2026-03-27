@@ -31,8 +31,8 @@ function DeleteConfirmationPreview() {
       <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete contact?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -57,8 +57,8 @@ function RevokeAccessPreview() {
       <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiUserUnfollowLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiUserUnfollowLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Revoke access?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -107,7 +107,7 @@ function SmallSizePreview() {
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
-            <RiLogoutBoxLine className="size-7 text-[var(--color-icon-neutral)]" />
+            <RiLogoutBoxLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Sign out?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -140,8 +140,8 @@ function LoadingStatePreview() {
       <Button variant="outline" onClick={() => setOpen(true)}>Open dialog</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -200,7 +200,7 @@ import { RiDeleteBinLine } from "@remixicon/react"
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogMedia>
-        <RiDeleteBinLine className="size-7 text-[var(--color-icon-critical)]" />
+        <RiDeleteBinLine  />
       </AlertDialogMedia>
       <AlertDialogTitle>Delete contact?</AlertDialogTitle>
       <AlertDialogDescription>
@@ -238,8 +238,8 @@ export function DeleteConfirmation() {
       <Button variant="outline" onClick={() => setOpen(true)}>Delete contact</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete contact?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -278,8 +278,8 @@ export function RevokeAccess() {
       <Button variant="outline" onClick={() => setOpen(true)}>Revoke access</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiUserUnfollowLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiUserUnfollowLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Revoke access?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -355,7 +355,7 @@ export function SmallSignOut() {
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
-            <RiLogoutBoxLine className="size-7 text-[var(--color-icon-neutral)]" />
+            <RiLogoutBoxLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Sign out?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -405,8 +405,8 @@ export function LoadingDialog() {
       <Button variant="outline" onClick={() => setOpen(true)}>Delete workspace</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-7 text-[var(--color-icon-critical)]" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete workspace?</AlertDialogTitle>
           <AlertDialogDescription>

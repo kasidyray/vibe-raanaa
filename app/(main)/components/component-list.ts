@@ -21,7 +21,7 @@ export type ComponentCategory =
 export const components: ComponentMeta[] = [
   // Inputs
   { slug: "button",       name: "Button",        description: "Trigger actions and navigation.",                   category: "Inputs" },
-  { slug: "button-group", name: "Button Group",  description: "Combine related actions in a single row.",          category: "Inputs" },
+  { slug: "button-group", name: "Button Group",  description: "Combine related actions in a single row.",          category: "Inputs", status: "Ready", tags: ["Inputs", "Actions", "Toolbar"] },
   { slug: "input",        name: "Input",         description: "Single-line text entry.",                           category: "Inputs" },
   { slug: "textarea",     name: "Textarea",      description: "Multi-line text entry.",                            category: "Inputs" },
   { slug: "checkbox",     name: "Checkbox",      description: "Binary on/off selection.",                          category: "Inputs" },
@@ -31,7 +31,7 @@ export const components: ComponentMeta[] = [
   { slug: "toggle",       name: "Toggle",        description: "Pressable button that holds an active state.",      category: "Inputs" },
   { slug: "toggle-group", name: "Toggle Group",  description: "A group of toggles where one can be active.",      category: "Inputs" },
   { slug: "date-picker",  name: "Date Picker",   description: "Pick a single date from a calendar popover.",       category: "Inputs" },
-  { slug: "calendar",     name: "Calendar",      description: "Standalone month calendar for date selection.",     category: "Inputs" },
+  { slug: "calendar",     name: "Calendar",      description: "Standalone month calendar for date selection.",     category: "Inputs", status: "Ready", tags: ["Inputs", "Date", "Picker"] },
   { slug: "input-otp",    name: "Input OTP",     description: "One-time password / PIN code input.",              category: "Inputs" },
   { slug: "field",        name: "Field",         description: "Form field wrapper with label, hint, and error.",  category: "Inputs" },
   { slug: "input-group",  name: "Input Group",   description: "Input with leading/trailing addons.",              category: "Inputs" },
@@ -41,7 +41,7 @@ export const components: ComponentMeta[] = [
   { slug: "badge",        name: "Badge",         description: "Coloured pill for categorical labels.",             category: "Display", status: "Ready", tags: ["Display", "Label", "Indicator"] },
   { slug: "status-badge", name: "Status Badge",  description: "Bordered pill with a dot for live status.",        category: "Display" },
   { slug: "icon-badge",   name: "Icon Badge",    description: "Square icon container in various semantic colours.", category: "Display" },
-  { slug: "card",         name: "Card",          description: "Surface container for grouped content.",            category: "Display" },
+  { slug: "card",         name: "Card",          description: "Surface container for grouped content.",            category: "Display", status: "Ready", tags: ["Display", "Surface", "Container"] },
   { slug: "separator",    name: "Separator",     description: "Visual divider between sections.",                  category: "Display" },
   { slug: "skeleton",     name: "Skeleton",      description: "Placeholder shape shown while content loads.",      category: "Display" },
 
@@ -56,7 +56,7 @@ export const components: ComponentMeta[] = [
   { slug: "dropdown-menu", name: "Dropdown Menu", description: "Contextual action menu anchored to a trigger.",   category: "Overlay" },
 
   // Navigation
-  { slug: "breadcrumb",   name: "Breadcrumb",    description: "Shows the current page path hierarchy.",           category: "Navigation" },
+  { slug: "breadcrumb",   name: "Breadcrumb",    description: "Shows the current page path hierarchy.",           category: "Navigation", status: "Ready", tags: ["Navigation", "Path", "Hierarchy"] },
   { slug: "tabs",         name: "Tabs",          description: "Switch between related content views.",            category: "Navigation" },
 
   // Feedback

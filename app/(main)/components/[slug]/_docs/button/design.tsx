@@ -452,16 +452,61 @@ export const buttonDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       title: "In a page toolbar",
       description: "Primary action on the right; secondary export action alongside it.",
       preview: <ToolbarExample />,
+      code: `<div className="rounded-xl border overflow-hidden">
+  <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
+    <p className="text-sm font-medium">Contacts</p>
+    <div className="flex items-center gap-2">
+      <Button variant="outline" size="sm">
+        <RiDownloadLine />
+        Export
+      </Button>
+      <Button size="sm">
+        <RiAddLine />
+        Add contact
+      </Button>
+    </div>
+  </div>
+  <div className="px-4 py-8 flex items-center justify-center">
+    <p className="text-sm text-muted-foreground">Table content</p>
+  </div>
+</div>`,
     },
     {
       title: "In a drawer footer",
       description: "Outline cancel + primary save — aligned to the right edge.",
       preview: <DrawerFooterExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="px-4 py-3 border-b">
+    <p className="text-sm font-medium">Edit contact</p>
+  </div>
+  <div className="px-4 py-6 flex flex-col gap-3">
+    {/* form fields */}
+  </div>
+  <div className="flex items-center justify-end gap-2 border-t px-4 py-3">
+    <Button variant="outline" size="sm">Cancel</Button>
+    <Button size="sm">Save changes</Button>
+  </div>
+</div>`,
     },
     {
       title: "In a destructive confirmation",
       description: "Ghost dismiss + destructive confirm — clear visual separation of intent.",
       preview: <DestructiveExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="px-4 py-4">
+    <p className="text-sm font-medium mb-1">Delete this record?</p>
+    <p className="text-xs text-muted-foreground">
+      This action cannot be undone. All associated data will be permanently removed.
+    </p>
+  </div>
+  <div className="flex items-center justify-end gap-2 border-t px-4 py-3">
+    <Button variant="ghost" size="sm">Cancel</Button>
+    <Button variant="destructive" size="sm">
+      <RiDeleteBinLine />
+      Delete
+    </Button>
+  </div>
+</div>`,
     },
   ],
 

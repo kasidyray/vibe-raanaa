@@ -669,21 +669,121 @@ export const avatarDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       title: "In a data table row",
       description: "Size sm avatar beside the member name. Keeps rows compact while instantly grounding each record in a person.",
       preview: <TableExample />,
+      code: `<div className="rounded-xl border overflow-hidden">
+  <div className="grid grid-cols-[1fr_120px_100px] gap-4 px-4 py-2 border-b bg-muted/50">
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Member</p>
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Email</p>
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</p>
+  </div>
+  {members.map(row => (
+    <div key={row.name} className="grid grid-cols-[1fr_120px_100px] gap-4 items-center px-4 py-3 border-b last:border-0">
+      <div className="flex items-center gap-2.5 min-w-0">
+        <Avatar size="sm">
+          <AvatarImage src={\`https://api.dicebear.com/9.x/micah/svg?seed=\${row.seed}\`} alt={row.name} />
+          <AvatarFallback>{row.initials}</AvatarFallback>
+        </Avatar>
+        <p className="text-sm font-medium truncate">{row.name}</p>
+      </div>
+      <p className="text-xs text-muted-foreground truncate">{row.email}</p>
+      <div className="flex items-center gap-1.5">
+        <span className={\`size-1.5 rounded-full \${row.online ? "bg-emerald-500" : "bg-muted-foreground/40"}\`} />
+        <span className="text-xs text-muted-foreground">{row.online ? "Online" : "Offline"}</span>
+      </div>
+    </div>
+  ))}
+</div>`,
     },
     {
       title: "In a drawer header",
       description: "Size lg avatar beside name and email. The badge shows online presence. The larger size signals this person is the subject of the detail view.",
       preview: <DrawerHeaderExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="flex items-center gap-3 p-4 border-b bg-muted/30">
+    <Avatar size="lg">
+      <AvatarImage src="https://api.dicebear.com/9.x/micah/svg?seed=Ngozi" alt="Ngozi Achebe" />
+      <AvatarFallback>NA</AvatarFallback>
+      <AvatarBadge className="bg-emerald-500" />
+    </Avatar>
+    <div className="min-w-0">
+      <p className="text-sm font-semibold">Ngozi Achebe</p>
+      <p className="text-xs text-muted-foreground">ngozi@dangote.ng · Owner</p>
+    </div>
+  </div>
+  <div className="p-4 flex flex-col gap-3">
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Company</span>
+      <span className="text-xs font-medium">Dangote Group</span>
+    </div>
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Joined</span>
+      <span className="text-xs font-medium">Jan 12, 2024</span>
+    </div>
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Location</span>
+      <span className="text-xs font-medium">Lagos, Nigeria</span>
+    </div>
+  </div>
+</div>`,
     },
     {
       title: "In an activity feed",
       description: "Size default avatar top-aligned beside each event. The image anchors each action to its author without requiring a name scan.",
       preview: <ActivityFeedExample />,
+      code: `const events = [
+  { name: "Adaeze Okoye",    seed: "Adaeze", action: "left a comment on Invoice #1042", time: "2 min ago"  },
+  { name: "Chidi Okeke",     seed: "Chidi",  action: "approved the Q2 budget proposal", time: "18 min ago" },
+  { name: "Fatima Aliyu",    seed: "Fatima", action: "assigned ticket #408 to Emeka",   time: "1 hr ago"   },
+]
+
+<div className="rounded-xl border overflow-hidden">
+  {events.map((item, i) => (
+    <div key={i} className="flex items-start gap-3 px-4 py-3 border-b last:border-0">
+      <Avatar size="default">
+        <AvatarImage src={\`https://api.dicebear.com/9.x/micah/svg?seed=\${item.seed}\`} alt={item.name} />
+        <AvatarFallback>{item.name[0]}</AvatarFallback>
+      </Avatar>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm">
+          <span className="font-medium">{item.name}</span>{" "}
+          <span className="text-muted-foreground">{item.action}</span>
+        </p>
+        <p className="text-xs text-muted-foreground mt-0.5">{item.time}</p>
+      </div>
+    </div>
+  ))}
+</div>`,
     },
     {
       title: "In a team list with AvatarGroup",
       description: "AvatarGroup stacks avatars with overlap. AvatarGroupCount shows the hidden member count. The group communicates team size at a glance.",
       preview: <TeamGroupExample />,
+      code: `const teams = [
+  { name: "Engineering", members: engineeringMembers, total: 12 },
+  { name: "Design",      members: designMembers,      total: 5  },
+  { name: "Growth",      members: growthMembers,      total: 8  },
+]
+
+<div className="rounded-xl border overflow-hidden max-w-sm">
+  {teams.map(row => (
+    <div key={row.name} className="flex items-center justify-between px-4 py-3 border-b last:border-0">
+      <p className="text-sm font-medium">{row.name}</p>
+      <div className="flex items-center gap-2">
+        <AvatarGroup>
+          {row.members.map(m => (
+            <Avatar key={m.name} size="sm">
+              <AvatarImage src={\`https://api.dicebear.com/9.x/micah/svg?seed=\${m.seed}\`} alt={m.name} />
+              <AvatarFallback>{m.initials}</AvatarFallback>
+            </Avatar>
+          ))}
+          <AvatarGroupCount className="size-6 text-xs">
+            +{row.total - row.members.length}
+          </AvatarGroupCount>
+        </AvatarGroup>
+        <span className="text-xs text-muted-foreground">{row.total} members</span>
+      </div>
+    </div>
+  ))}
+</div>`,
     },
   ],
 

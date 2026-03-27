@@ -16,16 +16,12 @@ type Props = {
 export function AnswerDrawer({ answer, onClose }: Props) {
   return (
     <Drawer open={!!answer} onOpenChange={(open) => !open && onClose()} direction="right">
-      <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
-        <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
+      <DrawerContent className="overflow-y-auto">
+        <DrawerHeader className="items-start">
           <DrawerTitle className="text-sm font-medium leading-snug">
             {answer?.prompt}
           </DrawerTitle>
-          <DrawerClose asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Close">
-              <RiCloseLine />
-            </Button>
-          </DrawerClose>
+          <DrawerClose />
         </DrawerHeader>
 
         {answer && (

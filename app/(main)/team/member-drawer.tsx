@@ -104,7 +104,7 @@ export function MemberDetailDrawer({
         {member && (
           <div className="flex flex-col h-full overflow-y-auto">
             {/* Header */}
-            <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b">
+            <DrawerHeader className="items-start">
               <div className="flex items-center gap-3">
                 <Avatar className="size-10 rounded-full">
                   <AvatarImage src={member.avatar} alt={member.name} />
@@ -120,9 +120,7 @@ export function MemberDetailDrawer({
                   <p className="text-sm text-muted-foreground">{member.email}</p>
                 </div>
               </div>
-              <DrawerClose asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="Close"><RiCloseLine /></Button>
-              </DrawerClose>
+              <DrawerClose />
             </DrawerHeader>
 
             {/* Body */}

@@ -2,8 +2,10 @@
 
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
+import { RiCloseLine } from "@remixicon/react"
 
 import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 
 function Drawer({
   ...props
@@ -24,9 +26,20 @@ function DrawerPortal({
 }
 
 function DrawerClose({
+  className,
+  children,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Close>) {
-  return <DrawerPrimitive.Close data-slot="drawer-close" {...props} />
+  return (
+    <DrawerPrimitive.Close
+      data-slot="drawer-close"
+      aria-label="Close"
+      className={cn(buttonVariants({ variant: "outline", size: "icon-sm" }), "text-muted-foreground", className)}
+      {...props}
+    >
+      {children ?? <RiCloseLine className="size-4" />}
+    </DrawerPrimitive.Close>
+  )
 }
 
 function DrawerOverlay({
@@ -45,18 +58,30 @@ function DrawerOverlay({
   )
 }
 
+const DRAWER_WIDTHS = {
+  sm:      "data-[vaul-drawer-direction=left]:sm:max-w-sm  data-[vaul-drawer-direction=right]:sm:max-w-sm",
+  md:      "data-[vaul-drawer-direction=left]:sm:max-w-md  data-[vaul-drawer-direction=right]:sm:max-w-md",
+  lg:      "data-[vaul-drawer-direction=left]:sm:max-w-lg  data-[vaul-drawer-direction=right]:sm:max-w-lg",
+  xl:      "data-[vaul-drawer-direction=left]:sm:max-w-xl  data-[vaul-drawer-direction=right]:sm:max-w-xl",
+  "2xl":   "data-[vaul-drawer-direction=left]:sm:max-w-2xl data-[vaul-drawer-direction=right]:sm:max-w-2xl",
+} as const
+
 function DrawerContent({
   className,
+  size = "sm",
   children,
   ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Content>) {
+}: React.ComponentProps<typeof DrawerPrimitive.Content> & {
+  size?: keyof typeof DRAWER_WIDTHS
+}) {
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "group/drawer-content fixed z-50 flex h-auto flex-col bg-transparent p-2 text-sm before:absolute before:inset-2 before:-z-10 before:rounded-xl before:border before:border-border before:bg-card data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=left]:sm:max-w-sm data-[vaul-drawer-direction=right]:sm:max-w-sm",
+          "group/drawer-content fixed z-50 flex h-auto flex-col bg-transparent p-2 text-sm before:absolute before:inset-2 before:-z-10 before:rounded-xl before:border before:border-border before:bg-card data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh]",
+          DRAWER_WIDTHS[size],
           className
         )}
         {...props}
@@ -73,7 +98,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="drawer-header"
       className={cn(
-        "flex flex-row gap-1.5 p-6 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1 md:text-left",
+        "flex flex-row items-center justify-between gap-4 border-b p-4 shrink-0",
         className
       )}
       {...props}
@@ -85,7 +110,7 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="drawer-footer"
-      className={cn("mt-auto flex flex-col gap-2 p-6", className)}
+      className={cn("mt-auto bg-muted border-t p-6 flex items-center gap-2 rounded-b-xl", className)}
       {...props}
     />
   )

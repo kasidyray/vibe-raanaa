@@ -460,16 +460,87 @@ export const badgeDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       title: "In a data table",
       description: "Role and plan tier badges alongside user details. Small size keeps rows compact.",
       preview: <TableExample />,
+      code: `const users = [
+  { name: "Adaeze Okoye",    email: "adaeze@mtn.com", role: "Admin",  plan: "Pro",        roleV: "info",    planV: "success" },
+  { name: "Emeka Nwachukwu", email: "emeka@mtn.com",  role: "Member", plan: "Free",       roleV: "neutral", planV: "neutral" },
+  { name: "Ngozi Achebe",    email: "ngozi@mtn.com",  role: "Owner",  plan: "Enterprise", roleV: "caution", planV: "info"    },
+]
+
+<div className="rounded-xl border overflow-hidden">
+  <div className="grid grid-cols-[1fr_100px_100px] gap-4 px-4 py-2 border-b bg-muted/50">
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">User</p>
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Role</p>
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Plan</p>
+  </div>
+  {users.map(row => (
+    <div key={row.name} className="grid grid-cols-[1fr_100px_100px] gap-4 items-center px-4 py-3 border-b last:border-0">
+      <div className="flex items-center gap-2.5 min-w-0">
+        <Avatar className="size-7 rounded-full shrink-0">
+          <AvatarImage src={\`https://api.dicebear.com/9.x/micah/svg?seed=\${row.name.split(" ")[0]}\`} alt={row.name} />
+          <AvatarFallback>{row.name[0]}</AvatarFallback>
+        </Avatar>
+        <div className="min-w-0">
+          <p className="text-sm font-medium truncate">{row.name}</p>
+          <p className="text-xs text-muted-foreground truncate">{row.email}</p>
+        </div>
+      </div>
+      <Badge variant={row.roleV} size="sm">{row.role}</Badge>
+      <Badge variant={row.planV} size="sm">{row.plan}</Badge>
+    </div>
+  ))}
+</div>`,
     },
     {
       title: "In a profile or detail card",
       description: "Multiple attributes side-by-side in a detail layout.",
       preview: <ProfileCardExample />,
+      code: `<div className="rounded-xl border overflow-hidden max-w-xs">
+  <div className="flex items-center gap-3 p-4 border-b">
+    <Avatar className="size-10 rounded-full shrink-0">
+      <AvatarImage src="https://api.dicebear.com/9.x/micah/svg?seed=Ikedi" alt="Ikedi Eze" />
+      <AvatarFallback>I</AvatarFallback>
+    </Avatar>
+    <div className="min-w-0">
+      <p className="text-sm font-semibold">Ikedi Eze</p>
+      <p className="text-xs text-muted-foreground truncate">kasidyray@gmail.com</p>
+    </div>
+  </div>
+  <div className="p-4 flex flex-col gap-3">
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Role</span>
+      <Badge variant="caution" size="sm">Owner</Badge>
+    </div>
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Plan</span>
+      <Badge variant="info" size="sm">Enterprise</Badge>
+    </div>
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-muted-foreground">Access</span>
+      <Badge variant="success" size="sm">Full access</Badge>
+    </div>
+  </div>
+</div>`,
     },
     {
       title: "Categorising a list",
       description: "Category type shown at a glance without reading every row.",
       preview: <CategorisedListExample />,
+      code: `const items = [
+  { title: "Automated welcome email", type: "System",    variant: "neutral"  },
+  { title: "Trial expiry reminder",   type: "Marketing", variant: "info"     },
+  { title: "Invoice payment failed",  type: "Billing",   variant: "critical" },
+  { title: "Feature announcement",    type: "Product",   variant: "success"  },
+  { title: "Upcoming maintenance",    type: "Ops",       variant: "warning"  },
+]
+
+<div className="rounded-xl border overflow-hidden">
+  {items.map((item, i) => (
+    <div key={i} className="flex items-center justify-between px-4 py-3 border-b last:border-0">
+      <p className="text-sm">{item.title}</p>
+      <Badge variant={item.variant} size="sm">{item.type}</Badge>
+    </div>
+  ))}
+</div>`,
     },
   ],
 

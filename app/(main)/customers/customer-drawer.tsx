@@ -1,11 +1,9 @@
 "use client"
 
-import * as React from "react"
-import { RiBankCardLine, RiCloseLine } from "@remixicon/react"
+import { RiBankCardLine } from "@remixicon/react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   Drawer,
   DrawerContent,
@@ -24,9 +22,9 @@ type Props = {
 export function CustomerDrawer({ customer, onClose }: Props) {
   return (
     <Drawer open={!!customer} onOpenChange={(open) => !open && onClose()} direction="right">
-      <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
+      <DrawerContent className="overflow-y-auto">
         {/* ── Header ────────────────────────────────────────────────────── */}
-        <DrawerHeader className="flex flex-row items-start justify-between gap-4 border-b p-4">
+        <DrawerHeader className="items-start">
           <div className="flex items-center gap-3 min-w-0">
             {customer && (() => {
               const firstName = customer.name.split(" ")[0]
@@ -46,11 +44,7 @@ export function CustomerDrawer({ customer, onClose }: Props) {
               <span className="font-mono text-xs text-muted-foreground">{customer?.id}</span>
             </div>
           </div>
-          <DrawerClose asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Close">
-              <RiCloseLine />
-            </Button>
-          </DrawerClose>
+          <DrawerClose />
         </DrawerHeader>
 
         {customer && (

@@ -14,6 +14,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { IconBadge } from "@/components/ui/icon-badge"
 import {
   RiDeleteBinLine,
   RiLogoutBoxLine,
@@ -27,12 +28,12 @@ import type { ComponentDocData } from "../../component-doc-types"
 
 const AnatomyPreview = () => (
   <div className="flex flex-col items-center gap-6 py-2 w-full max-w-sm mx-auto">
-    <div className="w-full rounded-4xl border bg-card p-6 shadow-lg ring-1 ring-foreground/5">
-      <div className="flex flex-col gap-6">
+    <div className="w-full rounded-2xl overflow-hidden bg-card ring-1 ring-foreground/5 shadow-lg">
+      <div className="flex flex-col gap-6 p-6">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left sm:gap-5">
-          <div className="inline-flex size-16 shrink-0 items-center justify-center rounded-full bg-muted">
-            <RiDeleteBinLine className="size-8 text-muted-foreground" />
-          </div>
+          <IconBadge variant="destructive" size="xl" className="shrink-0">
+            <RiDeleteBinLine />
+          </IconBadge>
           <div className="flex flex-col gap-1 pt-1">
             <p className="text-lg font-medium">Delete this record?</p>
             <p className="text-sm text-muted-foreground text-balance">
@@ -40,10 +41,10 @@ const AnatomyPreview = () => (
             </p>
           </div>
         </div>
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <Button variant="outline" size="sm">Cancel</Button>
-          <Button variant="destructive" size="sm">Delete record</Button>
-        </div>
+      </div>
+      <div className="flex flex-col-reverse gap-2 bg-muted border-t px-6 py-4 sm:flex-row sm:justify-end">
+        <Button variant="outline" size="sm">Cancel</Button>
+        <Button variant="destructive" size="sm">Delete record</Button>
       </div>
     </div>
     <div className="flex flex-wrap items-start justify-center gap-x-5 gap-y-2 text-center">
@@ -66,8 +67,8 @@ const WithMediaPreview = () => {
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-8 text-muted-foreground" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete Adaeze Okoye?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -112,7 +113,7 @@ const SmallSizePreview = () => {
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia>
-            <RiLogoutBoxLine className="size-8 text-muted-foreground" />
+            <RiLogoutBoxLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Sign out?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -120,7 +121,7 @@ const SmallSizePreview = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel variant="ghost">Stay</AlertDialogCancel>
+          <AlertDialogCancel variant="outline">Stay</AlertDialogCancel>
           <AlertDialogAction>Sign out</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -138,7 +139,7 @@ const DefaultStatePreview = () => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
-            <RiAlertLine className="size-8 text-muted-foreground" />
+            <RiAlertLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Revoke API key?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -170,8 +171,8 @@ const LoadingStatePreview = () => {
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiDeleteBinLine className="size-8 text-muted-foreground" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Delete project?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -200,8 +201,8 @@ const DestructiveStatePreview = () => {
       <Button variant="destructive" size="sm" onClick={() => setOpen(true)}><RiDeleteBinLine />Delete account</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia className="bg-destructive/10">
-            <RiDeleteBinLine className="size-8 text-destructive" />
+          <AlertDialogMedia variant="destructive">
+            <RiDeleteBinLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Permanently delete account?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -248,7 +249,7 @@ const DoMediaPreview = () => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogMedia>
-            <RiLogoutBoxLine className="size-8 text-muted-foreground" />
+            <RiLogoutBoxLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Sign out of workspace?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -271,8 +272,8 @@ const DoSingleActionPreview = () => {
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Revoke access</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
-            <RiUserUnfollowLine className="size-8 text-muted-foreground" />
+          <AlertDialogMedia variant="destructive">
+            <RiUserUnfollowLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Revoke access for Emeka?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -392,7 +393,7 @@ const DeleteRecordExample = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogMedia>
-              <RiDeleteBinLine className="size-8 text-muted-foreground" />
+              <RiDeleteBinLine />
             </AlertDialogMedia>
             <AlertDialogTitle>Delete {selected}?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -430,7 +431,7 @@ const RevokeAccessExample = () => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogMedia>
-              <RiUserUnfollowLine className="size-8 text-muted-foreground" />
+              <RiUserUnfollowLine />
             </AlertDialogMedia>
             <AlertDialogTitle>Revoke access for Emeka?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -472,7 +473,7 @@ const SignOutExample = () => {
         <AlertDialogContent size="sm">
           <AlertDialogHeader>
             <AlertDialogMedia>
-              <RiLogoutBoxLine className="size-8 text-muted-foreground" />
+              <RiLogoutBoxLine />
             </AlertDialogMedia>
             <AlertDialogTitle>Sign out?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -480,7 +481,7 @@ const SignOutExample = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel variant="ghost">Stay</AlertDialogCancel>
+            <AlertDialogCancel variant="outline">Stay</AlertDialogCancel>
             <AlertDialogAction>Sign out</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -746,16 +747,130 @@ export const alertDialogDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       title: "Delete from a data table",
       description: "Triggered by a delete icon in a table row. The dialog names the contact so there's no ambiguity about who is being deleted.",
       preview: <DeleteRecordExample />,
+      code: `const [open, setOpen] = useState(false)
+const [selected, setSelected] = useState<string | null>(null)
+
+<div className="rounded-xl border overflow-hidden">
+  {contacts.map(row => (
+    <div key={row.name} className="grid grid-cols-[1fr_auto] gap-4 items-center px-4 py-3 border-b last:border-0">
+      <div>
+        <p className="text-sm font-medium">{row.name}</p>
+        <p className="text-xs text-muted-foreground">{row.email}</p>
+      </div>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        className="text-destructive hover:text-destructive"
+        aria-label={\`Delete \${row.name}\`}
+        onClick={() => { setSelected(row.name); setOpen(true) }}
+      >
+        <RiDeleteBinLine />
+      </Button>
+    </div>
+  ))}
+</div>
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogMedia>
+        <RiDeleteBinLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>Delete {selected}?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This contact and all associated records will be permanently deleted.
+        This action cannot be undone.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction variant="destructive">Delete contact</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
     },
     {
       title: "Revoke team member access",
       description: "Triggered from a team management panel. Icon and name make the consequence immediately clear.",
       preview: <RevokeAccessExample />,
+      code: `const [open, setOpen] = useState(false)
+
+<div className="rounded-xl border overflow-hidden">
+  <div className="flex items-center justify-between px-4 py-3">
+    <div>
+      <p className="text-sm font-medium">Emeka Nwachukwu</p>
+      <p className="text-xs text-muted-foreground">emeka@nairabi.io · Member</p>
+    </div>
+    <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+      Revoke access
+    </Button>
+  </div>
+</div>
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogMedia>
+        <RiUserUnfollowLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>Revoke access for Emeka?</AlertDialogTitle>
+      <AlertDialogDescription>
+        Emeka Nwachukwu will immediately lose access to the workspace and all shared resources.
+        You can re-invite him at any time from Team settings.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction variant="destructive">Revoke access</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
     },
     {
       title: "Sign out from a user menu",
       description: "Small size with a symmetric footer. Non-destructive confirm (sign-out is reversible) — default variant on action.",
       preview: <SignOutExample />,
+      code: `const [open, setOpen] = useState(false)
+
+<div className="rounded-xl border overflow-hidden max-w-xs">
+  <div className="flex items-center gap-3 p-4 border-b">
+    <Avatar className="size-8 rounded-full">
+      <AvatarImage src="https://api.dicebear.com/9.x/micah/svg?seed=Ikedi" alt="Ikedi Eze" />
+      <AvatarFallback>IE</AvatarFallback>
+    </Avatar>
+    <div>
+      <p className="text-sm font-medium">Ikedi Eze</p>
+      <p className="text-xs text-muted-foreground">kasidyray@gmail.com</p>
+    </div>
+  </div>
+  <div className="p-2">
+    <button
+      className="cursor-pointer w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-destructive hover:bg-destructive/5 transition-colors"
+      onClick={() => setOpen(true)}
+    >
+      <RiLogoutBoxLine className="size-4" />
+      Sign out
+    </button>
+  </div>
+</div>
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent size="sm">
+    <AlertDialogHeader>
+      <AlertDialogMedia>
+        <RiLogoutBoxLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>Sign out?</AlertDialogTitle>
+      <AlertDialogDescription>
+        You will be signed out of your current session. Any unsaved changes may be lost.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel variant="ghost">Stay</AlertDialogCancel>
+      <AlertDialogAction>Sign out</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
     },
   ],
 

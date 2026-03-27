@@ -5,7 +5,7 @@ import { toast } from "sonner"
 import {
   RiBankCardLine,
   RiBuilding2Line,
-  RiCloseLine,
+
   RiExchangeFundsLine,
   RiUserLine,
 } from "@remixicon/react"
@@ -144,15 +144,11 @@ export function AddCustomerDrawer({ open, onClose, onAdd }: Props) {
 
   return (
     <Drawer open={open} onOpenChange={(open) => !open && handleClose()} direction="right">
-      <DrawerContent className="flex flex-col gap-0 overflow-y-auto">
+      <DrawerContent className="overflow-y-auto">
         {/* ── Header ────────────────────────────────────────────────────── */}
-        <DrawerHeader className="flex flex-row items-center justify-between gap-4 border-b p-4 shrink-0">
+        <DrawerHeader>
           <DrawerTitle className="text-base font-semibold">Add customer</DrawerTitle>
-          <DrawerClose asChild>
-            <Button variant="ghost" size="icon-sm" aria-label="Close">
-              <RiCloseLine />
-            </Button>
-          </DrawerClose>
+          <DrawerClose />
         </DrawerHeader>
 
         {/* ── Form ──────────────────────────────────────────────────────── */}

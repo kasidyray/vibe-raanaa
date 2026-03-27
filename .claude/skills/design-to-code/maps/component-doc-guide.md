@@ -150,9 +150,20 @@ dontItems: DoDontItem[]  // Each: { label, description, preview: ReactNode }
 ### `examplesInContext`
 ```ts
 examplesInContext: ContextExample[]
-// Each: { title, description, preview: ReactNode }
-// Show the component inside a realistic UI container (table row, card, list item).
+// Each: { title, description, preview: ReactNode, code: string }
+// Show the component inside a realistic UI container (table row, card, list item, grid).
 // 2–3 examples. Use real data (names, values) not Lorem ipsum.
+//
+// `code` is REQUIRED — a JSX snippet a developer can copy and adapt directly.
+//   Write it to match the preview exactly. Simplify internals (replace data arrays
+//   with a descriptive variable name), but keep all component names and props real.
+//   A "View code" button appears automatically in the design tab when code is present.
+//
+// preview layout rules:
+//   - Do NOT use mx-auto. Centering is handled by PreviewBox in the layout renderer.
+//   - Use max-w-xs / max-w-sm for single-entity examples (profile card, menu, drawer).
+//   - Use w-full grid sm:grid-cols-2 gap-4 for multi-item examples (tables, grids).
+//   - Never stretch a single card or component to full-width — it looks unbalanced.
 ```
 
 ### `relatedComponents`
