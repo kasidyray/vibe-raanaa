@@ -388,13 +388,13 @@ function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
   if (!variants.length) return null
   return (
     <DocSection id="variants" title="Variants">
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-8">
         {variants.map((v: ComponentVariant) => (
           <div key={v.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", v.fullWidth && "sm:col-span-2")}>
-            <div className="flex items-center justify-center bg-muted/30 px-6 py-8 border-b min-h-24">
+            <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
               {v.preview}
             </div>
-            <div className="p-4 flex flex-col gap-1">
+            <div className="p-4 flex flex-col gap-1 bg-muted/50">
               <p className="text-sm font-semibold">{v.name}</p>
               <p className="text-sm text-muted-foreground">{v.description}</p>
             </div>
@@ -409,13 +409,13 @@ function StatesSection({ states }: { states: ComponentState[] }) {
   if (!states.length) return null
   return (
     <DocSection id="states" title="States">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
         {states.map((s: ComponentState) => (
           <div key={s.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", s.fullWidth && "sm:col-span-2")}>
-            <PreviewBox className="rounded-none border-0 border-b py-6">
+            <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
               {s.preview}
-            </PreviewBox>
-            <div className="p-4 flex flex-col gap-0.5">
+            </div>
+            <div className="p-4 flex flex-col gap-0.5 bg-muted/50">
               <p className="text-sm font-medium">{s.name}</p>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
             </div>
