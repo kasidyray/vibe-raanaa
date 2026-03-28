@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StatusBadge } from "@/components/ui/status-badge"
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle, EmptyDescription, EmptyContent } from "@/components/ui/empty"
 import {
   RiSearchLine,
   RiFilterLine,
@@ -11,6 +12,8 @@ import {
   RiCheckboxLine,
   RiDeleteBinLine,
   RiEditLine,
+  RiUserLine,
+  RiCloseLine,
 } from "@remixicon/react"
 import type { ComponentDocData } from "../../component-doc-types"
 
@@ -184,11 +187,18 @@ const EmptyStatePreview = () => (
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Plan</p>
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</p>
     </div>
-    <div className="flex flex-col items-center gap-2 py-10 text-center px-4">
-      <p className="text-sm font-medium">No customers</p>
-      <p className="text-xs text-muted-foreground">Add your first customer to get started.</p>
-      <Button variant="outline" size="sm" className="mt-2">Add customer</Button>
-    </div>
+    <Empty className="rounded-none border-0 py-12">
+      <EmptyHeader>
+        <EmptyMedia>
+          <RiUserLine />
+        </EmptyMedia>
+        <EmptyTitle>No customers yet</EmptyTitle>
+        <EmptyDescription>Add your first customer to get started.</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button variant="outline" size="sm">Add customer</Button>
+      </EmptyContent>
+    </Empty>
   </div>
 )
 
@@ -205,37 +215,31 @@ const NoResultsStatePreview = () => (
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Plan</p>
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</p>
     </div>
-    <div className="flex flex-col items-center gap-2 py-10 text-center px-4">
-      <p className="text-sm font-medium">No results found</p>
-      <p className="text-xs text-muted-foreground">Try adjusting your search or filters.</p>
-    </div>
+    <Empty className="rounded-none border-0 py-12">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <RiSearchLine />
+        </EmptyMedia>
+        <EmptyTitle>No results found</EmptyTitle>
+        <EmptyDescription>Try adjusting your search or filters.</EmptyDescription>
+      </EmptyHeader>
+    </Empty>
   </div>
 )
 
 const SelectionStatePreview = () => (
-  <div className="w-full text-sm space-y-2">
-    {/* Selection bar */}
-    <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-foreground text-background text-xs">
-      <RiCheckboxLine className="size-4 opacity-70" />
-      <span className="font-medium">2 selected</span>
-      <div className="ml-auto flex items-center gap-2">
-        <button className="flex items-center gap-1.5 opacity-80 hover:opacity-100">
-          <RiEditLine className="size-3.5" />
-          Edit
-        </button>
-        <div className="w-px h-4 bg-background/20" />
-        <button className="flex items-center gap-1.5 text-red-300 hover:text-red-200">
-          <RiDeleteBinLine className="size-3.5" />
-          Delete
-        </button>
-      </div>
-    </div>
-    {/* Table rows */}
+  <div className="relative w-full text-sm pb-16">
+    {/* Table */}
     <div className="rounded-xl border overflow-hidden">
+      <div className="grid grid-cols-[32px_1fr_100px] gap-3 px-4 py-2.5 border-b bg-muted/30">
+        <div className="size-4 rounded border border-muted-foreground/40 bg-foreground" />
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Name</p>
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Plan</p>
+      </div>
       {[
-        { name: "Adaeze Okoye", plan: "Pro", selected: true },
-        { name: "Emeka Nwachukwu", plan: "Free", selected: true },
-        { name: "Ngozi Achebe", plan: "Enterprise", selected: false },
+        { name: "Adaeze Okoye",    plan: "Pro",        selected: true  },
+        { name: "Emeka Nwachukwu", plan: "Free",       selected: true  },
+        { name: "Ngozi Achebe",    plan: "Enterprise", selected: false },
       ].map(row => (
         <div
           key={row.name}
@@ -246,6 +250,25 @@ const SelectionStatePreview = () => (
           <Badge variant="neutral">{row.plan}</Badge>
         </div>
       ))}
+    </div>
+    {/* Floating selection bar — simulated with absolute positioning */}
+    <div className="absolute bottom-0 left-0 right-0 flex justify-center">
+      <div className="flex items-center gap-1 rounded-full border bg-popover px-2 py-2 shadow-xl shadow-black/10 ring-1 ring-border/50">
+        <div className="flex items-center gap-2 px-2">
+          <span className="text-sm font-medium">2 selected</span>
+          <button className="flex size-5 items-center justify-center rounded-md text-muted-foreground hover:bg-muted">
+            <RiCloseLine className="size-3.5" />
+          </button>
+        </div>
+        <div className="mx-1 h-5 w-px bg-border" />
+        <button className="flex size-7 items-center justify-center rounded-lg border bg-background hover:bg-muted">
+          <RiEditLine className="size-3.5" />
+        </button>
+        <div className="mx-1 h-5 w-px bg-border" />
+        <button className="flex size-7 items-center justify-center rounded-lg border bg-background text-destructive hover:bg-destructive/10">
+          <RiDeleteBinLine className="size-3.5" />
+        </button>
+      </div>
     </div>
   </div>
 )
