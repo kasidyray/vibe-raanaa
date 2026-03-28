@@ -15,12 +15,16 @@ export interface ComponentVariant {
   description: string
   when: string
   preview: ReactNode
+  /** Span the full section width instead of half the grid */
+  fullWidth?: boolean
 }
 
 export interface ComponentState {
   name: string
   description: string
   preview: ReactNode
+  /** Span the full section width instead of half the grid */
+  fullWidth?: boolean
 }
 
 // ── Properties ────────────────────────────────────────────────────────────────

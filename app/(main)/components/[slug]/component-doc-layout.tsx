@@ -390,7 +390,7 @@ function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
     <DocSection id="variants" title="Variants">
       <div className="grid sm:grid-cols-2 gap-4">
         {variants.map((v: ComponentVariant) => (
-          <div key={v.name} className="rounded-xl border bg-card overflow-hidden flex flex-col">
+          <div key={v.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", v.fullWidth && "sm:col-span-2")}>
             <div className="flex items-center justify-center bg-muted/30 px-6 py-8 border-b min-h-24">
               {v.preview}
             </div>
@@ -411,7 +411,7 @@ function StatesSection({ states }: { states: ComponentState[] }) {
     <DocSection id="states" title="States">
       <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {states.map((s: ComponentState) => (
-          <div key={s.name} className="rounded-xl border bg-card overflow-hidden flex flex-col">
+          <div key={s.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", s.fullWidth && "sm:col-span-2")}>
             <PreviewBox className="rounded-none border-0 border-b py-6">
               {s.preview}
             </PreviewBox>

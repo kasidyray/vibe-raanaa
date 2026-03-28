@@ -395,18 +395,21 @@ export const dataTableDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       description: "Table is wrapped in a rounded bordered container. Toolbar gets a bottom border, footer gets a top border. The most common variant for full-page data views.",
       when: "Primary data views with a toolbar and pagination (customers, leads, transactions).",
       preview: <ContainedVariantPreview />,
+      fullWidth: true,
     },
     {
       name: "Card",
       description: "Toolbar and footer are plain siblings above/below the table card. The table itself sits inside a Card with its own border and shadow.",
       when: "Dashboard sections or secondary tables embedded on a page with other content.",
       preview: <CardVariantPreview />,
+      fullWidth: true,
     },
     {
       name: "Plain",
       description: "No outer border. Table uses top/bottom border lines only. Minimal visual weight, blends with surrounding content.",
       when: "Detail views, drawers, or sections where the table is part of a larger layout and should not appear as a standalone panel.",
       preview: <PlainVariantPreview />,
+      fullWidth: true,
     },
   ],
 
@@ -416,21 +419,25 @@ export const dataTableDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       name: "With data",
       description: "Normal state. Rows render with hover highlight. Clicking triggers onRowClick if provided.",
       preview: <ContainedVariantPreview />,
+      fullWidth: true,
     },
     {
       name: "Empty",
       description: "No records in the data source. DataTable renders the emptyMessage in a centred empty state. Pagination is suppressed.",
       preview: <EmptyStatePreview />,
+      fullWidth: true,
     },
     {
       name: "No results",
       description: "Records exist but all are filtered out. Use a different emptyMessage to communicate this (\"No results match your filters.\").",
       preview: <NoResultsStatePreview />,
+      fullWidth: true,
     },
     {
       name: "Row selection",
       description: "Checked rows appear highlighted. The DataTableSelectionBar floats above the page showing the count and bulk action buttons.",
       preview: <SelectionStatePreview />,
+      fullWidth: true,
     },
   ],
 
