@@ -63,10 +63,11 @@ export default function TopbarLayout({ children }: { children: React.ReactNode }
               className="h-7 w-auto dark:invert"
             />
           }
+          logoHref="/dashboard"
           navItems={NAV_ITEMS}
           user={DEFAULT_USER}
         />
-        <main className="flex flex-1 flex-col bg-background md:rounded-2xl md:overflow-hidden md:shadow-md md:border">
+        <main className="flex flex-1 flex-col bg-background md:rounded-t-2xl md:overflow-hidden md:shadow-md md:border">
           {children}
         </main>
       </div>

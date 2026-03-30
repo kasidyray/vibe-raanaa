@@ -368,21 +368,21 @@ export default function TopbarDemoPage() {
               {SESSIONS_DATA.map((item) => (
                 <div key={item.country} className="flex flex-col gap-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       <span className="text-base leading-none">{item.flag}</span>
                       <span className="text-sm font-medium">{item.country}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-sm tabular-nums">
+                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground tabular-nums">
                       <span>{item.sessions.toLocaleString()}</span>
-                      <span className="text-success font-medium">
+                      <span className="text-foreground font-medium">
                         • {item.change}%
                       </span>
                     </div>
                   </div>
                   {/* Dynamic width — no token equivalent for a runtime percentage */}
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-secondary">
                     <div
-                      className="h-full rounded-full bg-success"
+                      className="h-full rounded-full bg-primary"
                       style={{
                         width: `${Math.round((item.sessions / MAX_SESSIONS) * 100)}%`,
                       }}

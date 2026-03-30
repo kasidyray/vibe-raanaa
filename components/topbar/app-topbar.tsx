@@ -42,6 +42,8 @@ const CONTAINER_MAX_WIDTH: Record<ContainerSize, string> = {
 
 export type AppTopbarProps = {
   logo: React.ReactNode
+  /** href the logo links to. Defaults to "/". */
+  logoHref?: string
   navItems: TopbarNavItem[]
   user: TopbarUser
   /**
@@ -126,6 +128,7 @@ function DefaultTopbarRight({ user }: { user: TopbarUser }) {
 
 export function AppTopbar({
   logo,
+  logoHref = "/",
   navItems,
   user,
   containerSize = "xl",
@@ -139,7 +142,7 @@ export function AppTopbar({
 
         {/* ── Mobile layout ──────────────────────────────────────────────── */}
         <div className="flex h-full items-center justify-between md:hidden">
-          <div className="shrink-0">{logo}</div>
+          <a href={logoHref} className="shrink-0">{logo}</a>
           <div className="flex items-center gap-1">
             <ModeToggle />
             <NotificationBell />
@@ -152,7 +155,7 @@ export function AppTopbar({
 
           {/* Left: logo + separator */}
           <div className="flex items-center gap-4">
-            <div className="shrink-0">{logo}</div>
+            <a href={logoHref} className="shrink-0">{logo}</a>
             {navItems.length > 0 && (
               <Separator
                 orientation="vertical"

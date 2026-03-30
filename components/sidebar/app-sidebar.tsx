@@ -89,6 +89,11 @@ const data = {
       url: "/canned-answers",
       icon: <RiMessage2Line />,
     },
+    {
+      title: "No Sidebar",
+      url: "/topbar-demo",
+      icon: <RiLayoutGridLine />,
+    },
   ],
   navClouds: [
     {
