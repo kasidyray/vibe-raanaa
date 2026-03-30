@@ -42,9 +42,8 @@ export function TopbarMobileMenu({ logo, navItems }: Props) {
 
       <SheetContent side="left" showCloseButton className="flex flex-col gap-0 p-0">
         <SheetHeader className="border-b px-4 py-3">
-          <SheetTitle asChild>
-            <div className="flex items-center">{logo}</div>
-          </SheetTitle>
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <div className="flex items-center">{logo}</div>
         </SheetHeader>
 
         <nav
