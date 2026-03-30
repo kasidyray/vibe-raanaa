@@ -225,8 +225,8 @@ export default function TopbarDemoPage() {
       <Container size="xl" className="flex flex-1 flex-col gap-6">
 
         <PageHeader
-          title="Overview"
-          description="Analytics summary for your business."
+          title="Y'ello, Ikedi 👋"
+          description="Here's your business analytics summary."
           actions={
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm">
