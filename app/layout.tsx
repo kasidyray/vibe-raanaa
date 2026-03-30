@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${mtnBrighterSans.variable} ${geistMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${mtnBrighterSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
         <NextTopLoader
           color="var(--color-primary)"

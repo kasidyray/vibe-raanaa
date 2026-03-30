@@ -103,6 +103,76 @@ Typical standalone layout patterns:
 
 ---
 
+## Context C — Inside the topbar shell (`app/(topbar)/`)
+
+Use when an application has **fewer than 5 primary navigation links** and a sidebar would be visually excessive. The `AppTopbar` and `NotificationProvider` are provided by `app/(topbar)/layout.tsx` — never recreate them inside a page.
+
+**When to choose topbar vs sidebar:**
+
+| Signal | Choose |
+|---|---|
+| ≤ 4 primary nav links, flat hierarchy | Topbar (`app/(topbar)/`) |
+| 5+ links, nested sections, or collapsible groups | Sidebar (`app/(main)/`) |
+
+**Required page skeleton:**
+```tsx
+export default function FooPage() {
+  const [containerSize, setContainerSize] = React.useState<ContainerSize>("xl")
+
+  const content = (
+    <>
+      <PageHeader title="..." description="..." actions={...} />
+      {/* page content */}
+    </>
+  )
+
+  return (
+    <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 md:overflow-y-auto">
+      <Container size={containerSize} className="flex flex-1 flex-col gap-6">{content}</Container>
+    </div>
+  )
+}
+```
+
+Pass the same `containerSize` to `AppTopbar` in `layout.tsx` so the topbar content aligns with the page content:
+```tsx
+<AppTopbar ... containerSize="xl" />
+```
+
+**No `SiteHeader`** — `AppTopbar` in `layout.tsx` is the header. Never add a second header inside a page.
+
+**`PageHeader` is allowed** — it has no sidebar dependencies. Use it the same way as in `app/(main)/` pages, including the width switcher on data/list pages.
+
+**No `SidebarInset`** — not applicable in this context.
+
+**Configure `AppTopbar` in `layout.tsx`:**
+```tsx
+<AppTopbar
+  logo={<img src="/logo.svg" alt="Logo" className="h-7 w-auto dark:invert" />}
+  navItems={NAV_ITEMS}
+  user={DEFAULT_USER}
+  // right={<CustomRightControls />}  ← optional full override
+/>
+```
+
+**`AppTopbar` is fully responsive:**
+- **≥ md** — logo + horizontal nav links (with `DropdownMenu` for items that have sub-items) + right controls
+- **< md** — logo + mode toggle + notification bell + hamburger → `Sheet` slides in from the left with the full nav
+
+**Nav item shape:**
+```ts
+type TopbarNavItem = {
+  title: string
+  url: string
+  icon?: React.ReactNode      // shown in mobile menu only
+  items?: { title: string; url: string }[]  // renders as DropdownMenu on desktop
+}
+```
+
+**Demo route:** `/topbar-demo` — see `app/(topbar)/topbar-demo/page.tsx`
+
+---
+
 ## Page archetypes and their layout conventions
 
 | Archetype | Context | Container size | Key structural note |
@@ -112,6 +182,7 @@ Typical standalone layout patterns:
 | Dashboard / overview | A (main) | `xl` or `full` | Stat cards + chart + activity, full-bleed chart option |
 | Entity detail | A (main) | `lg` default | Breadcrumb shows parent, tabbed body |
 | Placeholder / empty | A (main) | `xl` default | `Empty` component centred in flex-1 |
+| Topbar app (≤4 links) | C (topbar) | `xl` default | No sidebar, no `SiteHeader`, no `PageHeader` — `AppTopbar` in layout.tsx |
 | Auth / login | B (standalone) | N/A | Centred card or split panel |
 | Onboarding wizard | B (standalone) | N/A | Full-screen with step progress |
 | Error page (404 etc.) | B (standalone) | N/A | Centred, minimal |

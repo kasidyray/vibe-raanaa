@@ -5,7 +5,7 @@ import { RiCloseLine } from "@remixicon/react"
 import type { VariantProps } from "class-variance-authority"
 
 import { buttonVariants } from "@/components/ui/button"
-import { useSidebar } from "@/components/ui/sidebar"
+import { SidebarContext } from "@/components/ui/sidebar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
@@ -26,7 +26,8 @@ function DataTableSelectionBar({
   actions: DataTableSelectionBarAction[]
   label?: string
 }) {
-  const { open } = useSidebar()
+  const sidebar = React.useContext(SidebarContext)
+  const open = sidebar?.open ?? false
   const visible = count > 0
 
   return (

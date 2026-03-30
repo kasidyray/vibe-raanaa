@@ -703,6 +703,7 @@ function SidebarMenuSubButton({
 }
 
 export {
+  SidebarContext,
   Sidebar,
   SidebarContent,
   SidebarFooter,

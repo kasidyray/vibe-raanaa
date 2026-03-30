@@ -390,7 +390,7 @@ function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
     <DocSection id="variants" title="Variants">
       <div className="grid sm:grid-cols-2 gap-8">
         {variants.map((v: ComponentVariant) => (
-          <div key={v.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", v.fullWidth && "sm:col-span-2")}>
+          <div key={v.name} className={cn("rounded-xl border overflow-hidden flex flex-col", v.fullWidth && "sm:col-span-2")}>
             <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
               {v.preview}
             </div>
@@ -411,12 +411,12 @@ function StatesSection({ states }: { states: ComponentState[] }) {
     <DocSection id="states" title="States">
       <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
         {states.map((s: ComponentState) => (
-          <div key={s.name} className={cn("rounded-xl border bg-card overflow-hidden flex flex-col", s.fullWidth && "sm:col-span-2")}>
+          <div key={s.name} className={cn("rounded-xl border overflow-hidden flex flex-col", s.fullWidth && "sm:col-span-2")}>
             <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
               {s.preview}
             </div>
             <div className="p-4 flex flex-col gap-0.5 bg-muted/50">
-              <p className="text-sm font-medium">{s.name}</p>
+              <p className="text-base font-medium">{s.name}</p>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
             </div>
           </div>

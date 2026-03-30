@@ -43,6 +43,34 @@ import { comboboxDesignDoc } from "./_docs/combobox/design"
 import { comboboxDevelopDoc } from "./_docs/combobox/develop"
 import { dataTableDesignDoc } from "./_docs/data-table/design"
 import { dataTableDevelopDoc } from "./_docs/data-table/develop"
+import { datePickerDesignDoc } from "./_docs/date-picker/design"
+import { datePickerDevelopDoc } from "./_docs/date-picker/develop"
+import { dialogDesignDoc } from "./_docs/dialog/design"
+import { dialogDevelopDoc } from "./_docs/dialog/develop"
+import { dropdownMenuDesignDoc } from "./_docs/dropdown-menu/design"
+import { dropdownMenuDevelopDoc } from "./_docs/dropdown-menu/develop"
+import { emptyDesignDoc } from "./_docs/empty/design"
+import { emptyDevelopDoc } from "./_docs/empty/develop"
+import { fieldDesignDoc } from "./_docs/field/design"
+import { fieldDevelopDoc } from "./_docs/field/develop"
+import { hoverCardDesignDoc } from "./_docs/hover-card/design"
+import { hoverCardDevelopDoc } from "./_docs/hover-card/develop"
+import { iconBadgeDesignDoc } from "./_docs/icon-badge/design"
+import { iconBadgeDevelopDoc } from "./_docs/icon-badge/develop"
+import { inputGroupDesignDoc } from "./_docs/input-group/design"
+import { inputGroupDevelopDoc } from "./_docs/input-group/develop"
+import { popoverDesignDoc } from "./_docs/popover/design"
+import { popoverDevelopDoc } from "./_docs/popover/develop"
+import { inputOtpDesignDoc } from "./_docs/input-otp/design"
+import { inputOtpDevelopDoc } from "./_docs/input-otp/develop"
+import { progressDesignDoc } from "./_docs/progress/design"
+import { progressDevelopDoc } from "./_docs/progress/develop"
+import { separatorDesignDoc } from "./_docs/separator/design"
+import { separatorDevelopDoc } from "./_docs/separator/develop"
+import { sheetDesignDoc } from "./_docs/sheet/design"
+import { sheetDevelopDoc } from "./_docs/sheet/develop"
+import { skeletonDesignDoc } from "./_docs/skeleton/design"
+import { skeletonDevelopDoc } from "./_docs/skeleton/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -99,13 +127,27 @@ const docMap: Record<string, ComponentDocData> = {
   "button-group": { ...buttonGroupDesignDoc, devDoc: buttonGroupDevelopDoc },
   calendar:       { ...calendarDesignDoc, devDoc: calendarDevelopDoc },
   card:           { ...cardDesignDoc, devDoc: cardDevelopDoc },
-  input:          { ...inputDesignDoc, devDoc: inputDevelopDoc },
   textarea:       { ...textareaDesignDoc, devDoc: textareaDevelopDoc },
   checkbox:       { ...checkboxDesignDoc, devDoc: checkboxDevelopDoc },
   switch:         { ...switchDesignDoc, devDoc: switchDevelopDoc },
   select:         { ...selectDesignDoc,     devDoc: selectDevelopDoc },
   combobox:       { ...comboboxDesignDoc,   devDoc: comboboxDevelopDoc },
   "data-table":   { ...dataTableDesignDoc,  devDoc: dataTableDevelopDoc },
+  "date-picker":    { ...datePickerDesignDoc,    devDoc: datePickerDevelopDoc },
+  dialog:           { ...dialogDesignDoc,        devDoc: dialogDevelopDoc },
+  "dropdown-menu":  { ...dropdownMenuDesignDoc,  devDoc: dropdownMenuDevelopDoc },
+  empty:            { ...emptyDesignDoc,          devDoc: emptyDevelopDoc },
+  field:            { ...fieldDesignDoc,          devDoc: fieldDevelopDoc },
+  "hover-card":     { ...hoverCardDesignDoc,      devDoc: hoverCardDevelopDoc },
+  "icon-badge":     { ...iconBadgeDesignDoc,      devDoc: iconBadgeDevelopDoc },
+  input:            { ...inputDesignDoc,          devDoc: inputDevelopDoc },
+  "input-group":    { ...inputGroupDesignDoc,     devDoc: inputGroupDevelopDoc },
+  popover:          { ...popoverDesignDoc,        devDoc: popoverDevelopDoc },
+  "input-otp":      { ...inputOtpDesignDoc,       devDoc: inputOtpDevelopDoc },
+  progress:         { ...progressDesignDoc,       devDoc: progressDevelopDoc },
+  separator:        { ...separatorDesignDoc,      devDoc: separatorDevelopDoc },
+  sheet:            { ...sheetDesignDoc,          devDoc: sheetDevelopDoc },
+  skeleton:         { ...skeletonDesignDoc,       devDoc: skeletonDevelopDoc },
 }
 
 export default function ComponentPage({
