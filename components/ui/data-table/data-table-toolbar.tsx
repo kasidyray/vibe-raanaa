@@ -11,7 +11,7 @@ function DataTableToolbar({
   children: React.ReactNode
 }) {
   return (
-    <div className={cn("flex flex-wrap items-center gap-2 py-3", className)}>
+    <div className={cn("flex flex-wrap items-center gap-2 py-3 min-w-0", className)}>
       {children}
     </div>
   )

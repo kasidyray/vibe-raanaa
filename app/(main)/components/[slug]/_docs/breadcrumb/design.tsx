@@ -146,7 +146,7 @@ export const PageHeaderExample = () => (
 // ── Example in context: Detail drawer header ──────────────────────────────────
 
 const DrawerHeaderExample = () => (
-  <div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="rounded-xl border overflow-hidden w-full">
     <div className="flex items-center justify-between px-5 py-3 border-b bg-muted/40">
       <Breadcrumb>
         <BreadcrumbList>

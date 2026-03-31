@@ -490,24 +490,6 @@ export const selectDesignDoc: Omit<ComponentDocData, "devDoc"> = {
       ),
     },
     {
-      name: "Open",
-      description: "Dropdown popup is visible with items listed below the trigger.",
-      preview: (
-        <div className="w-52 h-36 flex items-start">
-          <Select open>
-            <SelectTrigger>
-              <SelectValue placeholder="Select plan" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="free">Free</SelectItem>
-              <SelectItem value="pro">Pro</SelectItem>
-              <SelectItem value="enterprise">Enterprise</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      ),
-    },
-    {
       name: "Disabled",
       description: "The trigger is dimmed and non-interactive.",
       preview: (

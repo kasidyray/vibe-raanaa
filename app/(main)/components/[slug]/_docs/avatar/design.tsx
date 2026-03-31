@@ -154,7 +154,7 @@ const ActivityFeedExample = () => (
 // ── Example in context: Team list with AvatarGroup ────────────────────────────
 
 const TeamGroupExample = () => (
-  <div className="rounded-xl border overflow-hidden max-w-sm">
+  <div className="rounded-xl border overflow-hidden w-full">
     {[
       { team: "Engineering",  members: PEOPLE.slice(0, 4), total: 12 },
       { team: "Design",       members: PEOPLE.slice(1, 4), total: 5  },

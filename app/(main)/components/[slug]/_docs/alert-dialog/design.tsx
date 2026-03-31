@@ -14,12 +14,18 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { IconBadge } from "@/components/ui/icon-badge"
 import {
   RiDeleteBinLine,
   RiLogoutBoxLine,
   RiUserUnfollowLine,
   RiAlertLine,
+  RiBluetoothLine,
+  RiShieldLine,
+  RiLockLine,
+  RiFingerprint2Line,
+  RiKeyLine,
 } from "@remixicon/react"
 import type { ComponentDocData } from "../../component-doc-types"
 
@@ -117,7 +123,7 @@ const SmallSizePreview = () => {
           </AlertDialogMedia>
           <AlertDialogTitle>Sign out?</AlertDialogTitle>
           <AlertDialogDescription>
-            You will be signed out of your current session.
+            You will be signed out of your current sessionsss.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -138,7 +144,7 @@ const DefaultStatePreview = () => {
       <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open preview</Button>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogMedia>
+          <AlertDialogMedia variant="destructive">
             <RiAlertLine />
           </AlertDialogMedia>
           <AlertDialogTitle>Revoke API key?</AlertDialogTitle>
@@ -392,7 +398,7 @@ const DeleteRecordExample = () => {
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogMedia>
+            <AlertDialogMedia variant="destructive">
               <RiDeleteBinLine />
             </AlertDialogMedia>
             <AlertDialogTitle>Delete {selected}?</AlertDialogTitle>
@@ -413,7 +419,7 @@ const DeleteRecordExample = () => {
 const RevokeAccessExample = () => {
   const [open, setOpen] = useState(false)
   return (
-    <div className="rounded-xl border overflow-hidden">
+    <div className="rounded-xl border overflow-hidden w-full">
       <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
         <p className="text-sm font-medium">Team members</p>
       </div>
@@ -430,7 +436,7 @@ const RevokeAccessExample = () => {
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogMedia>
+            <AlertDialogMedia variant="destructive">
               <RiUserUnfollowLine />
             </AlertDialogMedia>
             <AlertDialogTitle>Revoke access for Emeka?</AlertDialogTitle>
@@ -487,6 +493,131 @@ const SignOutExample = () => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  )
+}
+
+const BluetoothPairingExample = () => {
+  const [open, setOpen] = useState(false)
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Connect device</Button>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogMedia>
+            <RiBluetoothLine />
+          </AlertDialogMedia>
+          <AlertDialogTitle>Pair with this device?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will allow the device to connect and share data with your current session.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Connect</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+const ETicketSuccessExample = () => {
+  const [open, setOpen] = useState(false)
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Register ticket</Button>
+      <AlertDialogContent stacked>
+        <AlertDialogHeader>
+          <AlertDialogMedia variant="success" />
+          <AlertDialogTitle>Success! Your e-ticket is registered.</AlertDialogTitle>
+          <AlertDialogDescription>
+            Please check your email for confirmation and further instructions about the event.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="rounded-lg border divide-y text-sm">
+          {([
+            ["Order Number", "GBD99763JS"],
+            ["Order Date", "7 September 2024"],
+            ["Event Name", "Groove Beats Day Fest"],
+            ["Event Date", "20/09/2024"],
+            ["Register Date", "20/09/2024 | 09 PM"],
+          ] as const).map(([label, value]) => (
+            <div key={label} className="flex items-center justify-between px-4 py-2.5">
+              <span className="text-muted-foreground">{label}</span>
+              <span className="font-semibold">{value}</span>
+            </div>
+          ))}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogAction className="w-full" onClick={() => setOpen(false)}>Back to Home</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+const SystemUpdateExample = () => {
+  const [open, setOpen] = useState(false)
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Show update</Button>
+      <AlertDialogContent size="sm">
+        <AlertDialogHeader>
+          <AlertDialogMedia variant="primary">
+            <RiShieldLine />
+          </AlertDialogMedia>
+          <AlertDialogTitle>System Update Available!</AlertDialogTitle>
+          <Badge variant="success">Release v28.1.0 (2026-01-12)</Badge>
+          <AlertDialogDescription>
+            A new version of the application is ready. Restarting now will apply the latest security patches and features.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Remind Me Later</AlertDialogCancel>
+          <AlertDialogAction>Update Now</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+const SecurityAuditExample = () => {
+  const [open, setOpen] = useState(false)
+  const items = [
+    { icon: <RiLockLine />, label: "Password Policy", sub: "Verify strength and rotation", status: "Pending", variant: "caution" as const },
+    { icon: <RiFingerprint2Line />, label: "Biometric Status", sub: "Check hardware encryption", status: "Done", variant: "success" as const },
+    { icon: <RiKeyLine />, label: "Active Sessions", sub: "Review connected devices", status: "Pending", variant: "caution" as const },
+  ]
+  return (
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Start audit</Button>
+      <AlertDialogContent stacked>
+        <AlertDialogHeader>
+          <AlertDialogMedia variant="success">
+            <RiShieldLine />
+          </AlertDialogMedia>
+          <AlertDialogTitle>Advanced Security Audit</AlertDialogTitle>
+          <AlertDialogDescription>
+            Summary of your account status and security settings.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="flex flex-col divide-y rounded-lg border text-sm">
+          {items.map(({ icon, label, sub, status, variant }) => (
+            <div key={label} className="flex items-center gap-3 px-3 py-2.5">
+              <IconBadge variant="neutral" size="sm">{icon}</IconBadge>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium">{label}</p>
+                <p className="text-xs text-muted-foreground">{sub}</p>
+              </div>
+              <Badge variant={variant} size="sm">{status}</Badge>
+            </div>
+          ))}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel variant="ghost" className="col-span-2">Skip for now</AlertDialogCancel>
+          <AlertDialogAction className="col-span-2">Start Deep Audit</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
@@ -773,7 +904,7 @@ const [selected, setSelected] = useState<string | null>(null)
 <AlertDialog open={open} onOpenChange={setOpen}>
   <AlertDialogContent>
     <AlertDialogHeader>
-      <AlertDialogMedia>
+      <AlertDialogMedia variant="destructive">
         <RiDeleteBinLine />
       </AlertDialogMedia>
       <AlertDialogTitle>Delete {selected}?</AlertDialogTitle>
@@ -810,7 +941,7 @@ const [selected, setSelected] = useState<string | null>(null)
 <AlertDialog open={open} onOpenChange={setOpen}>
   <AlertDialogContent>
     <AlertDialogHeader>
-      <AlertDialogMedia>
+      <AlertDialogMedia variant="destructive">
         <RiUserUnfollowLine />
       </AlertDialogMedia>
       <AlertDialogTitle>Revoke access for Emeka?</AlertDialogTitle>
@@ -868,6 +999,119 @@ const [selected, setSelected] = useState<string | null>(null)
     <AlertDialogFooter>
       <AlertDialogCancel variant="ghost">Stay</AlertDialogCancel>
       <AlertDialogAction>Sign out</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    },
+    {
+      title: "Device pairing prompt",
+      description: "Non-destructive confirmation with a neutral media icon. Default action variant — connecting a device is reversible.",
+      preview: <BluetoothPairingExample />,
+      code: `<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogMedia>
+        <RiBluetoothLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>Pair with this device?</AlertDialogTitle>
+      <AlertDialogDescription>
+        This will allow the device to connect and share data with your current session.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Cancel</AlertDialogCancel>
+      <AlertDialogAction>Connect</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    },
+    {
+      title: "Success confirmation with order summary",
+      description: "A single-action dialog used after a successful async operation. The key-value summary removes the need for a separate confirmation page.",
+      preview: <ETicketSuccessExample />,
+      code: `<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent stacked>
+    <AlertDialogHeader>
+      <AlertDialogMedia variant="success" />
+      <AlertDialogTitle>Success! Your e-ticket is registered.</AlertDialogTitle>
+      <AlertDialogDescription>
+        Please check your email for confirmation and further instructions about the event.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <div className="rounded-lg border divide-y text-sm">
+      {rows.map(([label, value]) => (
+        <div key={label} className="flex items-center justify-between px-4 py-2.5">
+          <span className="text-muted-foreground">{label}</span>
+          <span className="font-semibold">{value}</span>
+        </div>
+      ))}
+    </div>
+    <AlertDialogFooter>
+      <AlertDialogAction className="w-full" onClick={() => setOpen(false)}>Back to Home</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    },
+    {
+      title: "System update prompt",
+      description: "A non-destructive prompt with a version badge between title and description. Cancel defers the action; confirm applies it immediately.",
+      preview: <SystemUpdateExample />,
+      code: `<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent size="sm">
+    <AlertDialogHeader>
+      <AlertDialogMedia variant="primary">
+        <RiShieldLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>System Update Available!</AlertDialogTitle>
+      <Badge variant="success">Release v28.1.0 (2026-01-12)</Badge>
+      <AlertDialogDescription>
+        A new version of the application is ready. Restarting now will apply
+        the latest security patches and features.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogCancel>Remind Me Later</AlertDialogCancel>
+      <AlertDialogAction>Update Now</AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>`,
+    },
+    {
+      title: "Security audit checklist",
+      description: "A pre-action summary dialog. IconBadge + StatusBadge pairs give users a quick audit status before they commit to starting the process.",
+      preview: <SecurityAuditExample />,
+      code: `const items = [
+  { icon: <RiLockLine />, label: "Password Policy", sub: "Verify strength and rotation", status: "Pending", variant: "caution" },
+  { icon: <RiFingerprint2Line />, label: "Biometric Status", sub: "Check hardware encryption", status: "Done", variant: "success" },
+  { icon: <RiKeyLine />, label: "Active Sessions", sub: "Review connected devices", status: "Pending", variant: "caution" },
+]
+
+<AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogContent stacked>
+    <AlertDialogHeader>
+      <AlertDialogMedia variant="success">
+        <RiShieldLine />
+      </AlertDialogMedia>
+      <AlertDialogTitle>Advanced Security Audit</AlertDialogTitle>
+      <AlertDialogDescription>
+        Summary of your account status and security settings.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <div className="flex flex-col divide-y rounded-lg border text-sm">
+      {items.map(({ icon, label, sub, status, variant }) => (
+        <div key={label} className="flex items-center gap-3 px-3 py-2.5">
+          <IconBadge variant="neutral" size="sm">{icon}</IconBadge>
+          <div className="flex-1 min-w-0">
+            <p className="font-medium">{label}</p>
+            <p className="text-xs text-muted-foreground">{sub}</p>
+          </div>
+          <Badge variant={variant} size="sm">{status}</Badge>
+        </div>
+      ))}
+    </div>
+    <AlertDialogFooter>
+      <AlertDialogAction className="col-span-2">Start Deep Audit</AlertDialogAction>
+      <AlertDialogCancel variant="ghost" className="col-span-2">Skip for now</AlertDialogCancel>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>`,

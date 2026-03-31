@@ -126,31 +126,33 @@ export function LeadsTable() {
         onRowClick={setSelectedLead}
         toolbar={
           <DataTableToolbar>
-            <DataTableSearch table={table} placeholder="Search by name, company..." />
+            <div className="flex w-full sm:flex-1 flex-wrap items-center gap-2 min-w-0">
+              <DataTableSearch table={table} placeholder="Search by name, company..." />
 
-            <DataTableFacetedFilter
-              title="Job Title"
-              options={JOB_TITLES}
-              selectedValues={jobTitleFilter}
-              onSelectionChange={setJobTitleFilter}
-              icon={<RiBriefcaseLine className="opacity-60" />}
-            />
+              <DataTableFacetedFilter
+                title="Job Title"
+                options={JOB_TITLES}
+                selectedValues={jobTitleFilter}
+                onSelectionChange={setJobTitleFilter}
+                icon={<RiBriefcaseLine className="opacity-60" />}
+              />
 
-            <DataTableFacetedFilter
-              title="Company"
-              options={COMPANIES}
-              selectedValues={companyFilter}
-              onSelectionChange={setCompanyFilter}
-              icon={<RiBuilding2Line className="opacity-60" />}
-            />
+              <DataTableFacetedFilter
+                title="Company"
+                options={COMPANIES}
+                selectedValues={companyFilter}
+                onSelectionChange={setCompanyFilter}
+                icon={<RiBuilding2Line className="opacity-60" />}
+              />
 
-            {hasActiveFilters && (
-              <Button variant="ghost" size="sm" onClick={() => { setJobTitleFilter([]); setCompanyFilter([]) }}>
-                Reset
-              </Button>
-            )}
+              {hasActiveFilters && (
+                <Button variant="ghost" size="sm" onClick={() => { setJobTitleFilter([]); setCompanyFilter([]) }}>
+                  Reset
+                </Button>
+              )}
+            </div>
 
-            <div className="ml-auto flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <DataTableSortMenu
                 sorting={sorting}
                 onSortingChange={setSorting}

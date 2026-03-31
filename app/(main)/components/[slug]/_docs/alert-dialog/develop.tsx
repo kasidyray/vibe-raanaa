@@ -459,6 +459,13 @@ export function LoadingDialog() {
         "default = max-w-md stacked footer. sm = max-w-xs with a 2-column row footer — use for short, low-stakes confirmations.",
     },
     {
+      name: "AlertDialogContent · stacked",
+      values: "boolean",
+      default: "false",
+      description:
+        "Forces the media icon and header content to stack vertically at all breakpoints. By default, size=\"default\" places the media icon beside the title and description on desktop. Use stacked when a centered layout is preferred regardless of width — e.g. success confirmations or audit summaries.",
+    },
+    {
       name: "AlertDialogContent · className",
       values: "string",
       default: "—",

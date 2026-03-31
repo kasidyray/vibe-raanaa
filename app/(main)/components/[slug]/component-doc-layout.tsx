@@ -391,7 +391,7 @@ function VariantsSection({ variants }: { variants: ComponentVariant[] }) {
       <div className="grid sm:grid-cols-2 gap-8">
         {variants.map((v: ComponentVariant) => (
           <div key={v.name} className={cn("rounded-xl border overflow-hidden flex flex-col", v.fullWidth && "sm:col-span-2")}>
-            <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
+            <div className="flex flex-1 items-center justify-center px-6 py-8 border-b min-h-24">
               {v.preview}
             </div>
             <div className="p-4 flex flex-col gap-1 bg-muted/50">
@@ -412,7 +412,7 @@ function StatesSection({ states }: { states: ComponentState[] }) {
       <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-8">
         {states.map((s: ComponentState) => (
           <div key={s.name} className={cn("rounded-xl border overflow-hidden flex flex-col", s.fullWidth && "sm:col-span-2")}>
-            <div className="flex items-center justify-center px-6 py-8 border-b min-h-24">
+            <div className="flex flex-1 items-center justify-center px-6 py-8 border-b min-h-24">
               {s.preview}
             </div>
             <div className="p-4 flex flex-col gap-0.5 bg-muted/50">

@@ -156,7 +156,7 @@ const DontTooManyItemsPreview = () => (
 // ── Examples in context ───────────────────────────────────────────────────────
 
 const ToolbarExample = () => (
-  <div className="rounded-xl border overflow-hidden">
+  <div className="rounded-xl border overflow-hidden w-full">
     <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
       <p className="text-sm font-medium">Format</p>
       <ButtonGroup aria-label="Text formatting">

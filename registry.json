@@ -56,6 +56,10 @@
       "type": "registry:ui"
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui"
+    },
+    {
       "name": "combobox",
       "type": "registry:ui"
     },

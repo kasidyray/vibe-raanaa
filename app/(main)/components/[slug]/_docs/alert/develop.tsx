@@ -11,6 +11,8 @@ import {
   AlertClose,
 } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import type { ComponentDevDocData } from "../../component-doc-types"
 
 // ── Alert develop doc ──────────────────────────────────────────────────────────
@@ -45,12 +47,13 @@ function DismissibleExample() {
 function InlineFormExample() {
   return (
     <div className="flex flex-col gap-1.5 w-full max-w-sm">
-      <label className="text-sm font-medium text-foreground">
-        Bank account number
-      </label>
-      <div className="h-9 rounded-md border border-destructive bg-background px-3 flex items-center text-sm text-muted-foreground">
-        0123456789
-      </div>
+      <Label htmlFor="account-number">Bank account number</Label>
+      <Input
+        id="account-number"
+        aria-invalid
+        defaultValue="0123456789"
+        readOnly
+      />
       <Alert variant="error" level="inline">
         <AlertIcon />
         <AlertContent>
@@ -332,8 +335,8 @@ export const alertDevelopDoc: ComponentDevDocData = {
         "Pair level=\"inline\" with an error variant to surface field-level validation messages directly below an input.",
       preview: <InlineFormExample />,
       code: `<div className="flex flex-col gap-1.5">
-  <label className="text-sm font-medium">Bank account number</label>
-  <input className="h-9 rounded-md border border-destructive px-3 text-sm" />
+  <Label htmlFor="account-number">Bank account number</Label>
+  <Input id="account-number" aria-invalid />
   <Alert variant="error" level="inline">
     <AlertIcon />
     <AlertContent>

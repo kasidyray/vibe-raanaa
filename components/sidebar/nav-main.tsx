@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { RiArrowRightSLine } from "@remixicon/react"
 import {
@@ -99,7 +100,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                               )}
                               <SidebarMenuSubButton
                                 isActive={subActive}
-                                render={<a href={sub.url} />}
+                                render={<Link href={sub.url} />}
                                 className="text-muted-foreground data-active:bg-transparent data-active:text-foreground data-active:font-medium"
                               >
                                 <span>{sub.title}</span>
@@ -118,7 +119,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                   <SidebarMenuButton
                     tooltip={item.title}
                     isActive={isActive}
-                    render={<a href={item.url} />}
+                    render={<Link href={item.url} />}
                   >
                     {item.icon}
                     <span>{item.title}</span>

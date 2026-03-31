@@ -35,7 +35,7 @@ const AnatomyPreview = () => (
 // ── Example in context: Toolbar ───────────────────────────────────────────────
 
 const ToolbarExample = () => (
-  <div className="rounded-xl border overflow-hidden">
+  <div className="rounded-xl border overflow-hidden w-full">
     <div className="flex items-center justify-between px-4 py-3 border-b bg-muted/30">
       <p className="text-sm font-medium">Contacts</p>
       <div className="flex items-center gap-2">

@@ -120,7 +120,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"p">) {
   return (
     <p
       data-slot="alert-title"
-      className={cn("text-sm font-semibold leading-snug", className)}
+      className={cn("text-sm font-medium leading-snug", className)}
       {...props}
     />
   )
