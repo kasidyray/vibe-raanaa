@@ -29,6 +29,7 @@ export function NavExamples({
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
+              tooltip={item.title}
               isActive={pathname === item.url}
               render={<Link href={item.url} />}
             >

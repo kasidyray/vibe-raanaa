@@ -37,6 +37,8 @@ export function NavMain({ items }: { items: NavItem[] }) {
   const [indicatorY, setIndicatorY] = useState<number | null>(null)
 
   useEffect(() => {
+    let rafId: number
+
     const updateIndicator = () => {
       const activeBtn = document.querySelector<HTMLElement>(
         '[data-sidebar="menu-button"][data-active]'
@@ -48,10 +50,35 @@ export function NavMain({ items }: { items: NavItem[] }) {
         setIndicatorY(null)
       }
     }
+
+    const startTracking = () => {
+      const track = () => {
+        updateIndicator()
+        rafId = requestAnimationFrame(track)
+      }
+      rafId = requestAnimationFrame(track)
+    }
+
+    const stopTracking = () => {
+      cancelAnimationFrame(rafId)
+      updateIndicator()
+    }
+
     updateIndicator()
+
     const scrollContainer = document.querySelector('[data-sidebar="content"]')
     scrollContainer?.addEventListener("scroll", updateIndicator, { passive: true })
-    return () => scrollContainer?.removeEventListener("scroll", updateIndicator)
+    scrollContainer?.addEventListener("transitionstart", startTracking)
+    scrollContainer?.addEventListener("transitionend", stopTracking)
+    scrollContainer?.addEventListener("transitioncancel", stopTracking)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      scrollContainer?.removeEventListener("scroll", updateIndicator)
+      scrollContainer?.removeEventListener("transitionstart", startTracking)
+      scrollContainer?.removeEventListener("transitionend", stopTracking)
+      scrollContainer?.removeEventListener("transitioncancel", stopTracking)
+    }
   }, [pathname])
 
   return (

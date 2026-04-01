@@ -14,6 +14,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine, RiMessage2Line } from "@remixicon/react"
 import { components } from "@/app/(main)/components/component-list"
@@ -179,17 +180,25 @@ const data = {
     },
   ],
 }
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+function AppSidebarInner({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { state } = useSidebar()
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              className="data-[slot=sidebar-menu-button]:p-4!"
+              className="data-[slot=sidebar-menu-button]:p-4! group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:justify-center hover:bg-transparent! active:bg-transparent!"
               render={<a href="#" />}
             >
-              <img src="/mtn-logo.svg" alt="MTN Logo" className="h-8 w-auto dark:invert" />
+              {state === "collapsed"
+                ? (
+                  <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary">
+                    <img src="/mtn-logo.svg" alt="MTN" className="h-2.5 w-auto" />
+                  </span>
+                )
+                : <img src="/mtn-logo.svg" alt="MTN Logo" className="h-8 w-auto dark:invert" />
+              }
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -204,4 +213,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
     </Sidebar>
   )
+}
+
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  return <AppSidebarInner {...props} />
 }

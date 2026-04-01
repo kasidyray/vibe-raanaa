@@ -28,7 +28,7 @@ export function NavSecondary({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton isActive={pathname.startsWith(item.url)} render={<a href={item.url} />}>
+              <SidebarMenuButton tooltip={item.title} isActive={pathname.startsWith(item.url)} render={<a href={item.url} />}>
                 {item.icon}
                 <span>{item.title}</span>
               </SidebarMenuButton>
