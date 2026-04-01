@@ -302,9 +302,7 @@ function ButtonGroupSection() {
       </Row>
       <Row label="URL input">
         <ButtonGroup>
-          <ButtonGroupText asChild>
-            <Label htmlFor="url-input">https://</Label>
-          </ButtonGroupText>
+          <ButtonGroupText>https://</ButtonGroupText>
           <InputGroup>
             <InputGroupInput id="url-input" placeholder="yoursite" />
             <InputGroupAddon align="inline-end">
