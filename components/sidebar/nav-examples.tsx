@@ -5,9 +5,11 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 export function NavExamples({
   items,
@@ -16,6 +18,7 @@ export function NavExamples({
     title: string
     url: string
     icon: React.ReactNode
+    badge?: number | string
   }[]
 }) {
   const pathname = usePathname()
@@ -27,10 +30,13 @@ export function NavExamples({
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               isActive={pathname === item.url}
-              render={<a href={item.url} />}
+              render={<Link href={item.url} />}
             >
               {item.icon}
               <span>{item.title}</span>
+              {item.badge !== undefined && (
+                <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

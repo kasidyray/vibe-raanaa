@@ -57,7 +57,8 @@ export const components: ComponentMeta[] = [
 
   // Navigation
   { slug: "breadcrumb",   name: "Breadcrumb",    description: "Shows the current page path hierarchy.",           category: "Navigation", status: "Ready", tags: ["Navigation", "Path", "Hierarchy"] },
-  { slug: "tabs",         name: "Tabs",          description: "Switch between related content views.",            category: "Navigation" },
+  { slug: "tabs",         name: "Tabs",          description: "Switch between related content views.",            category: "Navigation", status: "Ready", tags: ["Navigation", "Views", "Filter", "Settings"] },
+  { slug: "sidebar",      name: "Sidebar",       description: "Composable app navigation panel with grouped menus, sub-menus, badges, and collapsible modes.", category: "Navigation", status: "Ready", tags: ["Navigation", "Layout", "Shell", "Menu"] },
 
   // Feedback
   { slug: "alert",        name: "Alert",         description: "Inline message for info, success, warning, error.", category: "Feedback", status: "Ready", tags: ["Feedback", "Inline", "Message"] },

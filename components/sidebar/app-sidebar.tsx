@@ -2,7 +2,6 @@
 
 import * as React from "react"
 
-import { NavDocuments } from "@/components/sidebar/nav-documents"
 import { NavExamples } from "@/components/sidebar/nav-examples"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavSecondary } from "@/components/sidebar/nav-secondary"
@@ -16,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiDatabase2Line, RiFileChartLine, RiFileLine, RiCommandLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine, RiMessage2Line } from "@remixicon/react"
+import { RiDashboardLine, RiListUnordered, RiFolderLine, RiGroupLine, RiCameraLine, RiFileTextLine, RiSettingsLine, RiQuestionLine, RiSearchLine, RiFlashlightLine, RiLayoutGridLine, RiPieChartLine, RiTableLine, RiUserLine, RiHistoryLine, RiMessage2Line } from "@remixicon/react"
 import { components } from "@/app/(main)/components/component-list"
 
 const data = {
@@ -83,6 +82,7 @@ const data = {
       title: "Activity",
       url: "/activity",
       icon: <RiHistoryLine />,
+      badge: 12,
     },
     {
       title: "Canned Answers",
@@ -178,32 +178,6 @@ const data = {
       ),
     },
   ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "/data-library",
-      icon: (
-        <RiDatabase2Line
-        />
-      ),
-    },
-    {
-      name: "Reports",
-      url: "/reports",
-      icon: (
-        <RiFileChartLine
-        />
-      ),
-    },
-    {
-      name: "Word Assistant",
-      url: "/word-assistant",
-      icon: (
-        <RiFileLine
-        />
-      ),
-    },
-  ],
 }
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -223,8 +197,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavExamples items={data.navExamples} />
-        <NavDocuments items={data.documents} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+<NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

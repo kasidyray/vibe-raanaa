@@ -52,7 +52,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsPanel, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Toggle } from "@/components/ui/toggle"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -536,6 +536,25 @@ function TabsSection() {
             <TabsContent value="overview" className="mt-3 text-sm text-muted-foreground">Overview content</TabsContent>
             <TabsContent value="analytics" className="mt-3 text-sm text-muted-foreground">Analytics content</TabsContent>
             <TabsContent value="reports" className="mt-3 text-sm text-muted-foreground">Reports content</TabsContent>
+          </Tabs>
+        </div>
+        <div>
+          <p className="mb-2 text-xs text-muted-foreground">Vertical</p>
+          <Tabs defaultValue="profile" orientation="vertical">
+            <div className="border-r">
+              <TabsList variant="underline" className="min-w-36 p-2">
+                <TabsTrigger value="profile">Profile</TabsTrigger>
+                <TabsTrigger value="billing">Billing</TabsTrigger>
+                <TabsTrigger value="security">Security</TabsTrigger>
+                <TabsTrigger value="notifications">Notifications</TabsTrigger>
+              </TabsList>
+            </div>
+            <div className="flex-1 pl-5">
+              <TabsPanel value="profile" className="text-sm text-muted-foreground">Manage your name, email, and avatar.</TabsPanel>
+              <TabsPanel value="billing" className="text-sm text-muted-foreground">View invoices and manage payment methods.</TabsPanel>
+              <TabsPanel value="security" className="text-sm text-muted-foreground">Update your password and two-factor settings.</TabsPanel>
+              <TabsPanel value="notifications" className="text-sm text-muted-foreground">Control which emails and alerts you receive.</TabsPanel>
+            </div>
           </Tabs>
         </div>
       </div>

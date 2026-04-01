@@ -71,6 +71,10 @@ import { sheetDesignDoc } from "./_docs/sheet/design"
 import { sheetDevelopDoc } from "./_docs/sheet/develop"
 import { skeletonDesignDoc } from "./_docs/skeleton/design"
 import { skeletonDevelopDoc } from "./_docs/skeleton/develop"
+import { sidebarDesignDoc } from "./_docs/sidebar/design"
+import { sidebarDevelopDoc } from "./_docs/sidebar/develop"
+import { tabsDesignDoc } from "./_docs/tabs/design"
+import { tabsDevelopDoc } from "./_docs/tabs/develop"
 import type { ComponentDocData } from "./component-doc-types"
 
 // Static import map — add new slugs here as example files are created
@@ -148,6 +152,8 @@ const docMap: Record<string, ComponentDocData> = {
   separator:        { ...separatorDesignDoc,      devDoc: separatorDevelopDoc },
   sheet:            { ...sheetDesignDoc,          devDoc: sheetDevelopDoc },
   skeleton:         { ...skeletonDesignDoc,       devDoc: skeletonDevelopDoc },
+  sidebar:          { ...sidebarDesignDoc,        devDoc: sidebarDevelopDoc },
+  tabs:             { ...tabsDesignDoc,           devDoc: tabsDevelopDoc },
 }
 
 export default function ComponentPage({
