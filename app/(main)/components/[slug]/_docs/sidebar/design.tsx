@@ -380,7 +380,7 @@ const DoGroupsPreview = () => (
 const DontFlatPreview = () => (
   <div className="flex flex-col w-48 rounded-xl border bg-sidebar overflow-hidden">
     <div className="p-2 flex flex-col gap-0.5">
-      {[
+      {([
         [RiDashboardLine, "Dashboard"],
         [RiGroupLine, "Leads"],
         [RiFolderLine, "Projects"],
@@ -389,7 +389,7 @@ const DontFlatPreview = () => (
         [RiShieldLine, "Security"],
         [RiBankCardLine, "Billing"],
         [RiLogoutBoxLine, "Sign out"],
-      ].map(([Icon, label], i) => (
+      ] as const).map(([Icon, label], i) => (
         <div key={i} className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs text-muted-foreground">
           <Icon className="size-3.5" />{label}
         </div>
